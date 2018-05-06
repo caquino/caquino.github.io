@@ -1,0 +1,80 @@
+# General Settings
+name: Cassiano Aquino
+job_title: Principal Engineer
+email: cassianoaquino@me.com
+description: Protecting the weak against null pointer exceptions, motorcyles, skydiving and technology. 
+avatar: /images/avatar.png
+favicon: /favicon.ico
+twitter_handler: syshero
+analytics_code: UA-4406452-16
+disqus: syshero
+
+# Social Accounts
+social_networks:
+-  { name: facebook, url: 'http://facebook.com/cassiano.serdan' }
+-  { name: twitter, url: 'http://twitter.com/syshero' }
+-  { name: instagram, url: 'https://instagram.com/syshero' }
+-  { name: google-plus, url: '' }
+-  { name: linkedin, url: 'https://linkedin.com/in/cassianoaquino' }
+-  { name: skype, url: '' }
+-  { name: github, url: 'https://github.com/caquino' }
+-  { name: codepen, url: '' }
+-  { name: stack-overflow, url: '' }
+-  { name: dribbble, url: '' }
+-  { name: behance, url: '' }
+-  { name: pinterest, url: '' }
+-  { name: tumblr, url: '' }
+-  { name: youtube, url: 'https://youtube.com/caquino' }
+-  { name: vimeo, url: '' }
+-  { name: vine, url: '' }
+-  { name: 500px, url: '' }
+-  { name: flickr, url: 'https://youtube.com/caquino' }
+-  { name: spotify, url: '' }
+-  { name: steam, url: '' }
+-  { name: wordpress, url: '' }
+-  { name: xing, url: '' }
+-  { name: bitcoin, url: '' }
+-  { name: pocket, url: '' }
+-  { name: applemusic, url: '' }
+
+# Modules Settings
+show_categories: 1
+show_tags: 1
+show_email: 1
+show_rss: 1
+show_comments: 1
+show_menu: 1
+fixed_sidebar: 1
+
+# Defaults
+defaults:
+  -
+    scope:
+      path: ""
+      type: "posts"
+    values:
+      comments: "true"
+
+# Serving
+url: ""
+baseurl: ""
+
+# Includes
+include: ["_pages"]
+
+# Outputting
+permalink: /:year-:month-:day-:title/
+category_dir: categories
+
+# Pagination
+paginate: 10
+paginate_path: "/page:num/"
+
+# Conversion
+markdown: kramdown
+excerpt_separator: <!--more-->
+
+# Assets Settings
+sass:
+  sass_dir: assets/partials
+  style: compressed
