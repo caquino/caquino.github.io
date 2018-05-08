@@ -1,6 +1,6 @@
 # General Settings
 name: Cassiano Aquino
-job_title: Principal Engineer
+job_title: Principal Engineer @ Zendesk
 email: cassianoaquino@me.com
 description: Protecting the weak against null pointer exceptions, motorcyles, skydiving and technology. 
 avatar: /images/avatar.png
@@ -38,8 +38,8 @@ social_networks:
 -  { name: applemusic, url: '' }
 
 # Modules Settings
-show_categories: 1
-show_tags: 1
+show_categories: 0
+show_tags: 0
 show_email: 1
 show_rss: 1
 show_comments: 1
@@ -56,7 +56,7 @@ defaults:
       comments: "true"
 
 # Serving
-url: ""
+url: "syshero.org"
 baseurl: ""
 
 # Includes
