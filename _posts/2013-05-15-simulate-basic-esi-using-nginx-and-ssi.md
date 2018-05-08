@@ -18,13 +18,13 @@ I think this image illustrates how it works better than words:
 
 You can get more information about varnish and ESI, take a look at the source of [the image](http://blog.merge.nl/2010/11/22/drupal-blocks-esi-varnish-context) above or at the [wikipedia page](http://en.wikipedia.org/wiki/Edge_Side_Includes)
 
-Varnish implements this functionality, and for NGINX I found a [patch](https://github.com/taf2/nginx-esi), but I never used this patch so I can’t share any experience about it.
+[Varnish](https://varnish-cache.org/) implements this functionality, and for NGINX I found a [patch](https://github.com/taf2/nginx-esi), but I never used this patch so I can’t share any experience about it.
 
 I always try to avoid patching software if possible, so during my research, I found out that it’s possible to do a poor man ESI using SSI on NGINX. Basically, the idea is: 
 
 Your backend sends SSI code inside of the HTML page, and when you serve it from the cache, this SSI will be executed.
 
-It’s not advanced as ESI is, but you can achieve a lot using this simple trick, with small changes to your code.
+It’s not advanced as real ESI, but you can achieve a lot using this simple trick, with small changes to your code.
 
 For example, if you have one slice of your page, like a header or a footer that needs a different TTL from the rest of the page, you can change your code to output something like this:
 

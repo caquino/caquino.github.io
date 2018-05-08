@@ -21,6 +21,12 @@ If you read my blog post about [0-byte file caching]({% post_url 2013-05-04-avoi
 
 Using [proxy_cache_bypass](http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_cache_bypass), [proxy_no_cache](http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_no_cache) and [map](http://nginx.org/en/docs/http/ngx_http_map_module.html) will let us disable caching for logged-in users while still keep the cache for anonymous users.
 
-I have added a simple configuration snippet to show how it works:
+I have added a simple configuration snippet to show how it works, first we need to add a [map](http://nginx.org/en/docs/http/ngx_http_map_module.html) definition with the desired cookie:
 
-{% gist 5551277 %}
+{% gist 5551277 map-nginx-cookie %}
+
+And using the return value from the [map](http://nginx.org/en/docs/http/ngx_http_map_module.html) previously defined, disable caching for it using [proxy_no_cache](http://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_no_cache)
+
+{% gist 5551277 nginx-configuration-snippet %}
+
+See you next time!
