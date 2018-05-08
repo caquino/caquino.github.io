@@ -56,7 +56,7 @@ defaults:
       comments: "true"
 
 # Serving
-url: "blog.syshero.org"
+url: "http://blog.syshero.org"
 baseurl: ""
 
 # Includes
