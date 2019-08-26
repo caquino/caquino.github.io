@@ -38,7 +38,7 @@ social_networks:
 -  { name: applemusic, url: '' }
 
 # Modules Settings
-show_categories: 1
+show_categories: 0
 show_tags: 1
 show_email: 0
 show_rss: 1
@@ -63,8 +63,8 @@ baseurl: ""
 include: ["_pages"]
 
 # Outputting
-#permalink: /:year-:month-:day-:title/
-permalink: /:categories/:title/
+permalink: /:year-:month-:day-:title/
+#permalink: /:categories/:title/
 category_dir: categories
 
 # Pagination
