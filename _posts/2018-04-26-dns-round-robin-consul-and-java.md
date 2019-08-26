@@ -13,7 +13,7 @@ Hello everyone! Today, for a change, I will be talking about Consul from Hashico
 I will start with the assumption that you’re aware of what a DNS round robin is and how it’s supposed to work and evolve from there.
 
 I would like to start saying that the “problem” we faced, it’s not related to Consul, but the solution that we looked for was for Consul.
-
+<!--more-->
 Today Rafael while troubleshooting some uneven load distribution across his services, noticed an unexpected behavior.
 
 He had his service correctly configured in Consul, the DNS response from Consul was returning the expected information, but still, only one node was receiving all the requests.
@@ -36,7 +36,7 @@ While trying to search for more information, regarding DNS round robin, we found
 
 The short version is that most applications used gethostbyname to make DNS requests, which will just give you a randomly ordered list of hosts, which makes DNS round robin work as expected.
 
-But gethostbyname was built to support IPv4 and with IPv6 
+But gethostbyname was built to support IPv4 and with IPv6
 a new function was required, this is when getaddrinfo comes to play.
 
 The “problem” is that getaddrinfo implements RFC3484 which returns the address always in a specific order, thus breaking DNS round robin, which relied on the random order from gethostbyname.
