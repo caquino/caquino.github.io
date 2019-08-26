@@ -39,7 +39,7 @@ social_networks:
 
 # Modules Settings
 show_categories: 0
-show_tags: 1
+show_tags: 0
 show_email: 0
 show_rss: 1
 show_comments: 1
