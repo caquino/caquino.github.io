@@ -15,7 +15,7 @@ tumblr_url: http://syshero.org/post/77122862845/caching-range-requests-using-ngi
 On the end of 2013 I’ve met two amazing guys Justin Dorfman and David Archibald from MaxCDN, they were looking for a way to cache 206 Partial content.
 
 As some of you may be aware, partial content caching using squid/varnish/nginx does not work as expected, the cache needs to download the entire file before returning partial content, and until the file is not downloaded, it returns 200.
-
+<!--more-->
 Replying a partial request with 200 is supported as documented on RFC2616, but normally is not what you want, you want to reduce load, latency and bandwidth usage on backends, that’s why you have a reverse cache after all.
 
 Some options to solve this are complete disabling partial content caching using, for example, proxy_no_cache $http_range or if requests have the same range, adding $http_range to proxy_cache_key.

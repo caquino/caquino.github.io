@@ -10,7 +10,7 @@ tags:
 tumblr_url: http://syshero.org/post/145880203947/thinking-outside-of-the-box-with-nginx-series
 ---
 I think it’s time for me to start a series of posts about useful NGINX commands, and different ways of solving common problems using NGINX and to start this series, let’s talk about [split_clients](http://nginx.org/en/docs/http/ngx_http_split_clients_module.html).
-
+<!--more-->
 [split_clients](http://nginx.org/en/docs/http/ngx_http_split_clients_module.html) was built with A/B testing in mind, but it’s not the only possible way of using it, it’s way more powerful than it’s original design.
 
 let’s start with some examples, the first one I like to call it limited caching and renewal, the idea is that you have a cache in front of your application, where X% of the requests will hit the upstream servers and update the cached version.

@@ -11,7 +11,7 @@ tumblr_url: http://syshero.org/post/172889044421/nginx-unique-request-identifier
 A really useful information to have while debugging applications is an end-to-end request id.
 
 To be able to achieve that you need not only NGINX but also application changes, to forward the ids but also to log them.
-
+<!--more-->
 On this post, I would like to share how to implement the NGINX side.
 
 One way to achieve that is setting a header for both the client side and to the upstream called X-Request-ID for example.

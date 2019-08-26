@@ -10,10 +10,10 @@ tags:
 - sysadmin
 tumblr_url: http://syshero.org/post/68782243218/nginx-dynamic-reverse-proxying-using-lua
 ---
-I was looking for interesting stuff and found a project called hipache from dotcloud written in node.js. 
+I was looking for interesting stuff and found a project called hipache from dotcloud written in node.js.
 
 I start wondering if was possible to rebuild it using nginx + Lua but as it turns out, it was already made by Sam Alba from dotcloud as hipache-nginx.
-
+<!--more-->
 The hunt for more information leads me to a post on dotcloud blog explaining that they switched from the node.js version to nginx + Lua and the reasons behind it, that made even more interested on this project.
 
 While building a lab to check it out, I found a few issues with the current version that prevented it from running.

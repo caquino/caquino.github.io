@@ -13,6 +13,7 @@ tumblr_url: http://syshero.org/post/67727745605/override-templates-from-third-pa
 Some people prefer to develop everything from scratch, and I prefer to reuse everything if it’s possible, the only rule that I need to follow is that I need to find out a way to do it without changing a third party application.
 
 Some months ago, because of some security requirements, I needed to change the default configuration of the rsyslog cookbook.
+<!--more-->
 As you will see on the next code, the way that I found was to override the resource on the rsyslog cookbook from a cookbook that I had developed.
 
 {% gist 7594905 %}

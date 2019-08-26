@@ -9,7 +9,7 @@ tags:
 tumblr_url: http://syshero.org/post/68729802960/nginx-dynamically-configured-mass-virtual-hosting
 ---
 I’ve stumbled some times on ways of doing dynamic vhosts in nginx in a way similar to what apache does using mod_vhost_alias but not in a way that completely satisfies my needs.
-
+<!--more-->
 So I’ve built the following configuration:
 
 {% gist 11232759 %}

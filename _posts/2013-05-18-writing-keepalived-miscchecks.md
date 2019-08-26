@@ -11,7 +11,7 @@ tumblr_url: http://syshero.org/post/50699853023/writing-keepalived-miscchecks
 In some projects, I’m using [Keepalived](http://www.keepalived.org/) for failover using VRRP and load balancing managing IPVS.
 
 Normally it’s my default choice for any new architecture, only if it’s not possible to have layer-4 load balancing because of some requirement, like for example real servers talking to virtual servers on the same subnet.
-
+<!--more-->
 Why currently, layer-4 load balancing is my default choice:
 
 - No changes needed to the application
@@ -24,7 +24,7 @@ Why currently, layer-4 load balancing is my default choice:
 
 MISC_CHECKS allows you to use custom scripts to do service checks,  the only requirement is to be able to have custom exit codes.
 
-Keepalived handles MISC_CHECKS spawning the check script on a predefined interval of time and checking the exit code of it. 
+Keepalived handles MISC_CHECKS spawning the check script on a predefined interval of time and checking the exit code of it.
 
 The exit code should be 0 in case of success or 1 in case of failure.
 

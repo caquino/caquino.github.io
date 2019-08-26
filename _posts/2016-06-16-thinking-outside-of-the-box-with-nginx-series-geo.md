@@ -12,7 +12,7 @@ tumblr_url: http://syshero.org/post/146028334747/thinking-outside-of-the-box-wit
 For the second part of this series let’s talk about another command, this time, let’s talk about the [geo](http://nginx.org/en/docs/http/ngx_http_geo_module.html) command.
 
 The [geo](http://nginx.org/en/docs/http/ngx_http_geo_module.html) command, as the name says, was created to allow geolocation information, but actually, you can think of [geo](http://nginx.org/en/docs/http/ngx_http_geo_module.html) as a “switch case” where you can match network blocks and get a result from it.
-
+<!--more-->
 So let’s say for example that you want your QA team to always go to your preproduction environment instead of production, with [geo](http://nginx.org/en/docs/http/ngx_http_geo_module.html) this can be done easily, provide your team have a fixed IP address that you match.
 
 {% gist 514c4b62c78101441bf1efef4aa371e8 %}

@@ -12,7 +12,7 @@ tumblr_url: http://syshero.org/post/146652229967/thinking-outside-of-the-box-wit
 Hello, everyone! Time to get back to our series of posts about NGINX!
 
 This time, let’s talk about an old friend, the proxy_cache_bypass command, which we used multiple times in my examples, but I never dedicated a post to it, so it’s time to fix this error!
-
+<!--more-->
 At first glimpse, proxy_cache_bypass feels like a simple command, one where you can bypass caching when necessary, but after reading the documentation with more attention, there was a piece of it that caught my attention.
 
 > Note that the response from the back-end is still eligible for caching.

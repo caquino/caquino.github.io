@@ -8,7 +8,7 @@ tumblr_url: http://syshero.org/post/68174083489/nginx-syslog-ing-without-breakin
 After seeing a problem reported by a fellow devops on his post at HackerNews, I decided to spin up a lab trying to help to find a solution besides ditching nginx.
 
 About his post, TL;DR the free nginx can’t log to syslog.
-
+<!--more-->
 My idea was to configure nginx writing to a FIFO and use rsyslog reading from it.
 
 While testing rsyslog I found that to make it open the fifos you need to first write something on the fifos, this is a no-go for me.

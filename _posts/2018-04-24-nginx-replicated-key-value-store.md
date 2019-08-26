@@ -11,7 +11,7 @@ tumblr_url: http://syshero.org/post/173254351689/nginx-replicated-key-value-stor
 Today I would like to show how two NGINX+ modules can work together to create a replicated and load balanced RESTfull key-value storage.
 
 If you have any question, not only about NGINX, that you think that I can answer for you, feel free to leave a comment!
-
+<!--more-->
 I’ve been monitoring NGINX questions on Twitter, but let’s say that people have a really bad time asking questions, especially when they have a limited amount of characters to do so.
 
 The current implementation of NGINX+ API has support for a key-value store, but not to replicate it, but nothing that can’t be solved if we use the mirror module.

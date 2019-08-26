@@ -11,7 +11,7 @@ tumblr_url: http://syshero.org/post/50498184831/simulate-basic-esi-using-nginx-a
 Some people may have used ESI or at least heard something about it, but if this is a new term for you,  ESI is a feature that allows you to have different caching policies for “slices” of a page or no cache at all.
 
 For example, if you want to cache your main page for one hour, but it is not possible because you have a slice on your page that can’t be cached because it has user information, today is your luck day, ESI permits you to accomplish this task.
-
+<!--more-->
 I think this image illustrates how it works better than words:
 
 ![Drupal ESI Varnish]({{ "/assets/drupal-esi-varnish.jpg" | absolute_url }})
@@ -20,7 +20,7 @@ You can get more information about varnish and ESI, take a look at the source of
 
 [Varnish](https://varnish-cache.org/) implements this functionality, and for NGINX I found a [patch](https://github.com/taf2/nginx-esi), but I never used this patch so I can’t share any experience about it.
 
-I always try to avoid patching software if possible, so during my research, I found out that it’s possible to do a poor man ESI using SSI on NGINX. Basically, the idea is: 
+I always try to avoid patching software if possible, so during my research, I found out that it’s possible to do a poor man ESI using SSI on NGINX. Basically, the idea is:
 
 Your backend sends SSI code inside of the HTML page, and when you serve it from the cache, this SSI will be executed.
 

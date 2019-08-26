@@ -8,7 +8,7 @@ tumblr_url: http://syshero.org/post/49324881596/nginx-cache-purge-emulation
 I’m not a big fan of building my binaries with custom patching. Usually, I try to avoid as much as possible, maybe is some trauma from my past qmail days.
 
 Looking for a way of purging cache items on NGINX without adding a patch to it, I found some options like [https://github.com/perusio/nginx-cache-purge](https://github.com/perusio/nginx-cache-purge), which is a good solution, but for a cache with a large number of files can be expensive.
-
+<!--more-->
 And [https://github.com/FRiCKLE/ngx_cache_purge](https://github.com/FRiCKLE/ngx_cache_purge), which works well but as I stated at the beginning of the post, I try to avoid something outside of packages.
 
 Reading the documentation of the nginx cache module, I found one interest information about [cache_proxy_bypass](http://wiki.nginx.org/HttpProxyModule#proxy_cache_bypass):
