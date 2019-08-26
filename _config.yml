@@ -1,8 +1,8 @@
 # General Settings
 name: Cassiano Aquino
-job_title: Principal Engineer @ Zendesk
+job_title: Security R&D @ Ubiquiti Networks
 email: cassianoaquino@me.com
-description: Protecting the weak against null pointer exceptions, motorcyles, skydiving and technology. 
+description: Protecting the weak against null pointer exceptions, motorcyles, skydiving and technology.
 avatar: /images/avatar.png
 favicon: /favicon.ico
 twitter_handler: syshero
@@ -11,9 +11,9 @@ disqus: syshero
 
 # Social Accounts
 social_networks:
--  { name: facebook, url: 'http://facebook.com/cassiano.serdan' }
+-  { name: facebook, url: '' }
 -  { name: twitter, url: 'http://twitter.com/syshero' }
--  { name: instagram, url: 'https://instagram.com/syshero' }
+-  { name: instagram, url: '' }
 -  { name: google-plus, url: '' }
 -  { name: linkedin, url: 'https://linkedin.com/in/cassianoaquino' }
 -  { name: skype, url: '' }
@@ -24,11 +24,11 @@ social_networks:
 -  { name: behance, url: '' }
 -  { name: pinterest, url: '' }
 -  { name: tumblr, url: '' }
--  { name: youtube, url: 'https://youtube.com/caquino' }
+-  { name: youtube, url: '' }
 -  { name: vimeo, url: '' }
 -  { name: vine, url: '' }
 -  { name: 500px, url: '' }
--  { name: flickr, url: 'https://youtube.com/caquino' }
+-  { name: flickr, url: '' }
 -  { name: spotify, url: '' }
 -  { name: steam, url: '' }
 -  { name: wordpress, url: '' }
