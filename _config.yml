@@ -56,7 +56,7 @@ defaults:
       comments: "true"
 
 # Serving
-url: "httsp://syshero.org"
+url: "https://syshero.org"
 baseurl: ""
 
 # Includes
