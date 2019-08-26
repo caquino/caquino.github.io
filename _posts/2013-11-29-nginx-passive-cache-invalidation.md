@@ -14,7 +14,7 @@ tumblr_url: http://syshero.org/post/68479556365/nginx-passive-cache-invalidation
 Let's talk again about nginx caching, another post that I wrote about cache purging can be a good start for you.
 
 First of all, this is a proof-of-concept and was not used in production (yet), so if you are brave enough to use it, let me know the results.
-
+<!--more-->
 I was reading a very good post about varnish and trying to figure out a way to do cache invalidation in the same way they are doing but using nginx.
 
 After some failures I was able to create something that I called “passive cache invalidation”, because all the procedure is made together on the normal requests, the first idea was to use ngx.location.capture to do a request to a specific purge URL, but working with a queue appears to be more effective and performatic.

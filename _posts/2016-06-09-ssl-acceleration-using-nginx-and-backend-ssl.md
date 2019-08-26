@@ -8,7 +8,7 @@ tumblr_url: http://syshero.org/post/145664994617/ssl-acceleration-using-nginx-an
 One common trick to optimize SSL termination performance is to have a proxy terminating all the SSL connections and proxying the connection to a plain HTTP backend.
 
 This, in theory, works very well and without any code changes, but in practice, you discover that after doing this your application can’t tell the difference between HTTP and HTTPS clients.
-
+<!--more-->
 The most common issue is that the application creates a redirect loop trying to redirect the user to HTTPS because the application is not able to know that the user is already using HTTPS. 
 
 But how to solve this issue? The most common method is to use an HTTP Header to identify SSL/non-SSL connections, this way the application can know which protocol was used on the request.

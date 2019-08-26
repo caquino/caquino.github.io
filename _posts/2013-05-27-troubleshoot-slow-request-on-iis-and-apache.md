@@ -8,7 +8,7 @@ tumblr_url: http://syshero.org/post/51508627419/troubleshoot-slow-request-on-iis
 From time to time, I see operations-peeps struggling with web applications, trying to find out what’s causing problems on his infrastructure.
 
 It’s even more difficult when you try to debug it, working together with the developer, usually the default excuse for both sides is: “It was working, nothing was changed.”, but the problem still exists and needs to be solved, no matter who changed it or not.
-
+<!--more-->
 Depending on the programming language and application server used file operations are synchronous and with the advent of external integrations, like twitter or facebook for example, even when you don’t change anything, external requests can be the cause of your problem, with slower responses, causing your application to lock waiting for a response.
 
 One way to troubleshoot this in an [Apache](https://httpd.apache.org/) environment is using [mod_status](https://httpd.apache.org/docs/2.4/mod/mod_status.html).

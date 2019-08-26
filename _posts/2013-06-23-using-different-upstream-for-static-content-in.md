@@ -8,7 +8,7 @@ tumblr_url: http://syshero.org/post/53632583089/using-different-upstream-for-sta
 I know that you missed me because I was away from my blog for the past few weeks, but was for a good reason, I was doing skydiving lessons, I’m excited about this.
 
 I’ve found a video that shares a little bit of the experience at Vimeo.
-
+<!--more-->
 Trust me, if you never jumped, try it!
 
 Just to warm up the engines again, I will write about a simple but effective trick.

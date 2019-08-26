@@ -8,7 +8,7 @@ tumblr_url: http://syshero.org/post/51729932595/shared-persistence-between-virtu
 If you are afraid of reading this long post TL;DR to have shared persistence you will need to use iptables fwmark or service port 0 on keepalived, but if you are brave enough to read it, let’s start from the basics.
 
 First, we need to understand the difference between persistence algorithm and scheduling algorithm.
-
+<!--more-->
 The scheduling algorithm is used to choose the server that your connection will go.
 
 Persistence algorithm is used to tell if your connections will always go to the same server.

@@ -9,7 +9,7 @@ tumblr_url: http://syshero.org/post/123124082042/persistent-backend-selection-us
 Today a good old friend, [Alex](https://github.com/fiorix), sent me a "Bat signal" asking for help with an unusual NGINX configuration, I wonder why my friends only remembers me during "weird" incidents :P
 
 Basically the requirement was to run a multiple copies of a legacy application on the same URL as it does not support folder prefix or subdomains.
-
+<!--more-->
 The desired functionality was that /app1 configures nginx to use backend1 and return to /, and all the subsequent requests on / should be sent to backend1, the same with /app2 to backend2 and /app3 to backend3.
 
 So the solution we designed is:

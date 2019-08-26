@@ -11,7 +11,7 @@ tumblr_url: http://syshero.org/post/146155678882/imapfilter-cleaning-up-your-mai
 Hello friends, For the ones of you that do not know imapfilter, you should check it out, but basically, imapfilter is an IMAP client where you can write a set of rules and apply this rules to your mailbox.
 
 imapfilter rules are written in Lua, a really simple and powerful programming language.
-
+<!--more-->
 To start you should create a folder in your home directory called imapfilter, to do so you use the following command:
 
 {% highlight bash %}
@@ -24,7 +24,7 @@ To make things a little bit more interesting, let’s dissect my imapfilter conf
 
 Let’s start with some basic options that I use, and I will explain why.
 
-{% gist cf523a99ebfe29a2d8ebb374bc6df58f %} 
+{% gist cf523a99ebfe29a2d8ebb374bc6df58f %}
 
 - options.timeout: will specify a timeout for imapfilter to wait for the IMAP server response, if you have huge mailboxes OR if you’re planning to use the special “All mail” folder in Gmail, it’s a good idea to have a big timeout as operations may take a while.
 

@@ -10,7 +10,7 @@ tags:
 tumblr_url: http://syshero.org/post/146109564987/thinking-outside-of-the-box-with-nginx-series
 ---
 I don’t think this is thinking outside the box, but I could not do a series of posts about useful commands without talking about [map](http://nginx.org/en/docs/http/ngx_http_map_module.html), arguably one of the most useful commands on NGINX, especially that I’m sure map will be used in most of our posts.
-
+<!--more-->
 You should think about [map](http://nginx.org/en/docs/http/ngx_http_map_module.html) as a “switch” statement like many programming languages have, it’s how you will be able to take advantage of it.
 
 Basically, the syntax for [map](http://nginx.org/en/docs/http/ngx_http_map_module.html) is the following:
@@ -34,11 +34,11 @@ Another functionality is that [map](http://nginx.org/en/docs/http/ngx_http_map_m
 
 Let’s try another example, what about using [map](http://nginx.org/en/docs/http/ngx_http_map_module.html) and [geo](http://nginx.org/en/docs/http/ngx_http_geo_module.html) to allow us to only whitelist clients from our customer network that contains the whitelistrl cookie? Sounds like fun!
 
-{% gist 9c724bad73421b495e2ad6225b3c1e48 %} 
+{% gist 9c724bad73421b495e2ad6225b3c1e48 %}
 
 One thing to note thou, the order of the nesting matters, [map](http://nginx.org/en/docs/http/ngx_http_map_module.html) accepts nesting other commands, but this is not true for all commands, for example, if we had tried to call [map](http://nginx.org/en/docs/http/ngx_http_map_module.html) from [geo](http://nginx.org/en/docs/http/ngx_http_geo_module.html), it was not going to work, so always test before deploying to production!
 
-Also, you can see examples of [map](http://nginx.org/en/docs/http/ngx_http_map_module.html) usage in posts right here on my blog! 
+Also, you can see examples of [map](http://nginx.org/en/docs/http/ngx_http_map_module.html) usage in posts right here on my blog!
 
 Some examples are:
 - [Persistent backend selection using cookies with NGINX]({% post_url 2015-07-03-persistent-backend-selection-using-cookies-with %})

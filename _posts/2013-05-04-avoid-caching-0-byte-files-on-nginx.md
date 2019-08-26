@@ -12,7 +12,7 @@ tumblr_url: http://syshero.org/post/49594172838/avoid-caching-0-byte-files-on-ng
 Some people, including myself, had problems with some applications misbehaving and sending empty outputs (hello PHP, I'm talking to you!).
 
 The problem is even worse if you have a cache in front of your frontends and this empty page gets cached, your cache will send empty output until it expires or be purged.
-
+<!--more-->
 To avoid this, you can use one small configuration snippet that uses the Content-Length response from the upstream to disable caching.
 
 Basically, the idea is "only cache if the size is greater than 0", and to achieve this, you can use the following configuration on NGINX.

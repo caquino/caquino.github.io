@@ -12,7 +12,7 @@ tumblr_url: http://syshero.org/post/50053543196/disable-nginx-cache-based-on-coo
 Caching of dynamic content is difficult and invalidation of cache even more difficult, maybe you already heard Phil Karlton’s wise saying
 
 > There are only two hard things in Computer Science: Cache invalidation and naming things.
-
+<!--more-->
 If you have one situation when you need to disable caching, after the client logs in on the application, and this application uses cookies to track logged-in users, you can use the same [map](http://nginx.org/en/docs/http/ngx_http_map_module.html) function that was used to [avoid 0-byte file caching]({% post_url 2013-05-04-avoid-caching-0-byte-files-on-nginx %}).
 
 For example [.NET applications](http://msdn.microsoft.com/en-us/library/ee920427.aspx), when using the default configuration, will use the cookie named .ASPXAUTH to track if a user is authenticated.

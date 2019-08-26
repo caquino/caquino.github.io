@@ -13,18 +13,18 @@ tumblr_url: http://syshero.org/post/172864680752/nginx-chained-purge
 After a long winter, I’m here again to post about my favorite subject, wanna guess? NGINX! (Like it was hard to guess)
 
 I will start with a story, which may or may not be based in real life, you get to choose.
-
+<!--more-->
 Once upon the time, Mr. J worked in a big company that used NGINX as their caching layer.
 
 As the company grew, so their infrastructure, and now they needed to run multiple NGINXs (What’s the plural of NGINX BTW?), and seemed to be an easy task, turned into a complex problem.
 
 Their applications used NGINX as a cache, and now doing cache PURGE was a lot more complex than it was before, as they needed to do it on every NGINX server as the caches were isolated from each other.
 
-Mr. J was also worried about how this would work in the Cloud™, what about Autoscaling Groups? 
+Mr. J was also worried about how this would work in the Cloud™, what about Autoscaling Groups?
 
 All that fancy functionalities that I can leverage BUT now it’s much harder to do PURGEs.
 
-How do I keep a list of the servers? 
+How do I keep a list of the servers?
 Do I need to call the Cloud™ API?
 
 After some research, he had some ideas, one was to use shared storage between the caches, but he felt that this would increase the complexity even more and steered away from this option.
@@ -50,7 +50,7 @@ After a lot of research and hard work (not really, it was done in a couple of ho
 Let’s imagine a simple NGINX+, which works well with a single cache node:
 
 {% gist a4692d5abefba4141ad6f5e9fa49ee05On %}
- 
+
 On this example, NGINX+ uses Consul to populate the backends upstream server list.
 
 Nothing special here, no PURGE or anything just yet!
@@ -97,6 +97,6 @@ With this solution, the PURGE request can be sent to any NGINX+ server, and it w
 
 And Mr. J lived happily ever after.
 
-I hope that Mr. J adventure helps you solve your caching issues! 
+I hope that Mr. J adventure helps you solve your caching issues!
 
 See you next time!

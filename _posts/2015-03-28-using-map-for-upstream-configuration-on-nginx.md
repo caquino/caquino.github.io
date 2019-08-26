@@ -12,7 +12,7 @@ tumblr_url: http://syshero.org/post/114804017957/using-map-for-upstream-configur
 Hi everyone, sorry for not posting any content here for such a long time.
 
 Some of you should have noticed already that I like using map for a lot of stuff.
-
+<!--more-->
 Another neat usage of map is to simplify your configuration, let me give you a quick example.
 
 Imagine that you have the following configuration:

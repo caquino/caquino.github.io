@@ -12,7 +12,7 @@ tumblr_url: http://syshero.org/post/173024270270/nginx-automatic-purge-when-cont
 One of the biggest challenges for content caching is the expiration of this content, too short lived and your cache is not effective, too long, and you will serve stale data.
 
 The sweet spot for caching is exactly to cache the content while it’s valid, which is hard as you may not know for how long your content will be valid at the moment that’s being cached.
-
+<!--more-->
 To help with that NGINX+ has a cache purge functionality, that allows applications to send a request to NGINX+ and ask that specific content to be removed from the cache.
 
 This requires extra application logic, which is fine, but sometimes you need to be able to purge content for applications that are not aware of the caching in front of it.
