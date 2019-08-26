@@ -12,7 +12,7 @@ disqus: syshero
 # Social Accounts
 social_networks:
 -  { name: facebook, url: '' }
--  { name: twitter, url: 'http://twitter.com/syshero' }
+-  { name: twitter, url: 'https://twitter.com/syshero' }
 -  { name: instagram, url: '' }
 -  { name: google-plus, url: '' }
 -  { name: linkedin, url: 'https://linkedin.com/in/cassianoaquino' }
@@ -56,7 +56,7 @@ defaults:
       comments: "true"
 
 # Serving
-url: "http://blog.syshero.org"
+url: "httsp://syshero.org"
 baseurl: ""
 
 # Includes
