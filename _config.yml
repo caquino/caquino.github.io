@@ -13,6 +13,7 @@ disqus: syshero
 social_networks:
 -  { name: facebook, url: '' }
 -  { name: twitter, url: 'https://twitter.com/syshero' }
+-  { name: mastodon, url: 'https://mastodon.social/@syshero'}
 -  { name: instagram, url: '' }
 -  { name: google-plus, url: '' }
 -  { name: linkedin, url: 'https://linkedin.com/in/cassianoaquino' }
