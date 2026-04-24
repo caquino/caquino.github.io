@@ -35,15 +35,11 @@ jobs:
           sudo tar -xzf /tmp/pf.tar.gz -C /usr/local/bin
           pagefind --version
 
-      - name: Render PNG cover twins for OG cards
+      - name: Install rsvg-convert for OG card renderer plugin
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends librsvg2-bin
-          for svg in images/*/cover.svg; do
-            dir=$(dirname "$svg")
-            rsvg-convert -w 1200 -h 630 "$svg" -o "$dir/cover.png"
-          done
-          ls -la images/*/cover.png | head -5
+          rsvg-convert --version
 
       - name: Build Jekyll (plugin runs pagefind post-write)
         env:
