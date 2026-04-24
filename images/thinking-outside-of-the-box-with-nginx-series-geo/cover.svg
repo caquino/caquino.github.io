@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" fill="none" role="img" aria-label="NGINX geo directive: match CIDR ranges against client IP to set a variable used for routing">
+  <rect width="1200" height="630" fill="#fbfaf7"/>
+
+  <g>
+    <rect x="0" y="0" width="1200" height="36" fill="#eeeae3"/>
+    <circle cx="18" cy="18" r="5.5" fill="#ff5f56"/>
+    <circle cx="36" cy="18" r="5.5" fill="#ffbd2e"/>
+    <circle cx="54" cy="18" r="5.5" fill="#27c93f"/>
+    <line x1="0" y1="36" x2="1200" y2="36" stroke="#4c4f69" stroke-width="0.5" opacity="0.12"/>
+  </g>
+
+  <!-- Client IPs on left -->
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14">
+    <g transform="translate(80 155)">
+      <rect width="220" height="48" rx="8" stroke="#4c4f69" stroke-width="2"/>
+      <text x="20" y="30" fill="#4c4f69">203.0.113.42</text>
+    </g>
+    <g transform="translate(80 215)">
+      <rect width="220" height="48" rx="8" stroke="#4c4f69" stroke-width="2"/>
+      <text x="20" y="30" fill="#4c4f69">192.168.10.5</text>
+    </g>
+    <g transform="translate(80 275)">
+      <rect width="220" height="48" rx="8" stroke="#4c4f69" stroke-width="2"/>
+      <text x="20" y="30" fill="#4c4f69">198.51.100.11</text>
+    </g>
+    <g transform="translate(80 335)">
+      <rect width="220" height="48" rx="8" stroke="#4c4f69" stroke-width="2"/>
+      <text x="20" y="30" fill="#4c4f69">192.168.10.99</text>
+    </g>
+    <text x="190" y="405" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#4c4f69" text-anchor="middle" opacity="0.55" letter-spacing="0.1em">CLIENT $remote_addr</text>
+  </g>
+
+  <!-- Arrows into geo -->
+  <g stroke="#4c4f69" fill="#4c4f69" stroke-width="2" opacity="0.6">
+    <line x1="300" y1="180" x2="395" y2="260"/>
+    <line x1="300" y1="240" x2="395" y2="275"/>
+    <line x1="300" y1="300" x2="395" y2="290"/>
+    <line x1="300" y1="360" x2="395" y2="305"/>
+  </g>
+
+  <!-- geo directive (peach) -->
+  <g transform="translate(400 185)">
+    <rect width="380" height="200" rx="12" fill="#fe640b"/>
+    <text x="190" y="34" font-family="Inter, system-ui, sans-serif" font-size="13" fill="#fbfaf7" text-anchor="middle" opacity="0.7" letter-spacing="0.12em">GEO</text>
+    <line x1="24" y1="50" x2="356" y2="50" stroke="#fbfaf7" stroke-width="1" opacity="0.25"/>
+    <text x="24" y="82" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#fbfaf7" font-weight="600">geo $upstream_group {</text>
+    <text x="48" y="108" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#fbfaf7" opacity="0.9">default         "production";</text>
+    <text x="48" y="134" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#fbfaf7" opacity="0.9">192.168.10.0/24 "preproduction";</text>
+    <text x="24" y="160" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#fbfaf7" font-weight="600">}</text>
+    <text x="190" y="186" font-family="Inter, system-ui, sans-serif" font-size="11" fill="#fbfaf7" text-anchor="middle" opacity="0.7">longest-prefix match on CIDR</text>
+  </g>
+
+  <!-- Branch arrows -->
+  <g stroke="#4c4f69" fill="#4c4f69" stroke-width="2.5">
+    <line x1="785" y1="225" x2="870" y2="225"/>
+    <polygon points="880,225 868,218 868,232"/>
+    <line x1="785" y1="345" x2="870" y2="345"/>
+    <polygon points="880,345 868,338 868,352"/>
+  </g>
+
+  <!-- Two upstreams on right -->
+  <g transform="translate(885 195)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+    <rect width="230" height="62" rx="10" stroke="#4c4f69" stroke-width="2.5"/>
+    <text x="115" y="26" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#4c4f69" text-anchor="middle" opacity="0.6" letter-spacing="0.1em">UPSTREAM</text>
+    <text x="115" y="50" font-size="16" fill="#4c4f69" text-anchor="middle" font-weight="600">production</text>
+  </g>
+  <g transform="translate(885 315)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+    <rect width="230" height="62" rx="10" fill="#fe640b" opacity="0.15"/>
+    <rect width="230" height="62" rx="10" stroke="#fe640b" stroke-width="2.5"/>
+    <text x="115" y="26" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#fe640b" text-anchor="middle" opacity="0.75" letter-spacing="0.1em">UPSTREAM</text>
+    <text x="115" y="50" font-size="16" fill="#fe640b" text-anchor="middle" font-weight="600">preproduction</text>
+  </g>
+
+  <!-- proxy_pass line below -->
+  <text x="600" y="510" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#4c4f69" text-anchor="middle" opacity="0.6">proxy_pass http://$upstream_group;</text>
+
+  <text x="1178" y="618" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#4c4f69" text-anchor="end" opacity="0.35">// syshero.org</text>
+</svg>

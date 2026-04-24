@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" fill="none" role="img" aria-label="NGINX cache purge emulation via custom request header and proxy_cache_bypass">
+  <rect width="1200" height="630" fill="#fbfaf7"/>
+
+  <!-- Terminal chrome -->
+  <g>
+    <rect x="0" y="0" width="1200" height="36" fill="#eeeae3"/>
+    <circle cx="18" cy="18" r="5.5" fill="#ff5f56"/>
+    <circle cx="36" cy="18" r="5.5" fill="#ffbd2e"/>
+    <circle cx="54" cy="18" r="5.5" fill="#27c93f"/>
+    <line x1="0" y1="36" x2="1200" y2="36" stroke="#4c4f69" stroke-width="0.5" opacity="0.12"/>
+  </g>
+
+  <!-- Request document (left) with custom header highlighted -->
+  <g transform="translate(90 220)">
+    <rect width="230" height="230" rx="10" stroke="#4c4f69" stroke-width="3"/>
+    <text x="24" y="38" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#4c4f69" opacity="0.75">GET /cached/item</text>
+    <line x1="24" y1="60" x2="206" y2="60" stroke="#4c4f69" stroke-width="1" opacity="0.2"/>
+    <text x="24" y="88" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#4c4f69" opacity="0.55">Host: …</text>
+    <text x="24" y="110" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#4c4f69" opacity="0.55">Accept: …</text>
+    <!-- peach highlighted header -->
+    <rect x="16" y="126" width="200" height="36" rx="5" fill="#fe640b"/>
+    <text x="28" y="150" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#fbfaf7" font-weight="600">Cache-Purge: 1</text>
+    <text x="24" y="188" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#4c4f69" opacity="0.55">User-Agent: …</text>
+  </g>
+  <text x="205" y="485" font-family="Inter, system-ui, sans-serif" font-size="13" fill="#4c4f69" text-anchor="middle" opacity="0.55" letter-spacing="0.1em">REQUEST</text>
+
+  <!-- Arrow -->
+  <g stroke="#4c4f69" fill="#4c4f69" stroke-width="2.5">
+    <line x1="335" y1="335" x2="430" y2="335"/>
+    <polygon points="440,335 428,328 428,342"/>
+  </g>
+
+  <!-- NGINX box with directive -->
+  <g transform="translate(450 230)">
+    <rect width="300" height="200" rx="12" stroke="#4c4f69" stroke-width="3"/>
+    <text x="150" y="36" font-family="Inter, system-ui, sans-serif" font-size="13" fill="#4c4f69" text-anchor="middle" opacity="0.55" letter-spacing="0.12em">NGINX</text>
+    <line x1="24" y1="52" x2="276" y2="52" stroke="#4c4f69" stroke-width="1" opacity="0.18"/>
+    <text x="24" y="92" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#4c4f69" opacity="0.75">proxy_cache_bypass</text>
+    <rect x="24" y="108" width="252" height="32" rx="5" fill="#fe640b" opacity="0.18"/>
+    <text x="36" y="130" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#4c4f69">$http_cache_purge</text>
+    <text x="24" y="170" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#4c4f69" opacity="0.55">→ bypass, refetch, refill</text>
+  </g>
+
+  <!-- Arrow → cache (strike-through showing bypass) -->
+  <g stroke="#4c4f69" fill="#4c4f69" stroke-width="2.5">
+    <line x1="755" y1="335" x2="830" y2="335" stroke-dasharray="5 4" opacity="0.5"/>
+    <polygon points="840,335 828,328 828,342" opacity="0.5"/>
+  </g>
+
+  <!-- Cache cylinder (skipped for this request) -->
+  <g transform="translate(850 250)" opacity="0.5">
+    <ellipse cx="55" cy="14" rx="55" ry="12" fill="#4c4f69"/>
+    <rect x="0" y="14" width="110" height="72" fill="#4c4f69"/>
+    <ellipse cx="55" cy="86" rx="55" ry="12" fill="#4c4f69"/>
+    <text x="55" y="58" font-family="Inter, system-ui, sans-serif" font-size="16" fill="#fbfaf7" text-anchor="middle">cache</text>
+  </g>
+  <text x="905" y="380" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#4c4f69" text-anchor="middle" opacity="0.55">(skipped)</text>
+
+  <!-- Backend -->
+  <g transform="translate(990 260)">
+    <rect width="140" height="80" rx="10" stroke="#4c4f69" stroke-width="3"/>
+    <text x="70" y="48" font-family="Inter, system-ui, sans-serif" font-size="18" fill="#4c4f69" text-anchor="middle">backend</text>
+  </g>
+
+  <!-- Arrow cache-ish → backend (the actual refetch) -->
+  <g stroke="#fe640b" fill="#fe640b" stroke-width="3">
+    <line x1="965" y1="300" x2="985" y2="300"/>
+    <polygon points="992,300 982,294 982,306"/>
+  </g>
+
+  <!-- Refill arrow backend → cache (dashed peach, looping back) -->
+  <g stroke="#fe640b" fill="#fe640b" stroke-width="2" stroke-dasharray="4 4" opacity="0.75">
+    <path d="M 1060 340 Q 1060 420 945 420 Q 905 420 905 380" fill="none"/>
+    <polygon points="905,358 899,374 911,374" fill="#fe640b" opacity="0.75"/>
+  </g>
+  <text x="990" y="445" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#fe640b" text-anchor="middle" opacity="0.9" stroke="#fbfaf7" stroke-width="4" paint-order="stroke">refill</text>
+
+  <!-- Corner wordmark -->
+  <text x="1178" y="618" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#4c4f69" text-anchor="end" opacity="0.35">// syshero.org</text>
+</svg>

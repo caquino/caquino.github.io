@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Disallow nothing specific — whole site is public by design.
+# Keep AI-crawler honesty: I'm not blocking them, but if Google/others want to
+# find things they should use the sitemap.
+Sitemap: https://syshero.org/sitemap.xml

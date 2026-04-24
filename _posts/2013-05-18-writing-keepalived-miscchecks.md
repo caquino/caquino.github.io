@@ -1,6 +1,8 @@
 ---
 layout: post
 title: writing keepalived MISC_CHECKS
+cover: /images/writing-keepalived-miscchecks/cover.svg
+description: "Writing Keepalived MISC_CHECKS scripts to perform custom service checks with exit codes."
 date: '2013-05-18T04:02:00+01:00'
 tags:
 - keepalived
@@ -42,4 +44,25 @@ For your luck, this is just an imaginary scenario, and this will never happen i
 
 You can find the MISC_CHECK at my [github repo](https://github.com/caquino/keepalived-checks), and you can use it in your virtual_server this way:
 
-{% gist 5603080 %}
+```nginx
+virtual_server 192.168.0.10 1433 {
+	delay_loop 5
+	lb_algo lc
+	lb_kind DR
+	protocol TCP
+
+	real_server 192.168.1.10 1433 {
+		weight 1
+		MISC_CHECK {
+			misc_path /path/to/check_mssql_mirror.py
+		}
+	}
+
+	real_server 192.168.1.11 1433 {
+		weight 1
+		MISC_CHECK {
+			misc_path /path/to/check_mssql_mirror.py
+		}
+	}
+}
+```

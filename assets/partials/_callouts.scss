@@ -1,0 +1,50 @@
+// Callout blocks for inline asides inside post content.
+// This partial is imported from inside the `.post-content { }` scope,
+// so selectors here are already scoped to post content.
+//
+// Usage in markdown:
+//   <div class="callout note" markdown="1">
+//   **Note** — the `markdown="1"` attribute lets kramdown parse the content.
+//   </div>
+// Variants: note | tip | warning | danger | quote
+
+.callout {
+    margin: 24px 0;
+    padding: 16px 18px 16px 20px;
+    border-left: 4px solid var(--border);
+    border-radius: 6px;
+    background: var(--bg-subtle);
+    font-size: 15px;
+    line-height: 1.55;
+    color: var(--text);
+
+    p:first-child { margin-top: 0; }
+    p:last-child  { margin-bottom: 0; }
+
+    strong:first-child, b:first-child {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 12px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-weight: 700;
+    }
+
+    code { background: color-mix(in srgb, var(--bg) 70%, transparent); }
+
+    // Variants
+    &.note    { border-left-color: var(--link);    strong:first-child { color: var(--link); } }
+    &.tip     { border-left-color: var(--success); strong:first-child { color: var(--success); } }
+    &.warning { border-left-color: #df8e1d;        strong:first-child { color: #df8e1d; } }
+    &.danger  { border-left-color: var(--danger);  strong:first-child { color: var(--danger); } }
+    &.quote   { border-left-color: var(--accent);  font-style: italic;
+        strong:first-child { font-style: normal; color: var(--accent); }
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    .callout.warning {
+        border-left-color: #f9e2af;
+        strong:first-child { color: #f9e2af; }
+    }
+}

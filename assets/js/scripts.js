@@ -1,63 +1,76 @@
-svg4everybody();
+// Vanilla site scripts.
+// Hover-reveal # heading anchors, share button (Web Share API + copy fallback).
+// Burger menu is pure CSS (checkbox hack on .site-nav-toggle) — no JS needed.
+// OG image is set at build time via page.cover + jekyll-seo-tag, not at runtime.
+(function () {
 
-jQuery(document).ready( function() {
-
-    // Makes all videos responsive.
-    jQuery(".the-content").fitVids();
-
-    // Shows the number of search results.
-    jQuery('#search-input').on('focus', function() {
-        jQuery('.show-results-count').addClass('active');
-    });
-
-    // Shows available sharing options.
-    jQuery('.share').on('click', function() {
-        jQuery(this).addClass('active');
-    });
-
-    // Hides available sharing options and the number of search results.
-    jQuery(document).on('click focus', function(e) {
-        if (jQuery(e.target).closest('.share').length === 0 && jQuery(e.target).closest('#search-input').length === 0) {
-            jQuery('.show-results-count').removeClass('active');
-            jQuery('.results-container').hide();
-            jQuery('.share').removeClass('active');
+    function onReady(fn) {
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', fn);
+        } else {
+            fn();
         }
-    });
-
-    // Generates a quick link to the current heading section.
-    jQuery('.post-content').find(':header').on({
-        mouseenter: function() {
-            var headingID = jQuery(this).attr('id');
-            jQuery(this).append('<a class="heading-marker" href="#' + headingID + '">&#35;</a>');
-        },
-        mouseleave: function () {
-            jQuery(this).children('a').remove();
-        }
-    });
-
-    // Automatically sets the first post image as a featured image on Facebook and Twitter.
-    var firstImg = jQuery('.post.single').find('img:first-of-type');
-    var firstImgSrc = firstImg.attr('src');
-    if (typeof firstImgSrc !== 'undefined') {
-        jQuery('meta[property="og:image"]').attr('content', firstImgSrc);
-        jQuery('meta[name="twitter:image"]').attr('content', firstImgSrc);
     }
 
-    // Menus Show/Hide
-    var steveSidebar = jQuery('.user-profile');
-    var viewportWidth = window.innerWidth;
+    function initHeadingMarkers() {
+        var headings = document.querySelectorAll('.post-content h1, .post-content h2, .post-content h3, .post-content h4, .post-content h5, .post-content h6');
+        headings.forEach(function (h) {
+            h.addEventListener('mouseenter', function () {
+                if (!h.id || h.querySelector('.heading-marker')) return;
+                var a = document.createElement('a');
+                a.className = 'heading-marker';
+                a.href = '#' + h.id;
+                a.textContent = '#';
+                h.appendChild(a);
+            });
+            h.addEventListener('mouseleave', function () {
+                var a = h.querySelector('.heading-marker');
+                if (a) a.remove();
+            });
+        });
+    }
 
-    jQuery(window).on('resize', function() {
-        viewportWidth = window.innerWidth;
-        if (viewportWidth > 768 && steveSidebar.hasClass('active')) {
-            steveSidebar.removeClass('active');
-            jQuery('.wrapper').removeClass('active');
-            jQuery('#toggleBurger').prop('checked', false);
-        }
-    });
+    function initShareButtons() {
+        var buttons = document.querySelectorAll('.share-link');
+        buttons.forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var url = btn.getAttribute('data-url') || window.location.href;
+                var title = btn.getAttribute('data-title') || document.title;
 
-    jQuery('.trigger').on('click', function() {
-        steveSidebar.toggleClass('active');
-        jQuery('.wrapper').toggleClass('active');
+                if (navigator.share) {
+                    navigator.share({ title: title, url: url }).catch(function () {});
+                    return;
+                }
+
+                var copied = function () {
+                    btn.classList.add('copied');
+                    var label = btn.querySelector('.share-label');
+                    var original = label ? label.textContent : null;
+                    if (label) label.textContent = 'Link copied';
+                    setTimeout(function () {
+                        btn.classList.remove('copied');
+                        if (label && original !== null) label.textContent = original;
+                    }, 1500);
+                };
+
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(url).then(copied).catch(function () {});
+                } else {
+                    var ta = document.createElement('textarea');
+                    ta.value = url;
+                    ta.style.position = 'absolute';
+                    ta.style.left = '-9999px';
+                    document.body.appendChild(ta);
+                    ta.select();
+                    try { document.execCommand('copy'); copied(); } catch (e) { /* noop */ }
+                    document.body.removeChild(ta);
+                }
+            });
+        });
+    }
+
+    onReady(function () {
+        initHeadingMarkers();
+        initShareButtons();
     });
-});
+})();

@@ -1,6 +1,8 @@
 ---
 layout: post
 title: Keepalive proxy using NGINX
+cover: /images/keepalive-proxy-using-nginx/cover.svg
+description: "Configuring NGINX as a keepalive proxy to remote web services using upstream and keepalive directives."
 date: '2013-11-22T03:01:45+00:00'
 tags:
 - nginx
@@ -22,12 +24,29 @@ To achieve this, you can create an upstream that points to the remote web servic
 
 You will connect locally to your nginx server, and your nginx will have to keep persistent connections to your upstreams.
 
-{% highlight bash %}
+```bash
 local application —> connection without persistence — > nginx —> remote connection having persistence —> remote server
-{% endhighlight %}
+```
 
 You can see an example in the following gist:
 
-{% gist 7593884 %}
+```nginx
+upstream webservice-pers {
+  server webservices.remoteserver.com:80 max_fails=0 fail_timeout=30s;
+  keepalive 1024;
+}
+
+server {
+  listen   8080;
+  server_name  webservices.localserver.com;
+  
+  location / {
+    proxy_http_version 1.1;
+    proxy_set_header Connection "";
+    proxy_set_header Host "webservices.remoteserver.com";
+    proxy_pass https://webservice-pers;
+  }
+}
+```
 
 Thanks, everyone!

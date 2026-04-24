@@ -1,42 +1,49 @@
 # General Settings
+title: "Cassiano Aquino"
 name: Cassiano Aquino
-job_title: Principal Engineer - DevOps @ Flutter Entertainment Plc
+job_title: Senior Principal Engineer - DevOps @ Flutter Entertainment Plc
 email: cassianoaquino@me.com
 description: Protecting the weak against null pointer exceptions, motorcyles, skydiving and technology.
-avatar: /images/avatar.png
-favicon: /images/avatar.png
+avatar: /images/avatar.jpg
+favicon: /images/avatar.jpg
 twitter_handler: syshero
-analytics_code: UA-4406452-16
-disqus: syshero
 
-# Social Accounts
+# Webmentions — receiver at webmention.io/syshero.org.
+# The <link rel="webmention"> in head.html advertises these endpoints so
+# Bridgy / Mastodon / dev.to can POST mentions. Per-post reads happen
+# client-side via the public JF2 API (no token needed).
+webmention_endpoint: https://webmention.io/syshero.org/webmention
+webmention_pingback: https://webmention.io/syshero.org/xmlrpc
+
+# GoatCounter analytics — self-hosted in the homelab at analytics.syshero.org.
+# /count and /count.js are public; admin dashboards sit behind Authelia.
+goatcounter_endpoint: https://analytics.syshero.org
+
+# GitHub repo for "Edit on GitHub" post-footer link (branch + path built below).
+github_repo: caquino/caquino.github.io
+
+author:
+  name: Cassiano Aquino
+  email: cassianoaquino@me.com
+  twitter: syshero
+
+# Enabled plugins (Gemfile's :jekyll_plugins group is authoritative; this
+# mirror is kept for clarity and so jekyll --safe still loads them).
+plugins:
+  - jekyll-seo-tag
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-redirect-from
+  - jekyll-archives
+  - jekyll-paginate
+  - jekyll-gist
+
+# Social Accounts (only the ones actually used; template can add more later)
 social_networks:
--  { name: facebook, url: '' }
--  { name: twitter, url: 'https://twitter.com/syshero' }
--  { name: mastodon, url: 'https://mastodon.social/@syshero'}
--  { name: instagram, url: '' }
--  { name: google-plus, url: '' }
--  { name: linkedin, url: 'https://linkedin.com/in/cassianoaquino' }
--  { name: skype, url: '' }
--  { name: github, url: 'https://github.com/caquino' }
--  { name: codepen, url: '' }
--  { name: stack-overflow, url: '' }
--  { name: dribbble, url: '' }
--  { name: behance, url: '' }
--  { name: pinterest, url: '' }
--  { name: tumblr, url: '' }
--  { name: youtube, url: '' }
--  { name: vimeo, url: '' }
--  { name: vine, url: '' }
--  { name: 500px, url: '' }
--  { name: flickr, url: '' }
--  { name: spotify, url: '' }
--  { name: steam, url: '' }
--  { name: wordpress, url: '' }
--  { name: xing, url: '' }
--  { name: bitcoin, url: '' }
--  { name: pocket, url: '' }
--  { name: applemusic, url: '' }
+  - { name: twitter,   url: 'https://twitter.com/syshero' }
+  - { name: mastodon,  url: 'https://mastodon.social/@syshero' }
+  - { name: linkedin,  url: 'https://linkedin.com/in/cassianoaquino' }
+  - { name: github,    url: 'https://github.com/caquino' }
 
 # Modules Settings
 show_categories: 0
@@ -63,10 +70,27 @@ baseurl: ""
 # Includes
 include: ["_pages"]
 
+# Don't let Jekyll's site cleanup wipe Pagefind's generated index
+# between incremental rebuilds in `jekyll serve`.
+keep_files: ["pagefind"]
+
 # Outputting
 permalink: /:year-:month-:day-:title/
 #permalink: /:categories/:title/
 category_dir: categories
+
+# jekyll-archives — replaces the old _plugins/{generate_categories,tag_gen}.rb
+# generators. Permalinks preserved so existing links keep working.
+jekyll-archives:
+  enabled:
+    - tags
+    - categories
+  layouts:
+    tag: tag_index
+    category: category_index
+  permalinks:
+    tag: '/tag/:name/'
+    category: '/categories/:name/'
 
 # Pagination
 paginate: 10

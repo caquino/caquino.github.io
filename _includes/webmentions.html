@@ -1,0 +1,23 @@
+{%- comment -%}
+Webmentions via webmention.io. Fetches replies, likes, reposts for the
+current post URL from the public JF2 API and renders them inline.
+
+Requires a one-time sign-up at https://webmention.io/ with GitHub auth,
+which produces your receiver endpoint. Set in _config.yml:
+
+  webmention_endpoint: https://webmention.io/syshero.org/webmention
+  webmention_pingback: https://webmention.io/syshero.org/xmlrpc
+
+The <link rel="webmention"> in head.html advertises the endpoint so other
+sites (Bridgy, Mastodon via brid.gy, dev.to cross-posts) can deliver
+mentions. Reads are unauthenticated and work out of the box.
+{%- endcomment -%}
+{%- if site.webmention_endpoint -%}
+<section class="webmentions" aria-label="Webmentions" data-post-url="{{ page.url | absolute_url }}">
+  <h3 class="webmentions-title">Mentions &amp; replies from the web</h3>
+  <ol class="webmentions-list" aria-live="polite">
+    <li class="webmentions-loading">Loading…</li>
+  </ol>
+</section>
+<script src="{{ '/assets/js/webmentions.js' | relative_url }}" defer></script>
+{%- endif -%}

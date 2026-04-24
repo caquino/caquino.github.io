@@ -1,6 +1,8 @@
 ---
 layout: post
 title: DNS Round Robin, Consul and Java
+cover: /images/dns-round-robin-consul-and-java/cover.svg
+description: "Configuring Consul to work around getaddrinfo's implementation of RFC3484, which breaks DNS round robin."
 date: '2018-04-26T14:06:22+01:00'
 tags:
 - devops

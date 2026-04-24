@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" fill="none" role="img" aria-label="NGINX+ auto-purge cache on non-GET writes via mirror module">
+  <rect width="1200" height="630" fill="#fbfaf7"/>
+
+  <!-- Terminal chrome -->
+  <g>
+    <rect x="0" y="0" width="1200" height="36" fill="#eeeae3"/>
+    <circle cx="18" cy="18" r="5.5" fill="#ff5f56"/>
+    <circle cx="36" cy="18" r="5.5" fill="#ffbd2e"/>
+    <circle cx="54" cy="18" r="5.5" fill="#27c93f"/>
+    <line x1="0" y1="36" x2="1200" y2="36" stroke="#4c4f69" stroke-width="0.5" opacity="0.12"/>
+  </g>
+
+  <!-- Two request pills (left): GET and POST -->
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="18" font-weight="600">
+    <g transform="translate(80 195)">
+      <rect width="130" height="48" rx="24" fill="#40a02b"/>
+      <text x="65" y="32" fill="#fbfaf7" text-anchor="middle">GET</text>
+    </g>
+    <g transform="translate(80 395)">
+      <rect width="130" height="48" rx="24" fill="#fe640b"/>
+      <text x="65" y="32" fill="#fbfaf7" text-anchor="middle">POST</text>
+    </g>
+  </g>
+
+  <!-- Central NGINX container with two location sub-boxes -->
+  <g transform="translate(305 145)">
+    <rect width="380" height="360" rx="14" stroke="#4c4f69" stroke-width="3"/>
+    <text x="190" y="32" font-family="Inter, system-ui, sans-serif" font-size="15" fill="#4c4f69" text-anchor="middle" opacity="0.55" letter-spacing="0.12em">NGINX+ MIRROR MODULE</text>
+
+    <!-- location / -->
+    <g transform="translate(30 60)">
+      <rect width="320" height="115" rx="10" fill="#4c4f69" opacity="0.06"/>
+      <text x="16" y="28" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="16" fill="#4c4f69" font-weight="600">location /</text>
+      <text x="16" y="58" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#4c4f69" opacity="0.7">proxy_cache default;</text>
+      <text x="16" y="80" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#4c4f69" opacity="0.7">proxy_pass → backend;</text>
+      <text x="16" y="102" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#4c4f69" opacity="0.7">mirror /mirror;</text>
+    </g>
+
+    <!-- location /mirror -->
+    <g transform="translate(30 195)">
+      <rect width="320" height="145" rx="10" fill="#fe640b" opacity="0.1"/>
+      <rect width="320" height="145" rx="10" stroke="#fe640b" stroke-width="2" stroke-dasharray="4 3" opacity="0.5"/>
+      <text x="16" y="28" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="16" fill="#4c4f69" font-weight="600">location /mirror</text>
+      <text x="16" y="58" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#4c4f69" opacity="0.75">if ($method ~ GET|HEAD)</text>
+      <text x="28" y="78" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#40a02b" font-weight="600">return 204;  # skip</text>
+      <text x="16" y="106" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#4c4f69" opacity="0.75">else:</text>
+      <text x="28" y="126" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#fe640b" font-weight="600">proxy_cache_purge 1;</text>
+    </g>
+  </g>
+
+  <!-- Arrows from GET / POST into NGINX -->
+  <g stroke="#4c4f69" fill="#4c4f69" stroke-width="2.5">
+    <line x1="210" y1="219" x2="297" y2="219"/>
+    <polygon points="308,219 296,212 296,226"/>
+    <line x1="210" y1="419" x2="297" y2="419"/>
+    <polygon points="308,419 296,412 296,426"/>
+  </g>
+
+  <!-- Cache cylinder (right) -->
+  <g transform="translate(780 195)">
+    <ellipse cx="75" cy="18" rx="75" ry="15" fill="#4c4f69"/>
+    <rect x="0" y="18" width="150" height="90" fill="#4c4f69"/>
+    <ellipse cx="75" cy="108" rx="75" ry="15" fill="#4c4f69"/>
+    <text x="75" y="72" font-family="Inter, system-ui, sans-serif" font-size="20" fill="#fbfaf7" text-anchor="middle" font-weight="600">cache</text>
+  </g>
+  <text x="855" y="185" font-family="Inter, system-ui, sans-serif" font-size="13" fill="#4c4f69" text-anchor="middle" opacity="0.55" letter-spacing="0.1em">PROXY CACHE</text>
+
+  <!-- Backend box (right) -->
+  <g transform="translate(800 385)">
+    <rect width="110" height="80" rx="10" stroke="#4c4f69" stroke-width="3"/>
+    <text x="55" y="48" font-family="Inter, system-ui, sans-serif" font-size="18" fill="#4c4f69" text-anchor="middle">backend</text>
+  </g>
+
+  <!-- Arrow location / → cache (read/write) -->
+  <g stroke="#4c4f69" fill="#4c4f69" stroke-width="2.5">
+    <line x1="685" y1="235" x2="775" y2="235"/>
+    <polygon points="785,235 772,228 772,242"/>
+  </g>
+
+  <!-- Arrow location /mirror → cache (purge — peach) -->
+  <g stroke="#fe640b" fill="#fe640b" stroke-width="3">
+    <path d="M 685 390 Q 740 310 780 275" fill="none"/>
+    <polygon points="784,267 781,280 769,272"/>
+  </g>
+  <text x="732" y="310" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#fe640b" font-weight="600">purge</text>
+
+  <!-- Arrow cache → backend (miss/refill) -->
+  <g stroke="#4c4f69" fill="#4c4f69" stroke-width="2" opacity="0.45">
+    <line x1="855" y1="308" x2="855" y2="380"/>
+    <polygon points="855,388 849,376 861,376"/>
+  </g>
+
+  <!-- Legend -->
+  <g transform="translate(80 580)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#4c4f69">
+    <rect x="0" y="0" width="14" height="14" rx="7" fill="#40a02b"/>
+    <text x="22" y="11" opacity="0.75">read (cache)</text>
+    <rect x="160" y="0" width="14" height="14" rx="7" fill="#fe640b"/>
+    <text x="182" y="11" opacity="0.75">write (triggers purge)</text>
+  </g>
+
+  <!-- Corner wordmark -->
+  <text x="1178" y="618" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#4c4f69" text-anchor="end" opacity="0.35">// syshero.org</text>
+</svg>

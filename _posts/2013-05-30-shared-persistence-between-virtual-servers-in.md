@@ -1,6 +1,8 @@
 ---
 layout: post
 title: Shared persistence between virtual servers in keepalived
+cover: /images/shared-persistence-between-virtual-servers-in/cover.svg
+description: "Configuring keepalived to share persistence between virtual servers using iptables fwmark or service port 0."
 date: '2013-05-30T17:02:10+01:00'
 tags: []
 tumblr_url: http://syshero.org/post/51729932595/shared-persistence-between-virtual-servers-in
@@ -29,14 +31,117 @@ Keepalived supports persistence, but it’s not shared between different virtual
 One:
 Configuring your virtual_server port as 0, but this has some drawbacks, one of this is the fact that all ports will be balanced, if your server, for example, have ssh listening on the same IP it will be load balanced too.
 
-{% gist 5678442 %}
+```nginx
+virtual_server VIP.IP.ADDRESS 0 {
+        delay_loop 5
+        lb_kind NAT
+        lb_algo lc
+        persistence_timeout 600
+        protocol TCP
+ 
+        real_server SERVER.01.IP 0 {
+               weight 1
+                HTTP_GET {
+                    url {
+                        path /
+                        status_code 200
+                    }
+                    connect_timeout 15
+                    connect_port 80
+                }
+                SSL_GET {
+                    url {
+                        path /
+                        status_code 200
+                    }
+                    connect_timeout 15
+                    connect_port 443
+                }
+        }
+        real_server SERVER.02.IP 0 {
+               weight 1
+                HTTP_GET {
+                    url {
+                        path /
+                        status_code 200
+                    }
+                    connect_timeout 15
+                    connect_port 80
+                }
+                SSL_GET {
+                    url {
+                        path /
+                        status_code 200
+                    }
+                    connect_timeout 15
+                    connect_port 443
+                }
+        }
+}
+```
 
 Even doing this you can load balance others services on the same VIP, understand this as a “fallback” service, any port that is not defined will be handled by this virtual_server, having persistence on different ports.
 
 Two:
 Using iptables firewall mark to control the ports handled by the virtual_server.
 
-{% gist 5678420 %}
+**iptables-rules**
+
+```text
+iptables -t mangle -A PREROUTING -d VIP.IP.ADDRESS/32 -p tcp -m tcp --dport 80 -j MARK --set-mark 80
+iptables -t mangle -A PREROUTING -d VIP.IP.ADDRESS/32 -p tcp -m tcp --dport 443 -j MARK --set-mark 80
+```
+
+**keepalived-virtual-server.conf**
+
+```nginx
+virtual_server fwmark 80 {
+        delay_loop 5
+        lb_kind NAT
+        lb_algo lc
+        persistence_timeout 600
+        protocol TCP
+
+        real_server SERVER.01.IP 0 {
+               weight 1
+                HTTP_GET {
+                    url {
+                        path /
+                        status_code 200
+                    }
+                    connect_timeout 15
+                    connect_port 80
+                }
+                SSL_GET {
+                    url {
+                        path /
+                        status_code 200
+                    }
+                    connect_timeout 15
+                    connect_port 443
+                }
+        }
+        real_server SERVER.02.IP 0 {
+               weight 1
+                HTTP_GET {
+                    url {
+                        path /
+                        status_code 200
+                    }
+                    connect_timeout 15
+                    connect_port 80
+                }
+                SSL_GET {
+                    url {
+                        path /
+                        status_code 200
+                    }
+                    connect_timeout 15
+                    connect_port 443
+                }
+        }
+}
+```
 
 Every packet that you mark using iptables will be directed to the virtual_server, it’s not difficulty but is one external point that can’t be overlooked during troubleshooting.
 
@@ -44,4 +149,8 @@ This is more secure than the previous option and allows you to have more control
 
 Just one caveat not related to load balancing; session state is not shared between HTTP/HTTPS connections, even doing this, security settings of modern web browsers do not allow data to be shared between different ports, you can achieve persistence between both services sending the session identifier on the URL and using this identifier to read the session data, the load balancer will only guarantee that the user will go to the same server to allow you read this session data.
 
-FIX: thanks JP for pointing out that I was missing the -t mangle on the iptables commands. 
+FIX: thanks JP for pointing out that I was missing the -t mangle on the iptables commands.
+
+---
+
+**EDIT 2026-04-24.** The paragraph above claims that "security settings of modern web browsers do not allow data to be shared between different ports" for HTTP vs HTTPS. That's not how it actually works. Cookies aren't scoped to port by default, and same-origin for cookies is host+path, not host+port. The practical problem is usually that backend session stores are configured per port binding and end up disjoint. The keepalived fwmark / port-0 technique described above is the right answer regardless; it's just the browser-side explanation that was wrong. 

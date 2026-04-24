@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" fill="none" role="img" aria-label="NGINX map $request_uri collapses many location blocks into one, with proxy_pass to a dynamic upstream variable">
+  <rect width="1200" height="630" fill="#fbfaf7"/>
+
+  <g>
+    <rect x="0" y="0" width="1200" height="36" fill="#eeeae3"/>
+    <circle cx="18" cy="18" r="5.5" fill="#ff5f56"/>
+    <circle cx="36" cy="18" r="5.5" fill="#ffbd2e"/>
+    <circle cx="54" cy="18" r="5.5" fill="#27c93f"/>
+    <line x1="0" y1="36" x2="1200" y2="36" stroke="#4c4f69" stroke-width="0.5" opacity="0.12"/>
+  </g>
+
+  <!-- BEFORE: many locations -->
+  <text x="240" y="90" font-family="Inter, system-ui, sans-serif" font-size="13" fill="#4c4f69" text-anchor="middle" opacity="0.55" letter-spacing="0.12em">BEFORE · MANY LOCATIONS</text>
+  <g transform="translate(80 110)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13">
+    <rect width="320" height="330" rx="12" stroke="#4c4f69" stroke-width="2.5" opacity="0.55"/>
+    <g fill="#4c4f69" opacity="0.65">
+      <g transform="translate(20 30)">
+        <rect width="280" height="60" rx="6" fill="#4c4f69" opacity="0.08"/>
+        <text x="14" y="22">location /folder1 {</text>
+        <text x="14" y="44">  proxy_pass server1:80;</text>
+      </g>
+      <g transform="translate(20 100)">
+        <rect width="280" height="60" rx="6" fill="#4c4f69" opacity="0.08"/>
+        <text x="14" y="22">location /folder2 {</text>
+        <text x="14" y="44">  proxy_pass server2:80;</text>
+      </g>
+      <g transform="translate(20 170)">
+        <rect width="280" height="60" rx="6" fill="#4c4f69" opacity="0.08"/>
+        <text x="14" y="22">location /folder3 {</text>
+        <text x="14" y="44">  proxy_pass server3:80;</text>
+      </g>
+      <g transform="translate(20 240)">
+        <rect width="280" height="60" rx="6" fill="#4c4f69" opacity="0.08"/>
+        <text x="14" y="22">location / {</text>
+        <text x="14" y="44">  proxy_pass default:80;</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- Arrow between -->
+  <g stroke="#fe640b" fill="#fe640b" stroke-width="3">
+    <line x1="420" y1="275" x2="495" y2="275"/>
+    <polygon points="508,275 493,267 493,283"/>
+  </g>
+  <text x="462" y="260" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#fe640b" text-anchor="middle" font-weight="600" stroke="#fbfaf7" stroke-width="4" paint-order="stroke">collapse</text>
+
+  <!-- AFTER: map + single location -->
+  <text x="810" y="90" font-family="Inter, system-ui, sans-serif" font-size="13" fill="#4c4f69" text-anchor="middle" opacity="0.55" letter-spacing="0.12em">AFTER · ONE MAP + ONE LOCATION</text>
+
+  <!-- map block -->
+  <g transform="translate(520 110)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+    <rect width="580" height="180" rx="12" fill="#fe640b"/>
+    <text x="290" y="32" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#fbfaf7" text-anchor="middle" opacity="0.7" letter-spacing="0.12em">MAP</text>
+    <line x1="24" y1="48" x2="556" y2="48" stroke="#fbfaf7" stroke-width="1" opacity="0.25"/>
+    <text x="24" y="76" font-size="15" fill="#fbfaf7" font-weight="600">map $request_uri $backend_server {</text>
+    <text x="42" y="100" font-size="14" fill="#fbfaf7" opacity="0.9">default  'default:80';</text>
+    <text x="42" y="120" font-size="14" fill="#fbfaf7" opacity="0.9">/folder1 'server1:80';</text>
+    <text x="42" y="140" font-size="14" fill="#fbfaf7" opacity="0.9">/folder2 'server2:80';</text>
+    <text x="42" y="160" font-size="14" fill="#fbfaf7" opacity="0.9">/folder3 'server3:80';</text>
+  </g>
+
+  <!-- single location below -->
+  <g transform="translate(520 310)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+    <rect width="580" height="130" rx="12" stroke="#4c4f69" stroke-width="2.5"/>
+    <text x="290" y="30" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#4c4f69" text-anchor="middle" opacity="0.55" letter-spacing="0.12em">SERVER BLOCK</text>
+    <line x1="24" y1="46" x2="556" y2="46" stroke="#4c4f69" stroke-width="1" opacity="0.18"/>
+    <text x="24" y="74" font-size="15" fill="#4c4f69" font-weight="600">location / {</text>
+    <text x="42" y="98" font-size="14" fill="#4c4f69">proxy_pass http://$backend_server;</text>
+    <text x="24" y="120" font-size="15" fill="#4c4f69" font-weight="600">}</text>
+  </g>
+
+  <!-- Caveat footer -->
+  <text x="600" y="505" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#4c4f69" text-anchor="middle" opacity="0.55">runtime resolver lookup · no upstream{} semantics (no keepalive, health checks)</text>
+
+  <text x="1178" y="618" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#4c4f69" text-anchor="end" opacity="0.35">// syshero.org</text>
+</svg>

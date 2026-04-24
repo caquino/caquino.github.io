@@ -1,6 +1,8 @@
 ---
 layout: post
 title: Zero-downtime deployments using NGINX
+cover: /images/zero-downtime-deployments-using-nginx/cover.svg
+description: "Configuring NGINX for zero-downtime deployments using upstream blocks and shell scripting."
 date: '2016-06-09T02:02:10+01:00'
 tags: []
 tumblr_url: http://syshero.org/post/145635145517/zero-downtime-deployments-using-nginx
@@ -25,8 +27,36 @@ Your new application server is processing all the new requests!
 
 The following configuration is a simple example of how to achieve such functionality with minimal configuration. 
 
-{% gist 32e50922059aadcc75e787c62ae956c8 %}
+**backend_switch.sh**
+
+```bash
+#!/usr/bin/env bash
+DOWNBE=$(grep -E ' down;$' zerodowntime.conf | awk '{print $2}')
+ACTIVEBE=$(grep -E 'server 127.0.0.1' zerodowntime.conf | grep -v 'down' | awk '{print $2}' | tr -d ';')
+sed -i "s/\ down//g;s/${ACTIVEBE}/${ACTIVEBE} down/g" zerodowntime.conf
+nginx -qt && nginx -s reload
+```
+
+**nginx.conf**
+
+```nginx
+upstream zerodowntime {
+  server 127.0.0.1:8001;
+  server 127.0.0.1:8002 down;
+}
+
+server {
+  listen 80;
+  location / {
+    proxy_pass http://zerodowntime;
+  }
+}
+```
 
 I hope this will be useful for some poor soul suffering trying to do zero-downtime deployments.
+
+---
+
+**EDIT 2026-04-24.** Fixed a copy-paste typo in the upstream block (the inner directive is `server`, not `upstream`) and updated the corresponding `grep -E 'server 127.0.0.1'` line in the shell script so the two halves match again. The approach is unchanged.
 
 Thanks!

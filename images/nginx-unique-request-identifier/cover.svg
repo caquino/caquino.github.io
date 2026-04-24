@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" fill="none" role="img" aria-label="NGINX unique request identifier: map passes inbound X-Request-ID through or generates a new one from $request_id">
+  <rect width="1200" height="630" fill="#fbfaf7"/>
+
+  <g>
+    <rect x="0" y="0" width="1200" height="36" fill="#eeeae3"/>
+    <circle cx="18" cy="18" r="5.5" fill="#ff5f56"/>
+    <circle cx="36" cy="18" r="5.5" fill="#ffbd2e"/>
+    <circle cx="54" cy="18" r="5.5" fill="#27c93f"/>
+    <line x1="0" y1="36" x2="1200" y2="36" stroke="#4c4f69" stroke-width="0.5" opacity="0.12"/>
+  </g>
+
+  <!-- Two incoming requests: with and without X-Request-ID -->
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+    <g transform="translate(70 130)">
+      <rect width="280" height="100" rx="10" stroke="#4c4f69" stroke-width="2.5"/>
+      <text x="140" y="26" font-family="Inter, system-ui, sans-serif" font-size="11" fill="#4c4f69" text-anchor="middle" opacity="0.55" letter-spacing="0.1em">REQ A · HAS ID</text>
+      <rect x="14" y="40" width="252" height="30" rx="4" fill="#1e66f5" opacity="0.18"/>
+      <text x="24" y="60" font-size="13" fill="#4c4f69" font-weight="600">X-Request-ID: 12345678-...</text>
+      <text x="24" y="85" font-size="12" fill="#4c4f69" opacity="0.55">(forwarded from upstream edge)</text>
+    </g>
+    <g transform="translate(70 350)">
+      <rect width="280" height="100" rx="10" stroke="#4c4f69" stroke-width="2.5"/>
+      <text x="140" y="26" font-family="Inter, system-ui, sans-serif" font-size="11" fill="#4c4f69" text-anchor="middle" opacity="0.55" letter-spacing="0.1em">REQ B · NO ID</text>
+      <text x="24" y="62" font-size="13" fill="#4c4f69" opacity="0.55">no X-Request-ID header</text>
+      <text x="24" y="85" font-size="12" fill="#4c4f69" opacity="0.55">(raw incoming client)</text>
+    </g>
+  </g>
+
+  <!-- Arrows into map -->
+  <g stroke="#4c4f69" fill="#4c4f69" stroke-width="2.5">
+    <line x1="355" y1="180" x2="415" y2="260"/>
+    <line x1="355" y1="400" x2="415" y2="335"/>
+  </g>
+
+  <!-- map (peach) -->
+  <g transform="translate(420 220)">
+    <rect width="380" height="170" rx="12" fill="#fe640b"/>
+    <text x="190" y="34" font-family="Inter, system-ui, sans-serif" font-size="13" fill="#fbfaf7" text-anchor="middle" opacity="0.7" letter-spacing="0.12em">MAP $http_x_request_id $uuid</text>
+    <line x1="24" y1="50" x2="356" y2="50" stroke="#fbfaf7" stroke-width="1" opacity="0.25"/>
+    <text x="24" y="82" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#fbfaf7" opacity="0.95">default → "${request_id}"</text>
+    <text x="24" y="106" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#fbfaf7" opacity="0.7">         (nginx-generated)</text>
+    <text x="24" y="134" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#fbfaf7" opacity="0.95">~*      → "${http_x_request_id}"</text>
+    <text x="24" y="158" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#fbfaf7" opacity="0.7">         (pass-through)</text>
+  </g>
+
+  <!-- Arrow to output -->
+  <g stroke="#4c4f69" fill="#4c4f69" stroke-width="2.5">
+    <line x1="805" y1="305" x2="855" y2="305"/>
+    <polygon points="865,305 853,298 853,312"/>
+  </g>
+
+  <!-- Header stamped on both client and upstream sides -->
+  <g transform="translate(870 160)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+    <rect width="260" height="100" rx="10" fill="#40a02b" opacity="0.15"/>
+    <rect width="260" height="100" rx="10" stroke="#40a02b" stroke-width="2.5"/>
+    <text x="130" y="26" font-family="Inter, system-ui, sans-serif" font-size="11" fill="#40a02b" text-anchor="middle" opacity="0.75" letter-spacing="0.12em">ADD_HEADER</text>
+    <text x="130" y="52" font-size="14" fill="#40a02b" text-anchor="middle" font-weight="600">X-Request-ID: $uuid</text>
+    <text x="130" y="76" font-size="12" fill="#40a02b" text-anchor="middle" opacity="0.85">→ client response</text>
+  </g>
+
+  <g transform="translate(870 350)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+    <rect width="260" height="100" rx="10" fill="#40a02b" opacity="0.15"/>
+    <rect width="260" height="100" rx="10" stroke="#40a02b" stroke-width="2.5"/>
+    <text x="130" y="26" font-family="Inter, system-ui, sans-serif" font-size="11" fill="#40a02b" text-anchor="middle" opacity="0.75" letter-spacing="0.12em">PROXY_SET_HEADER</text>
+    <text x="130" y="52" font-size="14" fill="#40a02b" text-anchor="middle" font-weight="600">X-Request-ID: $uuid</text>
+    <text x="130" y="76" font-size="12" fill="#40a02b" text-anchor="middle" opacity="0.85">→ upstream backend</text>
+  </g>
+
+  <!-- Split arrow from single output to both sides -->
+  <g stroke="#4c4f69" fill="#4c4f69" stroke-width="2" opacity="0.55">
+    <line x1="870" y1="305" x2="870" y2="210"/>
+    <line x1="870" y1="305" x2="870" y2="400"/>
+  </g>
+
+  <text x="1178" y="618" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#4c4f69" text-anchor="end" opacity="0.35">// syshero.org</text>
+</svg>

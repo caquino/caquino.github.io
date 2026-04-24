@@ -1,6 +1,8 @@
 ---
 layout: post
 title: NGINX "cache purge" emulation
+cover: /images/nginx-cache-purge-emulation/cover.svg
+description: "Configuring NGINX's cache_proxy_bypass to refresh cache items using custom request headers."
 date: '2013-05-01T02:52:00+01:00'
 tags: nginx caching proxy devops
 tumblr_url: http://syshero.org/post/49324881596/nginx-cache-purge-emulation
@@ -23,14 +25,81 @@ To do this you can use a bash script using wget or curl, but I enjoy building ba
 
 Just the following configuration to nginx
 
-{% gist 5493273 nginx-config-example %}
+```text
+location / { 
+	add_header X-Cached $upstream_cache_status;
+	.... 
+	proxy_cache_bypass $http_cache_purge;
+	.... 
+	proxy_pass ... ;
+}
+```
 
 And to control the purge of the cache, a script similar to the following script can be used.
 
-{% gist 5493273 ngx_cache_purge %}
+```bash
+#!/usr/bin/env bash
+echo "Before purging:"
+exec 6<>/dev/tcp/127.0.0.1/80
+echo -ne "GET $1 HTTP/1.0\r\n\r\n" >&6
+while read -r -u 6
+do
+        if [[ ${REPLY} =~ ^$ ]]; then
+                break
+        elif [[ ${REPLY} =~ ^(Last-Modified|X-Cached):(.*)$ ]]; then
+                case ${BASH_REMATCH[1]} in
+                        Last-Modified)
+                                echo -ne "\tFile date:\t\t${BASH_REMATCH[2]}\n"
+                        ;;
+                        X-Cached)
+                                echo -ne "\tStatus:\t\t${BASH_REMATCH[2]}\n"
+                        ;;
+                esac
+        fi
+done
+exec 6>&-
+echo "Purging file."
+exec 6<>/dev/tcp/127.0.0.1/80
+echo -ne "GET $1 HTTP/1.0\r\nCache-Purge: 1\r\n\r\n" >&6
+while read -r -u 6
+do
+        if [[ ${REPLY} =~ ^$ ]]; then
+                break
+        elif [[ ${REPLY} =~ ^(Last-Modified|X-Cached):(.*)$ ]]; then
+                case ${BASH_REMATCH[1]} in
+                        Last-Modified)
+                                echo -ne "\tFile date:\t\t${BASH_REMATCH[2]}\n"
+                        ;;
+                        X-Cached)
+                                echo -ne "\tStatus:\t\t${BASH_REMATCH[2]}\n"
+                        ;;
+                esac
+        fi
+done
+exec 6>&-
+echo "After purging:"
+exec 6<>/dev/tcp/127.0.0.1/80
+echo -ne "GET $1 HTTP/1.0\r\n\r\n" >&6
+while read -r -u 6
+do
+        if [[ ${REPLY} =~ ^$ ]]; then
+                break
+        elif [[ ${REPLY} =~ ^(Last-Modified|X-Cached):(.*)$ ]]; then
+                case ${BASH_REMATCH[1]} in
+                        Last-Modified)
+                                echo -ne "\tFile date:\t\t${BASH_REMATCH[2]}\n"
+                        ;;
+                        X-Cached)
+                                echo -ne "\tStatus:\t\t${BASH_REMATCH[2]}\n"
+                        ;;
+                esac
+        fi
+done
+exec 6>&-
+```
 
 Just execute it in the following way.
 
-{% highlight bash %}
+```bash
 ./ngx_cache_purge http://www.domain.com/item/to/be/purged.jpg
-{% endhighlight %}
+```

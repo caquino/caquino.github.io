@@ -1,0 +1,37 @@
+<header class="site-header" role="banner">
+    <div class="site-header-inner">
+        <a class="site-brand" href="{{ '/' | relative_url }}">
+            <img class="site-avatar" src="{{ site.avatar | relative_url }}" alt="{{ site.name }} avatar" width="40" height="40">
+            <span class="site-name">{{ site.name }}</span>
+        </a>
+
+        <input type="checkbox" id="siteNavToggle" class="site-nav-toggle" hidden>
+        <label for="siteNavToggle" class="site-nav-burger" aria-label="Open navigation">
+            <span></span><span></span><span></span>
+        </label>
+
+        <nav class="site-nav" role="navigation" aria-label="Main">
+            <ul class="site-nav-links">
+                <li><a href="{{ '/' | relative_url }}" {% if page.url == '/' %}class="active"{% endif %}>Home</a></li>
+                <li><a href="{{ '/archive/' | relative_url }}" {% if page.url == '/archive/' %}class="active"{% endif %}>Archive</a></li>
+                <li><a href="{{ '/about/' | relative_url }}" {% if page.url == '/about/' %}class="active"{% endif %}>About</a></li>
+            </ul>
+
+            <button type="button" id="siteSearchTrigger" class="site-search-trigger" aria-label="Search posts" title="Search (press / or Ctrl+K)">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="7" cy="7" r="5"/><path d="M14 14l-3.2-3.2"/></svg>
+                <span class="site-search-hint">/</span>
+            </button>
+
+            <ul class="site-nav-social">
+                {% for social in site.social_networks %}
+                    {% if social.url != '' %}
+                    <li><a rel="me" href="{{ social.url }}" aria-label="{{ social.name }}" target="_blank" rel="noopener me"><svg width="16" height="16" aria-hidden="true"><use xlink:href="{{ '/assets/svg/social-icons.svg' | relative_url }}#{{ social.name }}-icon"></use></svg></a></li>
+                    {% endif %}
+                {% endfor %}
+                {% if site.show_rss == 1 %}
+                <li><a href="{{ '/feed.xml' | relative_url }}" aria-label="RSS feed" title="Subscribe via RSS"><svg width="16" height="16" aria-hidden="true"><use xlink:href="{{ '/assets/svg/social-icons.svg' | relative_url }}#rss-icon"></use></svg></a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+</header>

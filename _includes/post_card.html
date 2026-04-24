@@ -1,0 +1,52 @@
+{%- assign p = include.post -%}
+{%- assign type = p.type | default: "post" -%}
+
+<article class="post-card post-card-{{ type }}{% if p.cover %} has-cover{% endif %}" itemscope itemtype="http://schema.org/BlogPosting">
+    <div class="post-card-body">
+        <div class="post-card-meta">
+            {% if type == "link" %}
+                <span class="post-card-type-label link-label" aria-label="Link post">
+                    <svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 10l4-4"/><path d="M7 4h5v5"/><path d="M7 12H4V4"/></svg>
+                    Link
+                </span>
+                <span class="meta-sep">·</span>
+            {% elsif type == "til" %}
+                <span class="post-card-type-label til-label" aria-label="Today I Learned">TIL</span>
+                <span class="meta-sep">·</span>
+            {% endif %}
+            <time datetime="{{ p.date | date_to_xmlschema }}" itemprop="datePublished">{{ p.date | date: "%-d %b %Y" }}</time>
+            {% if type == "post" %}
+                <span class="meta-sep">·</span>
+                <span>{{ p.content | number_of_words | divided_by: 200 | at_least: 1 }} min read</span>
+            {% endif %}
+            {% if p.tags.size > 0 %}
+                <span class="meta-sep">·</span>
+                <span class="post-card-tags">
+                    {% for tag in p.tags limit: 3 %}<a class="tag-chip" href="{{ '/tag/' | append: tag | relative_url }}">{{ tag }}</a>{% endfor %}
+                </span>
+            {% endif %}
+        </div>
+
+        <h2 class="post-card-title" itemprop="name headline">
+            {% if type == "link" and p.external_url %}
+                <a href="{{ p.external_url }}" rel="noopener">{{ p.title }} &rarr;</a>
+            {% else %}
+                <a href="{{ p.url | relative_url }}">{{ p.title }}</a>
+            {% endif %}
+        </h2>
+
+        {% if p.description %}
+        <p class="post-card-desc">{{ p.description }}</p>
+        {% endif %}
+
+        {% if type == "link" and p.url %}
+        <p class="post-card-link-source"><a href="{{ p.url | relative_url }}">Cassiano's note &rarr;</a></p>
+        {% endif %}
+    </div>
+
+    {% if p.cover %}
+    <a class="post-card-cover" href="{{ p.url | relative_url }}" aria-hidden="true" tabindex="-1">
+        <img src="{{ p.cover | relative_url }}" alt="" loading="lazy" />
+    </a>
+    {% endif %}
+</article>

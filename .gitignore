@@ -4,3 +4,19 @@ _site
 .idea
 vendor/bundle
 bin
+
+# Development-only tooling kept out of the public repo.
+# Covers the one-shot migration scripts, the AI cover-generation pipeline
+# (generate_covers.py / image_prompt.py / briefs.json / audit.json), any
+# Python cache, and any ad-hoc helpers under scripts/.
+scripts/
+__pycache__/
+*.pyc
+.venv/
+
+# Dev-only Jekyll config; production uses _config.yml alone.
+_config.dev.yml
+
+# Local editor / OS junk
+.DS_Store
+Thumbs.db

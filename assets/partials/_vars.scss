@@ -1,22 +1,73 @@
-$background-color: 		#fcfcfc;
+// -- CSS custom properties (runtime theming + dark mode support) --
+// Catppuccin Latte (light) / Mocha (dark) — harmonizes with the
+// terminal-style code blocks. Auto-switches on `prefers-color-scheme`.
 
-$black:					#000;
-$white:					#fff;
+:root {
+    // Surfaces
+    --bg:           #ffffff;    // page background — pure white
+    --bg-subtle:    #f7f7f8;    // section tint (footer strips, header blur fallback)
+    --bg-code:      #f1f1f4;    // inline code background
+    --surface:      #ffffff;    // elevated surfaces (kept white, shadows do the work)
 
-$grey-color-dark: 		#333;
-$grey-color-normal: 	#666;
-$grey-color-light: 		#aaa;
-$grey-color-lighter: 	#ddd;
-$grey-color-lightest: 	#eee;
+    // Ink
+    --text:         #4c4f69;    // latte text
+    --text-muted:   #6c6f85;    // latte subtext0
+    --text-soft:    #8c8fa1;    // latte overlay2
 
-$primary-color:			#FE874A;
+    // Semantic
+    --accent:       #fe640b;    // latte peach — close to legacy #FE874A
+    --accent-soft:  #ffdbc4;
+    --link:         #1e66f5;    // latte blue
+    --link-hover:   #7287fd;    // latte lavender
+    --border:       #bcc0cc;    // latte overlay0
+    --border-soft:  #dce0e8;
+    --danger:       #d20f39;
+    --success:      #40a02b;
+}
 
-$facebook-brand-color:	#3b5998;
-$twitter-brand-color:	#55acee;
+@media (prefers-color-scheme: dark) {
+    :root {
+        // Surfaces — match terminal code block background for visual coherence
+        --bg:           #1e1e2e;    // mocha base
+        --bg-subtle:    #181825;    // mocha mantle
+        --bg-code:      #313244;    // mocha surface0
+        --surface:      #242436;
 
-$default-width:			1100px;
-$on-tablet:				768px;
+        // Ink
+        --text:         #cdd6f4;    // mocha text
+        --text-muted:   #a6adc8;    // mocha subtext0
+        --text-soft:    #9399b2;    // mocha overlay2
+
+        // Semantic
+        --accent:       #fab387;    // mocha peach — brighter for dark
+        --accent-soft:  rgba(250,179,135,0.18);
+        --link:         #89b4fa;    // mocha blue
+        --link-hover:   #b4befe;    // mocha lavender
+        --border:       #45475a;    // mocha surface1
+        --border-soft:  #313244;
+        --danger:       #f38ba8;
+        --success:      #a6e3a1;
+    }
+}
+
+// -- Legacy Sass vars (kept for lighten()/darken() call sites) --
+// New rules should reference CSS custom properties via var(...).
+$background-color:      #eff1f5;
+
+$black:                 #000;
+$white:                 #fff;
+
+$grey-color-dark:       #4c4f69;
+$grey-color-normal:     #6c6f85;
+$grey-color-light:      #8c8fa1;
+$grey-color-lighter:    #bcc0cc;
+$grey-color-lightest:   #dce0e8;
+
+$primary-color:         #fe640b;
+
+$default-width:         1100px;
+$on-tablet:             768px;
 $on-smaller-tablets:    640px;
-$on-phone:				480px;
+$on-phone:              480px;
 
 $burger-cell-height:    2px;

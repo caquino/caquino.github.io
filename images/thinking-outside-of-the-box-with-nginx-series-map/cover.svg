@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" fill="none" role="img" aria-label="NGINX map directive: a switch statement that converts any NGINX variable into a new one">
+  <rect width="1200" height="630" fill="#fbfaf7"/>
+
+  <g>
+    <rect x="0" y="0" width="1200" height="36" fill="#eeeae3"/>
+    <circle cx="18" cy="18" r="5.5" fill="#ff5f56"/>
+    <circle cx="36" cy="18" r="5.5" fill="#ffbd2e"/>
+    <circle cx="54" cy="18" r="5.5" fill="#27c93f"/>
+    <line x1="0" y1="36" x2="1200" y2="36" stroke="#4c4f69" stroke-width="0.5" opacity="0.12"/>
+  </g>
+
+  <!-- Input variables on left -->
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14">
+    <text x="180" y="95" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#4c4f69" text-anchor="middle" opacity="0.6" letter-spacing="0.12em">ANY NGINX VARIABLE</text>
+    <g transform="translate(80 120)">
+      <rect width="210" height="40" rx="6" stroke="#4c4f69" stroke-width="2" opacity="0.75"/>
+      <text x="20" y="26" fill="#4c4f69">$http_cookie</text>
+    </g>
+    <g transform="translate(80 175)">
+      <rect width="210" height="40" rx="6" stroke="#4c4f69" stroke-width="2" opacity="0.75"/>
+      <text x="20" y="26" fill="#4c4f69">$http_user_agent</text>
+    </g>
+    <g transform="translate(80 230)">
+      <rect width="210" height="40" rx="6" stroke="#4c4f69" stroke-width="2" opacity="0.75"/>
+      <text x="20" y="26" fill="#4c4f69">$request_uri</text>
+    </g>
+    <g transform="translate(80 285)">
+      <rect width="210" height="40" rx="6" stroke="#4c4f69" stroke-width="2" opacity="0.75"/>
+      <text x="20" y="26" fill="#4c4f69">$request_method</text>
+    </g>
+    <g transform="translate(80 340)">
+      <rect width="210" height="40" rx="6" stroke="#4c4f69" stroke-width="2" opacity="0.75"/>
+      <text x="20" y="26" fill="#4c4f69">$binary_remote_addr</text>
+    </g>
+    <text x="185" y="410" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#4c4f69" text-anchor="middle" opacity="0.55">…or any other variable</text>
+  </g>
+
+  <!-- Arrows converging -->
+  <g stroke="#4c4f69" fill="#4c4f69" stroke-width="2" opacity="0.5">
+    <line x1="290" y1="140" x2="395" y2="260"/>
+    <line x1="290" y1="195" x2="395" y2="275"/>
+    <line x1="290" y1="250" x2="395" y2="290"/>
+    <line x1="290" y1="305" x2="395" y2="300"/>
+    <line x1="290" y1="360" x2="395" y2="310"/>
+  </g>
+
+  <!-- MAP box (peach) -->
+  <g transform="translate(400 205)">
+    <rect width="400" height="220" rx="12" fill="#fe640b"/>
+    <text x="200" y="34" font-family="Inter, system-ui, sans-serif" font-size="13" fill="#fbfaf7" text-anchor="middle" opacity="0.7" letter-spacing="0.18em">MAP · "switch / case" for nginx</text>
+    <line x1="24" y1="50" x2="376" y2="50" stroke="#fbfaf7" stroke-width="1" opacity="0.25"/>
+    <text x="24" y="82" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#fbfaf7" font-weight="600">map $input $output {</text>
+    <text x="48" y="108" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#fbfaf7" opacity="0.9">match_literal    "return_value";</text>
+    <text x="48" y="130" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#fbfaf7" opacity="0.9">~regex           "return_value";</text>
+    <text x="48" y="152" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#fbfaf7" opacity="0.9">~*caseless_regex "return_value";</text>
+    <text x="48" y="174" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#fbfaf7" opacity="0.9">default          "return_value";</text>
+    <text x="24" y="200" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#fbfaf7" font-weight="600">}</text>
+  </g>
+
+  <!-- Arrows to outputs -->
+  <g stroke="#4c4f69" fill="#4c4f69" stroke-width="2.5">
+    <line x1="805" y1="315" x2="860" y2="315"/>
+    <polygon points="870,315 858,308 858,322"/>
+  </g>
+
+  <!-- Output variable -->
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14">
+    <g transform="translate(880 290)">
+      <rect width="240" height="50" rx="10" fill="#40a02b"/>
+      <text x="120" y="32" fill="#fbfaf7" text-anchor="middle" font-weight="600">$output</text>
+    </g>
+    <text x="1000" y="370" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#4c4f69" text-anchor="middle" opacity="0.55" letter-spacing="0.1em">NEW NGINX VARIABLE</text>
+  </g>
+
+  <!-- Nested hint at bottom -->
+  <g transform="translate(300 495)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13">
+    <rect width="600" height="50" rx="8" stroke="#4c4f69" stroke-width="1.5" opacity="0.3"/>
+    <text x="300" y="32" fill="#4c4f69" text-anchor="middle" opacity="0.6">maps can be nested · chain map → map → geo to compose rules</text>
+  </g>
+
+  <text x="1178" y="618" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#4c4f69" text-anchor="end" opacity="0.35">// syshero.org</text>
+</svg>

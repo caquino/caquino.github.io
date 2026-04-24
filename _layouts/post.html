@@ -2,39 +2,61 @@
 layout: default
 ---
 
-<article class="post single" role="article" itemscope itemtype="http://schema.org/BlogPosting">
+<article class="post single" role="article" itemscope itemtype="http://schema.org/BlogPosting" data-pagefind-body>
+    {% if page.cover %}
+    <figure class="post-cover">
+        <img src="{{ page.cover | relative_url }}" alt="" loading="eager" />
+    </figure>
+    {% endif %}
     <header class="post-header">
         <ul class="clear">
             <li><time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">{{ page.date | date: "%-d %b, %Y" }}</time></li>
+            <li>{{ page.content | number_of_words | divided_by: 200 | at_least: 1 }} min read</li>
+            {% if page.updated %}
+                <li class="updated">Updated {{ page.updated | date: "%-d %b, %Y" }}</li>
+            {% endif %}
             {% if site.show_categories == 1 and page.category %}
-                {% if page.category %}
                 <li class="cats">
                     {% for category in page.category %}
                         <a href="{{site.baseurl}}/{{site.category_dir}}/{{category}}/">{{ category }}</a>
                     {% endfor %}
                 </li>
-                {% endif %}
             {% endif %}
         </ul>
-        <h2 itemprop="name headline">{{ page.title }}</h2>
+        <h2 itemprop="name headline" data-pagefind-meta="title">{{ page.title }}</h2>
     </header>
+
+    {% if page.tldr %}
+    <div class="post-tldr">
+        <span class="post-tldr-label">TL;DR</span>
+        <p>{{ page.tldr }}</p>
+    </div>
+    {% endif %}
+
+    {% include toc.html %}
+
+    {% include series.html %}
 
     <div class="post-content">
         {{ page.content }}
     </div>
 
     <footer class="post-footer">
-        <div class="share">Share
-            <ul class="social-networks">
-                <li class="share-facebook"><a href="https://www.facebook.com/sharer.php?s=100&p[title]={{page.title | strip_html }}&p[summary]={{page.content | strip_html | truncate: 140 }}&p[url]={{ page.url | prepend: site.baseurl | prepend: site.url }}" class="s_facebook" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{{ site.baseurl | prepend: site.url }}/assets/svg/social-icons.svg#facebook-icon"></use></svg></a></li>
-                <li class="share-twitter"><a href="http://twitter.com/share?url={{page.url | prepend: site.baseurl | prepend: site.url | escape}}&text={{ page.content | strip_html | truncate: 140 }}&hashtags={% for tag in page.tags %}{{ tag }},{% endfor %}" rel="noreferrer" target="_blank" onclick="window.open(this.href, '','width=700,height=300');return false;"><svg title="" width="16" height="16"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{{ site.baseurl | prepend: site.url }}/assets/svg/social-icons.svg#twitter-icon"></use></svg></a></li>
-            </ul>
-        </div>
+        <button type="button" class="share-link" data-url="{{ page.url | absolute_url }}" data-title="{{ page.title | escape }}" aria-label="Share this post">
+            <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="4" cy="8" r="2"></circle><circle cx="12" cy="3" r="2"></circle><circle cx="12" cy="13" r="2"></circle><path d="M5.7 7 10.3 4"></path><path d="M5.7 9 10.3 12"></path></svg>
+            <span class="share-label">Share</span>
+        </button>
+        {% if site.github_repo %}
+        <a class="edit-link" href="https://github.com/{{ site.github_repo }}/edit/master/{{ page.path }}" rel="nofollow noopener" target="_blank" aria-label="Edit this post on GitHub">
+            <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 2l3 3-8 8H3v-3z"/><path d="M10 3l3 3"/></svg>
+            <span>Edit on GitHub</span>
+        </a>
+        {% endif %}
         {% if site.show_tags == 1 and page.tags %}
         <div class="tags">
             <ul>
                 {% for tag in page.tags %}
-                <li><a href="{{ site.baseurl | prepend: site.url }}/tags/#{{ tag }}">{{ tag }}</a></li>
+                <li><a href="{{ '/tag/' | append: tag | relative_url }}">{{ tag }}</a></li>
                 {% endfor %}
             </ul>
         </div>
@@ -42,22 +64,16 @@ layout: default
     </footer>
 </article>
 
-{% if page.comments and site.show_comments == 1 %}
+{% include prev_next.html %}
+
+{% include related.html %}
+
+{% include author_footer.html %}
+
+{% include webmentions.html %}
+
+{% if site.show_comments == 1 and page.comments != false %}
 <aside class="comments" role="complementary">
-    <div id="disqus_thread"></div>
-    <script>
-        var disqus_config = function () {
-            this.page.url = '{{ page.url | prepend: site.baseurl | prepend: site.url }}';
-            this.page.identifier = '{{ page.date | date: "%-m/%-d/%Y" }}';
-        };
-        (function() {
-            var d = document, s = d.createElement('script');
-
-            s.src = '//{{site.disqus}}.disqus.com/embed.js';
-
-            s.setAttribute('data-timestamp', +new Date());
-            (d.head || d.body).appendChild(s);
-        })();
-    </script>
+    {% include giscus.html %}
 </aside>
 {% endif %}

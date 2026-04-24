@@ -1,0 +1,26 @@
+{%- comment -%}
+In-post table of contents, opt-in via frontmatter `toc: true`.
+
+Liquid extracts H2 and H3 anchors from the rendered post content and lists
+them. Works without a plugin because kramdown already emits `id` attributes
+on headings (enabled globally via _config.yml kramdown.auto_ids).
+
+Show only for posts with at least two H2 headings — a TOC over one section
+is noise.
+{%- endcomment -%}
+{%- if page.toc -%}
+  {%- assign h2_count = page.content | split: '<h2 id="' | size | minus: 1 -%}
+  {%- if h2_count >= 2 -%}
+    <details class="post-toc" open>
+      <summary>Contents</summary>
+      <ol class="post-toc-list">
+        {%- assign parts = page.content | split: '<h2 id="' -%}
+        {%- for part in parts offset:1 -%}
+          {%- assign id = part | split: '"' | first -%}
+          {%- assign title = part | split: '">' | slice: 1, 1 | first | split: '</h2>' | first | strip_html | strip -%}
+          <li><a href="#{{ id }}">{{ title }}</a></li>
+        {%- endfor -%}
+      </ol>
+    </details>
+  {%- endif -%}
+{%- endif -%}

@@ -1,6 +1,8 @@
 ---
 layout: post
 title: NGINX+ Chained PURGE
+cover: /images/nginx-chained-purge/cover.svg
+description: "Implementing NGINX+ chained PURGE using Lua and Consul to dynamically update upstream server lists."
 date: '2018-04-12T18:06:13+01:00'
 tags:
 - devops
@@ -49,7 +51,30 @@ After a lot of research and hard work (not really, it was done in a couple of ho
 
 Let’s imagine a simple NGINX+, which works well with a single cache node:
 
-{% gist a4692d5abefba4141ad6f5e9fa49ee05On %}
+```nginx
+proxy_cache_path /tmp/nginx levels=1:2 keys_zone=default:10m max_size=50m;
+
+upstream backends {
+  server service.consul service=backend resolve;
+}
+
+server {
+  status_zone default;
+
+  listen 80;
+  server_name _;
+
+  add_header X-Cache-Status $upstream_cache_status;
+  
+  location / {
+    proxy_cache_valid 200 1m;
+    proxy_cache default;
+    proxy_cache_key $uri;
+    proxy_pass http://backends;
+  }
+
+}
+```
 
 On this example, NGINX+ uses Consul to populate the backends upstream server list.
 
@@ -57,11 +82,39 @@ Nothing special here, no PURGE or anything just yet!
 
 Now, to allow PURGE, Mr. J decided to go with an invalid internal domain, and this was the configuration used.
 
-{% gist 7cd202a7d15462b48c649ac829daf63b %}
+```nginx
+proxy_cache_path /tmp/nginx levels=1:2 keys_zone=default:10m max_size=50m;
+
+upstream backends {
+  server service.consul service=backend resolve;
+}
+
+map $request_method $purge_method {
+  PURGE 1;
+  default 0;
+}
+
+server {
+  status_zone purger;
+
+  listen 80;
+  server_name purger.local;
+
+  location / {
+    proxy_cache default;
+    proxy_cache_key $uri;
+    proxy_pass http://backends;
+    proxy_cache_purge $purge_method;
+  }
+
+}
+```
 
 Basically, to purge any content, he can even use cli tools like curl:
 
-{% gist e5bce397e4106e041d01fccf7a7755f5 %}
+```bash
+curl -X PURGE -H 'Host: purger.local' http://127.0.0.1/uri/to/purge/index.html
+```
 
 When executing a PURGE, NGINX+ will return a 204 No Content.
 
@@ -69,21 +122,157 @@ But still, Mr. J needed to turn this simple configuration in something that woul
 
 Finally  Mr. J he had a solution to his problem:
 
-{% gist 52b9612167325f43361aea80856fed56 %}
+```nginx
+resolver consul:8600 valid=2s ipv6=off;
+resolver_timeout 2s;
+
+proxy_cache_path /tmp/nginx levels=1:2 keys_zone=default:10m max_size=50m;
+
+upstream backends {
+  zone backends 32k;
+  server service.consul service=backend resolve;
+}
+
+upstream caches {
+  zone caches 32k;
+  server service.consul service=cache resolve;
+}
+
+lua_package_cpath '/usr/lib/x86_64-linux-gnu/lua/5.1/?.so;;';
+
+server {
+  status_zone default;
+
+  listen 80;
+  server_name _;
+
+  root /usr/share/nginx/html;
+
+  add_header X-Cache-Status $upstream_cache_status;
+
+  location / {
+    proxy_cache_valid 200 1m;
+    proxy_cache default;
+    proxy_cache_key $uri;
+    proxy_pass http://backends;
+  }
+
+}
+
+map $request_method $purge_method {
+  PURGE 1;
+  default 0;
+}
+
+server {
+  status_zone purger;
+
+  listen 80;
+  server_name purger.local;
+
+  allow 127.0.0.1;
+  allow 172.16.0.0/24; # NGINX+ Network
+  deny all;
+
+  location /api {
+    api write=on;
+  }
+  
+  location ~* ^/proxy_to/(?<dest>[^\/]+)/ {
+    resolver 1.1.1.1 ipv6=off;
+    resolver_timeout 2s;
+    proxy_method PURGE;
+    proxy_set_header Host 'purger.local';
+    proxy_pass http://$dest/;
+  }
+
+  location / {
+    proxy_cache default;
+    proxy_cache_key $uri;
+    proxy_pass http://backends;
+    proxy_cache_purge $purge_method;
+  }
+
+  location ~* ^/purger/(?<purge_uri>.*)$ {
+   content_by_lua_block {
+      local cjson = require("cjson")
+      local caches = cjson.decode(ngx.location.capture('/api/3/http/upstreams/caches/servers').body)
+      ngx.say('Purging URI: ' .. ngx.var.purge_uri)
+      for k,v in pairs(caches) do
+        if v['parent'] ~= nil then
+          res = ngx.location.capture('/proxy_to/' .. v['server'] .. '/' .. ngx.var.purge_uri, { share_all_vars =  true })
+          ngx.say('Purging server: ' .. v['server'] .. ' (' .. res.status .. ')')
+        end
+      end
+    }
+  }
+}
+```
 
 Let’s break these into pieces and explain the important parts, first NGINX+ has an upstream called caches configuration, that’s not used by any proxy_pass:
 
-{% gist 14ba8849cb2610f9ffa8202b9d72d560 %}
+```nginx
+upstream caches {
+  zone caches 32k;
+  server service.consul service=cache resolve;
+}
+```
 
 This is used as a catalog to allow instances to find each other.
 
 Another important part is to declare where the NGINX+ Lua module will find the cjson module, as Mr. J used Ubuntu, after simply doing an apt-get install lua-cjson, he added the following line to the configuration:
 
-{% gist fa8df1de60ee61489c3acf97f4786327 %}
+```nginx
+lua_package_cpath '/usr/lib/x86_64-linux-gnu/lua/5.1/?.so;;';
+```
 
 And now it comes the important part, the most complex one:
 
-{% gist e5f319f2df589c3fa7eb95e290da329c %}
+```nginx
+server {
+  status_zone purger;
+
+  listen 80;
+  server_name purger.local;
+
+  allow 127.0.0.1;
+  allow 172.16.0.0/24; # NGINX+ Network
+  deny all;
+
+  location /api {
+    api write=on;
+  }
+  
+  location ~* ^/proxy_to/(?<dest>[^\/]+)/ {
+    resolver 1.1.1.1 ipv6=off;
+    resolver_timeout 2s;
+    proxy_method PURGE;
+    proxy_set_header Host 'purger.local';
+    proxy_pass http://$dest/;
+  }
+
+  location / {
+    proxy_cache default;
+    proxy_cache_key $uri;
+    proxy_pass http://backends;
+    proxy_cache_purge $purge_method;
+  }
+
+  location ~* ^/purger/(?<purge_uri>.*)$ {
+   content_by_lua_block {
+      local cjson = require("cjson")
+      local caches = cjson.decode(ngx.location.capture('/api/3/http/upstreams/caches/servers').body)
+      ngx.say('Purging URI: ' .. ngx.var.purge_uri)
+      for k,v in pairs(caches) do
+        if v['parent'] ~= nil then
+          res = ngx.location.capture('/proxy_to/' .. v['server'] .. '/' .. ngx.var.purge_uri, { share_all_vars =  true })
+          ngx.say('Purging server: ' .. v['server'] .. ' (' .. res.status .. ')')
+        end
+      end
+    }
+  }
+}
+```
 
 When any content needs to be purged on all nodes, a PURGE request to /purger/index.html should be issued on using the host purger.local.
 
@@ -100,3 +289,7 @@ And Mr. J lived happily ever after.
 I hope that Mr. J adventure helps you solve your caching issues!
 
 See you next time!
+
+---
+
+**EDIT 2026-04-24.** The Lua code above calls `/api/3/http/upstreams/caches/servers`. Since this post was written, NGINX+ has iterated on its API (current stable is v8+). Older version paths still work because NGINX+ keeps backward compatibility on the versioned prefix, but if you're authoring new config you should point at the current version available on your build. Check `location /api { api write=on; }` output at `/api` for the versions it advertises.

@@ -1,6 +1,8 @@
 ---
 layout: post
 title: NGINX+ Automatic PURGE when content is changed
+cover: /images/nginx-automatic-purge-when-content-is-changed/cover.svg
+description: "NGINX+ mirror module purges cache for non-GET requests using the purge option and $uri variables."
 date: '2018-04-17T10:00:33+01:00'
 tags:
 - devops
@@ -32,7 +34,50 @@ The desired solution would:
 
 The following configuration achieves that by using the NGINX+ mirror module together with the purge option.
 
-{% gist ab3aabe5b0ba966a581ad649d7bbffe0 %}
+```nginx
+resolver consul:8600 valid=2s ipv6=off;
+resolver_timeout 2s;
+
+proxy_cache_path /tmp/nginx levels=1:2 keys_zone=default:10m max_size=50m;
+
+upstream backends {
+  zone backends 32k;
+  server service.consul service=backend resolve;
+}
+
+server {
+  status_zone default;
+
+  listen 80;
+  server_name _;
+
+  root /usr/share/nginx/html;
+
+  add_header X-Cache-Status $upstream_cache_status;
+
+  location / {
+    mirror /mirror;
+    mirror_request_body off;
+    proxy_cache_valid 200 1m;
+    proxy_cache default;
+    proxy_cache_key $uri;
+    proxy_pass http://backends;
+  }
+
+  location /mirror {
+    internal;
+    if ($request_method ~ "HEAD|GET") {
+      return 204;
+    }
+    proxy_pass_request_body off;
+    proxy_set_header Content-Length "";
+    proxy_cache_purge 1;
+    proxy_cache default;
+    proxy_cache_key $request_uri;
+    proxy_pass http://backends$request_uri;
+  }
+}
+```
 
 This configuration receives any request to /, forward to the backends servers and also mirrors this request to the location /mirror.
 
@@ -40,7 +85,15 @@ The location /mirror will return a 204 for GET and HEAD methods as we want to av
 
 As can be seen on the following test:
 
-{% gist 7a82a740a2cdbc5a67607dcacd4cb126 %}
+```bash
+root@host:~# curl -v http://localhost/data 2>&1 | grep X-Cache-Status
+< X-Cache-Status: HIT
+root@host:~# curl -X POST --data "test=1" -v http://localhost/data 2>&1 | grep X-Cache-Status
+root@host:~# curl -v http://localhost/data 2>&1 | grep X-Cache-Status
+< X-Cache-Status: MISS
+root@host:~# curl -v http://localhost/data 2>&1 | grep X-Cache-Status
+< X-Cache-Status: HIT
+```
 
 Simple as that!
 

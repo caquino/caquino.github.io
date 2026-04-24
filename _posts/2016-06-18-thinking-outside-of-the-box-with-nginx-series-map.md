@@ -1,6 +1,9 @@
 ---
 layout: post
 title: Thinking outside of the box with NGINX series - map command
+series: "Thinking outside the box with NGINX"
+cover: /images/thinking-outside-of-the-box-with-nginx-series-map/cover.svg
+description: "Configuring NGINX using the map command for conditional logic and variable manipulation."
 date: '2016-06-18T15:41:20+01:00'
 tags:
 - devops
@@ -15,12 +18,12 @@ You should think about [map](http://nginx.org/en/docs/http/ngx_http_map_module.h
 
 Basically, the syntax for [map](http://nginx.org/en/docs/http/ngx_http_map_module.html) is the following:
 
-{% highlight nginx %}
+```nginx
 map $variable_to_evaluate $return_variable { 
     value_to_match value_to_return; 
     default value_to_return_by_default;
 }
-{% endhighlight %}
+```
 
 Where the variable_to_evaluate can be ANY variable accessible by NGINX, which includes HTTP headers, Cookies, etc.
 
@@ -28,13 +31,58 @@ You can think of [map](http://nginx.org/en/docs/http/ngx_http_map_module.html) a
 
 Let’s review our rate limiting example that we used [geo](http://nginx.org/en/docs/http/ngx_http_geo_module.html) to create a whitelist, now we will use [map](http://nginx.org/en/docs/http/ngx_http_map_module.html) to do the same thing, if the client sends a cookie called “whitelistrl”, he will bypass the rate limiting, but remember, this is not a good idea for rate limiting control as cookies can be easily injected to any HTTP request.
 
-{% gist ad3e6bc545258880e437a8aec4470159 %}
+```nginx
+upstream production {
+  server 192.168.0.1:80;
+  server 192.168.0.2:80;
+}
+
+limit_req_zone $limit_var zone=limit_default:10m rate=10r/s;
+
+map $http_cookie $limit_var {
+  default $binary_remote_addr;
+  ~whitelistrl "";
+}
+
+server {
+  listen 80;
+  location / {
+    limit_req zone=limit_default burst=10;
+    proxy_pass http://production;
+  }
+}
+```
 
 Another functionality is that [map](http://nginx.org/en/docs/http/ngx_http_map_module.html) can be nested, one map can call another map or even combine [geo](http://nginx.org/en/docs/http/ngx_http_geo_module.html)/[map](http://nginx.org/en/docs/http/ngx_http_map_module.html)/[split_clients](http://nginx.org/en/docs/http/ngx_http_split_clients_module.html).
 
 Let’s try another example, what about using [map](http://nginx.org/en/docs/http/ngx_http_map_module.html) and [geo](http://nginx.org/en/docs/http/ngx_http_geo_module.html) to allow us to only whitelist clients from our customer network that contains the whitelistrl cookie? Sounds like fun!
 
-{% gist 9c724bad73421b495e2ad6225b3c1e48 %}
+```nginx
+upstream production {
+  server 192.168.0.1:80;
+  server 192.168.0.2:80;
+}
+
+limit_req_zone $limit_var zone=limit_default:10m rate=10r/s;
+
+map $http_cookie $limit_var {
+  default $binary_remote_addr;
+  ~whitelistrl $network_var;
+}
+
+geo $network_var {
+  default $binary_remote_addr;
+  200.200.200.0/24 "";
+}
+
+server {
+  listen 80;
+  location / {
+    limit_req zone=limit_default burst=10;
+    proxy_pass http://production;
+  }
+}
+```
 
 One thing to note thou, the order of the nesting matters, [map](http://nginx.org/en/docs/http/ngx_http_map_module.html) accepts nesting other commands, but this is not true for all commands, for example, if we had tried to call [map](http://nginx.org/en/docs/http/ngx_http_map_module.html) from [geo](http://nginx.org/en/docs/http/ngx_http_geo_module.html), it was not going to work, so always test before deploying to production!
 
@@ -44,7 +92,6 @@ Some examples are:
 - [Persistent backend selection using cookies with NGINX]({% post_url 2015-07-03-persistent-backend-selection-using-cookies-with %})
 - [Using map for upstream configuration on NGINX]({% post_url 2015-03-28-using-map-for-upstream-configuration-on-nginx %})
 - [Disable NGINX cache based on cookies]({% post_url 2013-05-10-disable-nginx-cache-based-on-cookies %})
-- [Avoid caching 0-byte files on NGINX]({% post_url 2013-05-04-avoid-caching-0-byte-files-on-nginx %})
 
 See you on the next post! 
 
