@@ -3,9 +3,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>{% if page.title %}{{ page.title | escape }} |{% endif %} {{ site.name | escape }} {% if site.job_title %}&mdash; {{site.job_title | escape }} {% endif %}</title>
-    <meta property="og:title" content="{% if page.title %}{{ page.title | escape }} |{% endif %} {{ site.name | escape }} {% if site.job_title %}&mdash; {{site.job_title | escape }} {% endif %}" />
-    <meta name="twitter:title" content="{% if page.title %}{{ page.title | escape }} |{% endif %} {{ site.name | escape }} {% if site.job_title %}&mdash; {{site.job_title | escape }} {% endif %}" />
+    {%- comment -%}
+    Post pages get a clean title — author identity lives in the lower-third
+    of the OG card and in the author footer on the page itself. Only the
+    homepage / section pages use the name + job-title format.
+    {%- endcomment -%}
+    {%- if page.title -%}
+      {%- assign page_title = page.title | escape -%}
+    {%- else -%}
+      {%- assign page_title = site.name | escape -%}
+      {%- if site.job_title -%}{%- assign page_title = page_title | append: " — " | append: site.job_title | escape -%}{%- endif -%}
+    {%- endif -%}
+    <title>{{ page_title }}</title>
+    <meta property="og:title" content="{{ page_title }}" />
+    <meta name="twitter:title" content="{{ page_title }}" />
 
     <meta name="description" content="{% if page.description %}{{ page.description | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
     <meta name="description" property="og:description" content="{% if page.description %}{{ page.description | strip_html | strip_newlines | truncate: 160 }}{% else %}{{ site.description }}{% endif %}" />
