@@ -342,9 +342,7 @@
                 svg { flex-shrink: 0; }
             }
 
-            .post-footer-actions { display: inline-flex; align-items: center; gap: 14px; }
-
-            .edit-link { display: inline-flex; align-items: center; color: var(--text-soft); text-decoration: none; transition: color 0.1s ease;
+            .edit-link { display: inline-flex; align-items: center; gap: 8px; color: var(--text-soft); text-decoration: none; font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; transition: color 0.1s ease;
                 &:hover { color: var(--text); }
                 svg { flex-shrink: 0; }
             }
