@@ -1,6 +1,8 @@
 ---
 layout: post
 title: simulate basic ESI using NGINX and SSI
+cover: /images/simulate-basic-esi-using-nginx-and-ssi/cover.svg
+description: "Implementing basic ESI using NGINX and Server-Side Includes."
 date: '2013-05-15T15:53:00+01:00'
 tags:
 - nginx
@@ -28,36 +30,89 @@ It’s not advanced as real ESI, but you can achieve a lot using this simple tri
 
 For example, if you have one slice of your page, like a header or a footer that needs a different TTL from the rest of the page, you can change your code to output something like this:
 
-{% highlight html %}
+```html
 <div id=“header”>
 <!–# include virtual=“/content/header_page.php”  –>
 </div>
-{% endhighlight %}
+```
 
 and on your nginx.conf you can do create a location block which specifies TTL for this request.
 
-{% highlight nginx %}
+```nginx
 location /content {
 ….
    proxy_cache_valid 5m;
 ….
 }
-{% endhighlight %}
+```
 
 Well, at least for me examples works better than large documentation, so let’s do it :D
 
 I have used two servers definitions in the nginx configuration to simulate a front-end and a cache, it’s not needed in a real-world environment all the files and configuration to do this proof-of-concept can be found at the gist.
 
-{% gist 5580730 nginx.conf %}
+```nginx
+proxy_cache_path  /tmp/nginx levels=1:2   keys_zone=default:10m;
+
+ server {
+
+     listen 80;
+     server_name localhost;
+
+     location / {
+         ssi on;
+         proxy_cache default;
+         proxy_cache_valid 5m;
+         proxy_pass http://localhost:81;
+     }
+
+     location /uncached {
+         ssi on;
+         proxy_pass http://localhost:81;
+     }
+
+ }
+
+ server {
+     listen 81;
+     server_name localhost;
+
+     index index.shtml;
+
+     root /var/www;
+
+     location /cached {
+         ssi on;
+     }
+
+ }
+```
 
 And both SSI files used to test this server definition, the file should be saved under /var/www/uncached/index.shtml
-{% gist 5580730 index-uncached.shtml %}
+```text
+Uncached: <!--# echo var="date_local" -->
+```
 
 The second file should be saved under /var/www/cached/index.shtml
-{% gist 5580730 index-cached.shtml %}
+```text
+Cached: <!--# echo var="date_local" -->
+```
 
 Also the index page that load both SSI pages as ESI should be saved under /var/www/index.shtml
-{% gist 5580730 index.shtml %}
+```text
+Main: <!--# echo var="date_local" -->
+<!--# block name="cached" --> <!--# endblock -->
+<!--# include virtual="/cached/" stub="cached" -->
+<!--# block name="uncached" --> <!--# endblock -->
+<!--# include virtual="/uncached/" stub="uncached" -->
+```
 
 Let's test and verify this setup works as expected
-{% gist 5580730 test-output %}
+```text
+root@server:~# wget -q -O - http://localhost/
+Main: Tuesday, 14-May-2013 22:01:07 BRT
+
+Cached: Tuesday, 14-May-2013 21:59:41 BRT
+
+
+Uncached: Tuesday, 14-May-2013 22:01:07 BRT
+```

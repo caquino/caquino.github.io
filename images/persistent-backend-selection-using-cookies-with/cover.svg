@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" fill="none" role="img" aria-label="NGINX sticky backend selection: /appN sets cookie, map $cookie_beid resolves backend">
+  <rect width="1200" height="630" fill="#fbfaf7"/>
+
+  <g>
+    <rect x="0" y="0" width="1200" height="36" fill="#eeeae3"/>
+    <circle cx="18" cy="18" r="5.5" fill="#ff5f56"/>
+    <circle cx="36" cy="18" r="5.5" fill="#ffbd2e"/>
+    <circle cx="54" cy="18" r="5.5" fill="#27c93f"/>
+    <line x1="0" y1="36" x2="1200" y2="36" stroke="#4c4f69" stroke-width="0.5" opacity="0.12"/>
+  </g>
+
+  <!-- STEP 1 label -->
+  <text x="300" y="80" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#4c4f69" text-anchor="middle" opacity="0.55" letter-spacing="0.12em">STEP 1 · SET COOKIE AND REDIRECT</text>
+
+  <!-- /app2 request -->
+  <g transform="translate(80 110)">
+    <rect width="170" height="60" rx="10" stroke="#4c4f69" stroke-width="2.5"/>
+    <text x="85" y="38" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="16" fill="#4c4f69" text-anchor="middle">GET /app2</text>
+  </g>
+
+  <g stroke="#4c4f69" fill="#4c4f69" stroke-width="2.5">
+    <line x1="255" y1="140" x2="310" y2="140"/>
+    <polygon points="320,140 308,133 308,147"/>
+  </g>
+
+  <!-- regex capture + Set-Cookie + 301 -->
+  <g transform="translate(325 95)">
+    <rect width="390" height="95" rx="10" fill="#fe640b"/>
+    <text x="20" y="28" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#fbfaf7" opacity="0.9">location ~ ^/app(?&lt;beid&gt;[0-9]+)</text>
+    <text x="20" y="54" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#fbfaf7">Set-Cookie: beid=2; Max-Age=31536000</text>
+    <text x="20" y="78" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#fbfaf7" opacity="0.9">return 301 /;</text>
+  </g>
+
+  <!-- Divider line -->
+  <line x1="80" y1="240" x2="1120" y2="240" stroke="#4c4f69" stroke-width="1" opacity="0.15" stroke-dasharray="4 4"/>
+
+  <!-- STEP 2 label -->
+  <text x="600" y="280" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#4c4f69" text-anchor="middle" opacity="0.55" letter-spacing="0.12em">STEP 2 · SUBSEQUENT REQUESTS RESOLVE BACKEND FROM COOKIE</text>
+
+  <!-- Request with cookie -->
+  <g transform="translate(80 305)">
+    <rect width="210" height="90" rx="10" stroke="#4c4f69" stroke-width="2.5"/>
+    <text x="105" y="30" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#4c4f69" text-anchor="middle">GET /</text>
+    <rect x="14" y="46" width="182" height="30" rx="4" fill="#fe640b" opacity="0.18"/>
+    <text x="24" y="66" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#4c4f69" font-weight="600">Cookie: beid=2</text>
+  </g>
+
+  <g stroke="#4c4f69" fill="#4c4f69" stroke-width="2.5">
+    <line x1="295" y1="350" x2="355" y2="350"/>
+    <polygon points="365,350 353,343 353,357"/>
+  </g>
+
+  <!-- map on cookie -->
+  <g transform="translate(370 290)">
+    <rect width="400" height="220" rx="12" fill="#fe640b"/>
+    <text x="200" y="32" font-family="Inter, system-ui, sans-serif" font-size="13" fill="#fbfaf7" text-anchor="middle" opacity="0.7" letter-spacing="0.12em">MAP $cookie_beid $backend</text>
+    <line x1="24" y1="48" x2="376" y2="48" stroke="#fbfaf7" stroke-width="1" opacity="0.25"/>
+    <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#fbfaf7">
+      <text x="24" y="80">default → www.globo.com:80</text>
+      <text x="24" y="108">1       → www.uol.com.br:80</text>
+      <g>
+        <rect x="14" y="120" width="372" height="28" rx="4" fill="#fbfaf7" opacity="0.2"/>
+        <text x="24" y="140" font-weight="600">2       → www.ig.com.br:80</text>
+      </g>
+      <text x="24" y="168">3       → www.terra.com.br:80</text>
+    </g>
+    <text x="200" y="198" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#fbfaf7" text-anchor="middle" opacity="0.9">proxy_pass http://$backend;</text>
+  </g>
+
+  <!-- Arrow → backend -->
+  <g stroke="#4c4f69" fill="#4c4f69" stroke-width="2.5">
+    <line x1="775" y1="400" x2="835" y2="400"/>
+    <polygon points="845,400 833,393 833,407"/>
+  </g>
+
+  <!-- Selected backend -->
+  <g transform="translate(850 370)">
+    <rect width="250" height="60" rx="10" fill="#40a02b"/>
+    <text x="125" y="38" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="16" fill="#fbfaf7" text-anchor="middle" font-weight="600">www.ig.com.br:80</text>
+  </g>
+  <text x="975" y="455" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#40a02b" text-anchor="middle" opacity="0.8" letter-spacing="0.1em" stroke="#fbfaf7" stroke-width="4" paint-order="stroke">SELECTED BACKEND</text>
+
+  <text x="1178" y="618" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#4c4f69" text-anchor="end" opacity="0.35">// syshero.org</text>
+</svg>

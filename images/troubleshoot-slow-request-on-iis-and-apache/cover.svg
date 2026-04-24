@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" fill="none" role="img" aria-label="Aggregate slow-request snapshots across multiple Apache and IIS servers">
+  <rect width="1200" height="630" fill="#fbfaf7"/>
+
+  <g>
+    <rect x="0" y="0" width="1200" height="36" fill="#eeeae3"/>
+    <circle cx="18" cy="18" r="5.5" fill="#ff5f56"/>
+    <circle cx="36" cy="18" r="5.5" fill="#ffbd2e"/>
+    <circle cx="54" cy="18" r="5.5" fill="#27c93f"/>
+    <line x1="0" y1="36" x2="1200" y2="36" stroke="#4c4f69" stroke-width="0.5" opacity="0.12"/>
+  </g>
+
+  <!-- Four web servers on the left, each showing status endpoints -->
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+    <g transform="translate(90 150)">
+      <rect width="220" height="70" rx="10" stroke="#4c4f69" stroke-width="2.5"/>
+      <text x="20" y="30" font-size="14" fill="#4c4f69">apache1</text>
+      <text x="20" y="52" font-size="12" fill="#4c4f69" opacity="0.6">/server-status</text>
+    </g>
+    <g transform="translate(90 240)">
+      <rect width="220" height="70" rx="10" stroke="#4c4f69" stroke-width="2.5"/>
+      <text x="20" y="30" font-size="14" fill="#4c4f69">apache2</text>
+      <text x="20" y="52" font-size="12" fill="#4c4f69" opacity="0.6">/server-status</text>
+    </g>
+    <g transform="translate(90 330)">
+      <rect width="220" height="70" rx="10" stroke="#4c4f69" stroke-width="2.5"/>
+      <text x="20" y="30" font-size="14" fill="#4c4f69">iis1</text>
+      <text x="20" y="52" font-size="12" fill="#4c4f69" opacity="0.6">appcmd list requests</text>
+    </g>
+    <g transform="translate(90 420)">
+      <rect width="220" height="70" rx="10" stroke="#4c4f69" stroke-width="2.5"/>
+      <text x="20" y="30" font-size="14" fill="#4c4f69">iis2</text>
+      <text x="20" y="52" font-size="12" fill="#4c4f69" opacity="0.6">appcmd list requests</text>
+    </g>
+  </g>
+
+  <!-- Arrows from each server to aggregator -->
+  <g stroke="#4c4f69" fill="#4c4f69" stroke-width="2.5">
+    <line x1="310" y1="185" x2="470" y2="280"/>
+    <line x1="310" y1="275" x2="470" y2="305"/>
+    <line x1="310" y1="365" x2="470" y2="335"/>
+    <line x1="310" y1="455" x2="470" y2="360"/>
+  </g>
+
+  <!-- Central aggregator script (peach) -->
+  <g transform="translate(475 235)">
+    <rect width="260" height="170" rx="12" fill="#fe640b"/>
+    <text x="130" y="36" font-family="Inter, system-ui, sans-serif" font-size="13" fill="#fbfaf7" text-anchor="middle" opacity="0.7" letter-spacing="0.12em">AGGREGATOR</text>
+    <line x1="24" y1="52" x2="236" y2="52" stroke="#fbfaf7" stroke-width="1" opacity="0.25"/>
+    <text x="24" y="82" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#fbfaf7" opacity="0.95">parse HTTP line</text>
+    <text x="24" y="104" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#fbfaf7" opacity="0.95">extract URI</text>
+    <text x="24" y="126" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#fbfaf7" opacity="0.95">sort | uniq -c</text>
+    <text x="24" y="148" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#fbfaf7" opacity="0.95">sort -rk1 | head -20</text>
+  </g>
+
+  <!-- Arrow → output -->
+  <g stroke="#4c4f69" fill="#4c4f69" stroke-width="2.5">
+    <line x1="740" y1="320" x2="835" y2="320"/>
+    <polygon points="845,320 833,313 833,327"/>
+  </g>
+
+  <!-- Top-N output panel -->
+  <g transform="translate(850 190)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+    <rect width="270" height="260" rx="12" stroke="#4c4f69" stroke-width="2.5"/>
+    <text x="135" y="30" font-family="Inter, system-ui, sans-serif" font-size="13" fill="#4c4f69" text-anchor="middle" opacity="0.55" letter-spacing="0.12em">TOP-20 SLOW URIS</text>
+    <line x1="20" y1="46" x2="250" y2="46" stroke="#4c4f69" stroke-width="1" opacity="0.18"/>
+    <g fill="#4c4f69" font-size="13">
+      <text x="22" y="76"><tspan opacity="0.9" font-weight="600" fill="#fe640b">47</tspan><tspan opacity="0.75">  /api/slow/export</tspan></text>
+      <text x="22" y="100"><tspan opacity="0.9" fill="#fe640b">31</tspan><tspan opacity="0.75">  /reports/weekly</tspan></text>
+      <text x="22" y="124"><tspan opacity="0.9" fill="#fe640b">22</tspan><tspan opacity="0.75">  /users/search</tspan></text>
+      <text x="22" y="148"><tspan opacity="0.75">18</tspan><tspan opacity="0.55">  /billing/invoice</tspan></text>
+      <text x="22" y="172"><tspan opacity="0.75">12</tspan><tspan opacity="0.55">  /dashboard</tspan></text>
+      <text x="22" y="196"><tspan opacity="0.5">  9</tspan><tspan opacity="0.4">  /notifications</tspan></text>
+      <text x="22" y="220"><tspan opacity="0.5">  7</tspan><tspan opacity="0.4">  /profile</tspan></text>
+      <text x="22" y="244"><tspan opacity="0.4" font-style="italic">…</tspan></text>
+    </g>
+  </g>
+
+  <text x="1178" y="618" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#4c4f69" text-anchor="end" opacity="0.35">// syshero.org</text>
+</svg>

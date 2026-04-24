@@ -1,6 +1,8 @@
 ---
 layout: post
 title: NGINX dynamically configured mass virtual hosting
+cover: /images/nginx-dynamically-configured-mass-virtual-hosting/cover.svg
+description: "Configuring NGINX for dynamic mass virtual hosting using regular expressions in server_name directives."
 date: '2013-12-02T01:03:00+00:00'
 tags:
 - nginx
@@ -12,7 +14,28 @@ I’ve stumbled some times on ways of doing dynamic vhosts in nginx in a way sim
 <!--more-->
 So I’ve built the following configuration:
 
-{% gist 11232759 %}
+```nginx
+server {
+  listen 80 default;
+ 
+  server_name   ~^(www\.)?(?<domain>.+)$;
+ 
+  root       /srv/httpd/$domain/public_html/;
+  access_log /srv/httpd/$domain/logs/access.log;
+ 
+  location / {
+    index index.html index.htm index.php;
+  }
+ 
+  location ~ [^/]\.php(/|$) {
+    fastcgi_split_path_info ^(.+?\.php)(/.*)$;
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    fastcgi_pass 127.0.0.1:9000;
+    fastcgi_index index.php;
+    include fastcgi_params;
+  }
+}
+```
 
 As you will notice, it’s possible to use regular expressions in nginx server_name.
 
@@ -22,10 +45,10 @@ Hosting a new domain will be simple as creating some directories and copying the
 
 So basically the directory structure is the following:
 
-{% highlight bash %}
+```bash
 /srv/httpd/<domain name>/public_html
 /srv/httpd/<domain name>/logs
-{% endhighlight %}
+```
 
 One thing to notice is that error_log can’t be configured the same way as access_log.
 

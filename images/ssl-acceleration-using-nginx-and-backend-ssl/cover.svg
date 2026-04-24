@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" fill="none" role="img" aria-label="NGINX SSL termination with X-Forwarded-Proto so the plain-HTTP backend still knows the request was HTTPS">
+  <rect width="1200" height="630" fill="#fbfaf7"/>
+
+  <g>
+    <rect x="0" y="0" width="1200" height="36" fill="#eeeae3"/>
+    <circle cx="18" cy="18" r="5.5" fill="#ff5f56"/>
+    <circle cx="36" cy="18" r="5.5" fill="#ffbd2e"/>
+    <circle cx="54" cy="18" r="5.5" fill="#27c93f"/>
+    <line x1="0" y1="36" x2="1200" y2="36" stroke="#4c4f69" stroke-width="0.5" opacity="0.12"/>
+  </g>
+
+  <!-- Client -->
+  <g transform="translate(80 240)">
+    <rect width="170" height="130" rx="12" stroke="#4c4f69" stroke-width="3"/>
+    <text x="85" y="36" font-family="Inter, system-ui, sans-serif" font-size="13" fill="#4c4f69" text-anchor="middle" opacity="0.55" letter-spacing="0.12em">CLIENT</text>
+    <!-- tiny padlock icon -->
+    <g transform="translate(72 60)" fill="#fe640b">
+      <rect x="4" y="12" width="18" height="16" rx="2"/>
+      <path d="M 8 12 V 8 a 5 5 0 0 1 10 0 V 12" fill="none" stroke="#fe640b" stroke-width="2.5"/>
+    </g>
+    <text x="85" y="106" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#fe640b" text-anchor="middle" font-weight="600">HTTPS</text>
+  </g>
+
+  <!-- Encrypted arrow to NGINX -->
+  <g stroke="#fe640b" fill="#fe640b" stroke-width="3">
+    <line x1="255" y1="305" x2="400" y2="305"/>
+    <polygon points="410,305 398,298 398,312"/>
+  </g>
+  <text x="330" y="292" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#fe640b" text-anchor="middle" font-weight="600" stroke="#fbfaf7" stroke-width="4" paint-order="stroke">tls</text>
+
+  <!-- NGINX terminator -->
+  <g transform="translate(415 175)">
+    <rect width="380" height="280" rx="12" stroke="#4c4f69" stroke-width="3"/>
+    <text x="190" y="34" font-family="Inter, system-ui, sans-serif" font-size="13" fill="#4c4f69" text-anchor="middle" opacity="0.55" letter-spacing="0.12em">NGINX (SSL TERMINATE)</text>
+    <line x1="24" y1="50" x2="356" y2="50" stroke="#4c4f69" stroke-width="1" opacity="0.18"/>
+
+    <!-- ssl listen -->
+    <text x="24" y="80" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#4c4f69">listen 443 ssl;</text>
+    <text x="24" y="100" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#4c4f69" opacity="0.6">ssl_certificate … .crt;</text>
+    <text x="24" y="118" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#4c4f69" opacity="0.6">ssl_certificate_key … .key;</text>
+
+    <line x1="24" y1="136" x2="356" y2="136" stroke="#4c4f69" stroke-width="1" opacity="0.1"/>
+
+    <!-- proxy_set_header block with peach highlight on X-Forwarded-Proto -->
+    <text x="24" y="160" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#4c4f69" opacity="0.75">proxy_set_header X-Real-IP $remote_addr;</text>
+    <text x="24" y="182" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#4c4f69" opacity="0.75">proxy_set_header X-Forwarded-For …;</text>
+    <rect x="14" y="196" width="352" height="34" rx="5" fill="#fe640b" opacity="0.18"/>
+    <text x="24" y="220" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#4c4f69" font-weight="600">proxy_set_header X-Forwarded-Proto $scheme;</text>
+    <text x="24" y="254" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#4c4f69" opacity="0.75">proxy_pass http://backend;</text>
+  </g>
+
+  <!-- Plain arrow + X-Forwarded-Proto carried to backend -->
+  <g stroke="#4c4f69" fill="#4c4f69" stroke-width="3">
+    <line x1="800" y1="305" x2="945" y2="305"/>
+    <polygon points="955,305 943,298 943,312"/>
+  </g>
+  <text x="872" y="292" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#4c4f69" text-anchor="middle" opacity="0.7">http</text>
+  <text x="872" y="330" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#fe640b" text-anchor="middle" font-weight="600" stroke="#fbfaf7" stroke-width="4" paint-order="stroke">X-Forwarded-Proto: https</text>
+
+  <!-- Backend -->
+  <g transform="translate(960 240)">
+    <rect width="170" height="130" rx="12" stroke="#4c4f69" stroke-width="3"/>
+    <text x="85" y="36" font-family="Inter, system-ui, sans-serif" font-size="13" fill="#4c4f69" text-anchor="middle" opacity="0.55" letter-spacing="0.12em">BACKEND</text>
+    <text x="85" y="72" font-family="Inter, system-ui, sans-serif" font-size="18" fill="#4c4f69" text-anchor="middle" font-weight="600">app</text>
+    <text x="85" y="98" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#4c4f69" text-anchor="middle" opacity="0.6">reads header</text>
+    <text x="85" y="114" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#4c4f69" text-anchor="middle" opacity="0.6">knows it's HTTPS</text>
+  </g>
+
+  <text x="1178" y="618" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#4c4f69" text-anchor="end" opacity="0.35">// syshero.org</text>
+</svg>

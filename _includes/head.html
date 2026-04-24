@@ -15,10 +15,11 @@
     {% if site.twitter_handler %}
     <meta name="twitter:site" content="@{{site.twitter_handler}}" />
     {% endif %}
-    <meta property="og:url" content="{{page.url | prepend: site.baseurl | prepend: site.url}}" />
+    <meta property="og:url" content="{{page.url | absolute_url}}" />
 
-    <meta property="og:image" content="" />
-    <meta name="twitter:image" content="" />
+    {%- assign og_image = page.cover | default: site.og_default_image | default: "/images/og-default.png" -%}
+    <meta property="og:image" content="{{ og_image | absolute_url }}" />
+    <meta name="twitter:image" content="{{ og_image | absolute_url }}" />
 
     <meta name="author" content="{{site.name}}" />
 
@@ -28,9 +29,18 @@
     {% if {{site.favicon != blank}} %}
     <link href="{{ site.favicon }}" rel="shortcut icon" type="image/x-icon" />
     {% endif %}
-    <link rel="stylesheet" href="{{ "/assets/css/main.css" | prepend: site.baseurl | prepend: site.url}}">
+    <link rel="stylesheet" href="{{ "/assets/css/main.css" | relative_url }}">
 
-    <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
+    <link rel="canonical" href="{{ page.url | replace:'index.html','' | absolute_url }}">
 
-    <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ "/feed.xml" | prepend: site.baseurl | prepend: site.url }}">
+    <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ "/feed.xml" | relative_url }}">
+
+    {% if site.webmention_endpoint %}
+    <link rel="webmention" href="{{ site.webmention_endpoint }}">
+    {% if site.webmention_pingback %}<link rel="pingback" href="{{ site.webmention_pingback }}">{% endif %}
+    {% endif %}
+
+    {% if site.goatcounter_endpoint %}
+    <script data-goatcounter="{{ site.goatcounter_endpoint }}/count" async src="{{ site.goatcounter_endpoint }}/count.js"></script>
+    {% endif %}
 </head>

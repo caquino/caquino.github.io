@@ -1,0 +1,48 @@
+{%- comment -%}
+Related-posts block. Score every other post by count of shared tags with the
+current page, pick the top 3 (score > 0). Pure Liquid, runs at build time.
+{%- endcomment -%}
+
+{% assign current_tags = page.tags | default: empty %}
+{% assign candidates = "" | split: "" %}
+
+{% for p in site.posts %}
+    {% if p.url == page.url %}{% continue %}{% endif %}
+    {% assign score = 0 %}
+    {% for t in p.tags %}
+        {% if current_tags contains t %}
+            {% assign score = score | plus: 1 %}
+        {% endif %}
+    {% endfor %}
+    {% if score > 0 %}
+        {% capture entry %}{{ score }}|{{ p.url }}{% endcapture %}
+        {% assign candidates = candidates | push: entry %}
+    {% endif %}
+{% endfor %}
+
+{% assign sorted = candidates | sort | reverse %}
+{% assign top = sorted | slice: 0, 3 %}
+
+{% if top.size > 0 %}
+<aside class="related-posts" aria-label="Related posts">
+    <h3 class="related-title">Related</h3>
+    <ul class="related-list">
+    {% for entry in top %}
+        {% assign parts = entry | split: "|" %}
+        {% assign related_url = parts | last %}
+        {% for p in site.posts %}
+            {% if p.url == related_url %}
+            <li>
+                <a href="{{ p.url | relative_url }}">
+                    <span class="related-date">{{ p.date | date: "%b %Y" }}</span>
+                    <span class="related-title-text">{{ p.title }}</span>
+                    {% if p.description %}<span class="related-desc">{{ p.description }}</span>{% endif %}
+                </a>
+            </li>
+            {% break %}
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+    </ul>
+</aside>
+{% endif %}

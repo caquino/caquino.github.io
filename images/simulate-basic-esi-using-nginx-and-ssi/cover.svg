@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" fill="none" role="img" aria-label="Emulating ESI via NGINX SSI includes with per-slot cache TTLs">
+  <rect width="1200" height="630" fill="#fbfaf7"/>
+
+  <g>
+    <rect x="0" y="0" width="1200" height="36" fill="#eeeae3"/>
+    <circle cx="18" cy="18" r="5.5" fill="#ff5f56"/>
+    <circle cx="36" cy="18" r="5.5" fill="#ffbd2e"/>
+    <circle cx="54" cy="18" r="5.5" fill="#27c93f"/>
+    <line x1="0" y1="36" x2="1200" y2="36" stroke="#4c4f69" stroke-width="0.5" opacity="0.12"/>
+  </g>
+
+  <!-- Composed page on the left — a document with slots -->
+  <g transform="translate(110 170)">
+    <rect width="380" height="360" rx="12" stroke="#4c4f69" stroke-width="3"/>
+    <text x="190" y="32" font-family="Inter, system-ui, sans-serif" font-size="13" fill="#4c4f69" text-anchor="middle" opacity="0.55" letter-spacing="0.12em">COMPOSED PAGE</text>
+    <line x1="30" y1="48" x2="350" y2="48" stroke="#4c4f69" stroke-width="1" opacity="0.18"/>
+
+    <!-- main body slot -->
+    <g transform="translate(30 70)">
+      <rect width="320" height="80" rx="6" fill="#4c4f69" opacity="0.08"/>
+      <text x="16" y="26" font-family="Inter, system-ui, sans-serif" font-size="13" fill="#4c4f69" opacity="0.65">main body</text>
+      <text x="16" y="54" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#4c4f69" opacity="0.5">&lt;!--# echo var="date" --&gt;</text>
+      <text x="16" y="70" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#4c4f69" opacity="0.4">ttl: 5m</text>
+    </g>
+
+    <!-- SSI include: cached -->
+    <g transform="translate(30 165)">
+      <rect width="320" height="60" rx="6" fill="#40a02b" opacity="0.15"/>
+      <rect width="320" height="60" rx="6" stroke="#40a02b" stroke-width="2" stroke-dasharray="4 3" opacity="0.55"/>
+      <text x="16" y="26" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#40a02b" font-weight="600">&lt;!--# include /cached/ --&gt;</text>
+      <text x="16" y="46" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#40a02b" opacity="0.8">ttl: 5m (cached)</text>
+    </g>
+
+    <!-- SSI include: uncached -->
+    <g transform="translate(30 240)">
+      <rect width="320" height="60" rx="6" fill="#fe640b" opacity="0.15"/>
+      <rect width="320" height="60" rx="6" stroke="#fe640b" stroke-width="2" stroke-dasharray="4 3" opacity="0.55"/>
+      <text x="16" y="26" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#fe640b" font-weight="600">&lt;!--# include /uncached/ --&gt;</text>
+      <text x="16" y="46" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#fe640b" opacity="0.8">no cache (ttl: 0)</text>
+    </g>
+
+    <text x="190" y="345" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#4c4f69" text-anchor="middle" opacity="0.5">ssi on;</text>
+  </g>
+
+  <!-- Flow arrows to two location blocks on the right -->
+  <g stroke="#4c4f69" fill="#4c4f69" stroke-width="2.5">
+    <!-- green include → cached location -->
+    <line x1="490" y1="280" x2="780" y2="240" stroke="#40a02b"/>
+    <polygon points="788,238 775,233 779,248" fill="#40a02b"/>
+    <!-- peach include → uncached location -->
+    <line x1="490" y1="355" x2="780" y2="395" stroke="#fe640b"/>
+    <polygon points="788,397 775,395 780,410" fill="#fe640b"/>
+  </g>
+
+  <!-- Two location blocks -->
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+    <!-- /cached — green -->
+    <g transform="translate(790 185)">
+      <rect width="340" height="110" rx="10" fill="#40a02b" opacity="0.1"/>
+      <rect width="340" height="110" rx="10" stroke="#40a02b" stroke-width="2.5"/>
+      <text x="18" y="30" font-size="16" fill="#40a02b" font-weight="600">location /cached</text>
+      <text x="18" y="58" font-size="13" fill="#4c4f69" opacity="0.75">proxy_cache_valid 5m;</text>
+      <text x="18" y="78" font-size="13" fill="#4c4f69" opacity="0.75">proxy_pass → backend;</text>
+    </g>
+    <!-- /uncached — peach -->
+    <g transform="translate(790 345)">
+      <rect width="340" height="110" rx="10" fill="#fe640b" opacity="0.1"/>
+      <rect width="340" height="110" rx="10" stroke="#fe640b" stroke-width="2.5"/>
+      <text x="18" y="30" font-size="16" fill="#fe640b" font-weight="600">location /uncached</text>
+      <text x="18" y="58" font-size="13" fill="#4c4f69" opacity="0.75">(no proxy_cache)</text>
+      <text x="18" y="78" font-size="13" fill="#4c4f69" opacity="0.75">proxy_pass → backend;</text>
+    </g>
+  </g>
+
+  <text x="1178" y="618" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#4c4f69" text-anchor="end" opacity="0.35">// syshero.org</text>
+</svg>

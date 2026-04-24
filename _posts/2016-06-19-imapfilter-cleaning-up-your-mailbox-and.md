@@ -1,6 +1,8 @@
 ---
 layout: post
 title: imapfilter - cleaning up your mailbox and Gmail tricks
+cover: /images/imapfilter-cleaning-up-your-mailbox-and/cover.svg
+description: "Configuring imapfilter with Lua scripts to automate mailbox cleanup and Gmail management tasks."
 date: '2016-06-19T15:03:35+01:00'
 tags:
 - devops
@@ -14,9 +16,9 @@ imapfilter rules are written in Lua, a really simple and powerful programming la
 <!--more-->
 To start you should create a folder in your home directory called imapfilter, to do so you use the following command:
 
-{% highlight bash %}
+```bash
 mkdir ~/.imapfilter
-{% endhighlight %}
+```
 
 The configuration file should be saved at ~/.imapfilter/config.lua, after having this configuration file in place, just by running imapfilter will be enough to have your configuration executed.
 
@@ -24,7 +26,12 @@ To make things a little bit more interesting, let’s dissect my imapfilter conf
 
 Let’s start with some basic options that I use, and I will explain why.
 
-{% gist cf523a99ebfe29a2d8ebb374bc6df58f %}
+```lua
+options.timeout = 1200
+options.create = true
+options.subscribe = true
+options.expunge = true
+```
 
 - options.timeout: will specify a timeout for imapfilter to wait for the IMAP server response, if you have huge mailboxes OR if you’re planning to use the special “All mail” folder in Gmail, it’s a good idea to have a big timeout as operations may take a while.
 
@@ -34,7 +41,14 @@ Let’s start with some basic options that I use, and I will explain why.
 
 Now let’s define our account login options.
 
-{% gist a31480066518213f4a364a559e26ab35 %}
+```lua
+account1 = IMAP {
+  server = "imap.gmail.com",
+  username = "your-login@your-domain.com",
+  password = "your-password",
+  ssl = "auto"
+}
+```
 
 This block will create an object called account1, which represents our mail account.
 
@@ -42,13 +56,23 @@ It’s a self-explanatory block, but I do have a remark if you use 2-factor auth
 
 Now, let’s start to see some basic rules I use, you will need to change the examples to match your needs, as this one was made based on my personal needs.
 
-{% gist 27d8b48b22dda1a544e2e19aa4fd86ad %}
+```lua
+archive_read_older = 30
+print("Archiving read messages on INBOX unflagged and older than ".. archive_read_older .. " days.")
+messages = account1["INBOX"]:is_seen() * account1["INBOX"]:is_unflagged() * account1["INBOX"]:is_older(archive_read_older)
+messages:delete_messages()
+```
 
 On this block, I’ve created a code that, in the case of Gmail, archives read and unflagged messages older than a specified period, for example in this example 30 days.
 
 For Gmail, the function delete_messages() archive instead of delete, keep this in mind while doing your configuration.
 
-{% gist 989eb350ba975fabc05522895c6c0070 %}
+```lua
+cal_delete_older  = 90
+print("Removing calendar messages older than ".. cal_delete_older .. " days.")
+messages = account1["[Gmail]/All Mail"]:contain_field("sender", "calendar-notification@google.com") * account1["[Gmail]/All Mail"]:is_older(cal_delete_older)
+messages:move_messages(account1["[Gmail]/Trash"])
+```
 
 Now we will remove meeting invites older than 90 days, don’t worry if you accepted, it will be on your calendar and will not be deleted.
 
@@ -56,23 +80,67 @@ Note as we want to delete this messages, instead of using delete_messages() we a
 
 Now let’s say we want to delete messages from some senders and based on some subjects, instead of having individual code for each, it’s simpler to use arrays to do it.
 
-{% gist 1fe8b1115865b6c1e07dfc776158deaa %}
+```lua
+senders = {
+  "spammer@spammerdomain.com", "youtube.com", "Mailer Delivery System"
+}
+
+subjects = {
+  "out of office", "AFK", "Sick"
+}
+
+for sender = 1, #senders do
+  print("Removing messages from " .. senders[sender])
+  messages = account1["[Gmail]/All Mail"]:contain_from(senders[sender])
+  messages:move_messages(account1["[Gmail]/Trash"])
+end
+
+for subject = 1, #subjects do
+  print("Removing messages with subject " .. subjects[subject])
+  messages = account1["[Gmail]/All Mail"]:contain_subject(subjects[subject])
+  messages:move_messages(account1["[Gmail]/Trash"])
+end
+```
 
 Again we are moving to Trash, as we want to delete this messages.
 
 Now let’s clean up some folders where I store automated emails.
 
-{% gist 74fe45880aabf3e3269d1344672095e1 %}
+```lua
+folders = {
+  "Monitoring/Crons",
+  "Monitoring/Nagios"
+}
+
+for folder = 1, #folders do
+  print("Emptying folder " .. folders[folder])
+  messages = account1[folders[folder]]:select_all()
+  messages:move_messages(account1["[Gmail]/Trash"])
+end
+```
 
 And to finish things up, we need to delete messages on our Trash by using the following code.
 
-{% gist 6ccac22055e1a2ea435e0ccfd80adaac %}
+```lua
+print("Emptying trash folder.")
+messages = account1["[Gmail]/Trash"]:select_all()
+messages:delete_messages()
+```
 
 One thing that I like to do is to move messages older than a specific period out of my INBOX to a “Cleanup” folder.
 
-{% gist cadee6720fc566b0f5787e010a1140ab %}
+```lua
+cleanup_older = 30
+print("Moving messages older than ".. cleanup_older .. " on INBOX to Cleanup.")
+messages = account1["INBOX"]:is_older(cleanup_older)
+messages:move_messages(account1["Cleanup"])
+```
 
 All these examples should be put on the same file, called ~/.imapfilter/config.lua, or you can use includes if you want, but now you have a good baseline on how to clean up your mailbox using imapfilter.
+
+---
+
+**EDIT 2026-04-24.** Changed `ssl = "tls1"` to `ssl = "auto"` in the account block. When this post was written TLSv1.0 was still common, but Gmail and most other IMAP providers have long since required TLSv1.2+. Leaving `"tls1"` in a 2026 config means the connection will fail to negotiate.
 
 Thanks!
 

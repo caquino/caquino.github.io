@@ -1,6 +1,8 @@
 ---
 layout: post
 title: Troubleshoot slow request on IIS and Apache
+cover: /images/troubleshoot-slow-request-on-iis-and-apache/cover.svg
+description: "Troubleshooting slow requests on IIS and Apache using mod_status and command-line tools."
 date: '2013-05-27T23:26:00+01:00'
 tags: []
 tumblr_url: http://syshero.org/post/51508627419/troubleshoot-slow-request-on-iis-and-apache
@@ -17,7 +19,18 @@ Having [mod_status](https://httpd.apache.org/docs/2.4/mod/mod_status.html) enabl
 
 If you have an application, that runs on multiple servers and you want to have a consolidated view, you will need to some gluing using a, for example, the bash script below:
 
-{% gist 5658941 %}
+```bash
+#!/usr/bin/env bash
+WEBSERVERS="apache1.domain.com apache2.domain.com apache3.domain.com apache4.domain.com"
+for server in ${WEBSERVERS};do
+    wget -q -O - ${server}/server-status | grep 'HTTP' | \
+    while IFS=$'\n' read; do
+        if [[ ${REPLY} =~ (GET|POST|HEAD)\ (.+?)\ HTTP ]]; then
+            echo ${BASH_REMATCH[2]}
+        fi | grep -v server-status
+    done
+done | sort | uniq -c | sort -rk1 | head -20
+```
 
 This scripts parse the output of server-status of multiple servers and gives you the top 20 URI’s being executed at those time.
 
@@ -29,9 +42,9 @@ Imagine it as a "poor man slow query log" that exists in mysql but on a webserve
 
 Now, if You manage IIS webservers, AFAIK IIS has no functionality like [mod_status](https://httpd.apache.org/docs/2.4/mod/mod_status.html), but you can list requests being executed using the following command:
 
-{% highlight powershell %}
+```powershell
 %windir%\system32\inetsrv\appcmd list requests /elapsed:30000
-{% endhighlight %}
+```
 
 The /elapsed parameter allows you to filter requests being executed for more than the specified amount of seconds, having a similar behavior of [Apache's](https://httpd.apache.org/) [mod_status](https://httpd.apache.org/docs/2.4/mod/mod_status.html).
 
@@ -39,7 +52,40 @@ Mike has an excellent post about how to troubleshoot IIS hanging requests on 
 
 In the same situation of multiple IIS’s running the same application, and you want something similar to the bash script above, you can use this ugly batch script I wrote.
 
-{% gist 5659030 %}
+```batchfile
+@ECHO OFF
+SETLOCAL ENABLEDELAYEDEXPANSION
+FOR %%A IN (%*) DO (
+  PSEXEC.EXE \\%%A %windir%\system32\inetsrv\appcmd list requests  > %TMP%\output-%%A.log 2>&1
+)
+FOR %%A IN (%*) DO (
+	TYPE %TMP%\output-%%A.log | FIND "REQUEST" >> %TMP%\output.log
+	DEL %TMP%\output-%%A.log
+)
+FOR /F "tokens=2,3 delims==:" %%A IN (%TMP%\output.log) DO ECHO %%A | SORT >> %TMP%\outputs.log
+FOR /F "tokens=1,2 delims==," %%A IN (%TMP%\outputs.log) DO ECHO %%A | SORT >> %TMP%\outputc.log
+FOR /F "tokens=1,2 delims==?" %%A IN (%TMP%\outputc.log) DO ECHO %%A | SORT >> %TMP%\outputq.log
+FOR /F "tokens=1,2 delims==?" %%A IN (%TMP%\outputq.log) DO (
+	IF DEFINED ELEMS["%%A"] (
+		SET C=!ELEMS["%%A"]!
+		SET /A C+=1
+		SET ELEMS["%%A"]=!C!
+	) ELSE (
+		SET ELEMS["%%A"]=1
+	)
+)
+FOR /F "tokens=1,2 delims==?" %%A IN (%TMP%\outputq.log) DO (
+	IF !ELEMS["%%A"]! GTR 0 (
+		ECHO !ELEMS["%%A"]! %%A >> %TMP%\result.log
+		SET ELEMS["%%A"]=0
+	)
+) 
+TYPE %TMP%\result.log | SORT /+1 /R | MORE
+ENDLOCAL
+DEL %TMP%\output.log
+DEL %TMP%\output?.log
+DEL %TMP%\result.log
+```
 
 To use this script just add the hostnames to the command line and It requires the [psexec](https://docs.microsoft.com/en-us/sysinternals/downloads/psexec) tool from SysInternals to be installed on the server.
 

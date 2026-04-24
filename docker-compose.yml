@@ -1,0 +1,24 @@
+services:
+  blog-qa:
+    build: .
+    image: blog-qa:local
+    container_name: blog-qa
+    volumes:
+      - .:/site
+      - blog-bundle:/bundle
+    networks:
+      - admin-net
+    labels:
+      traefik.enable: "true"
+      traefik.docker.network: "admin-net"
+      traefik.http.routers.blog-qa.rule: "Host(`blog-qa.syshero.org`)"
+      traefik.http.routers.blog-qa.entrypoints: "web"
+      traefik.http.routers.blog-qa.middlewares: "authelia"
+      traefik.http.services.blog-qa.loadbalancer.server.port: "4000"
+
+volumes:
+  blog-bundle: {}
+
+networks:
+  admin-net:
+    external: true

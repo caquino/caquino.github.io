@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" fill="none" role="img" aria-label="Shared keepalived persistence across ports via iptables fwmark">
+  <rect width="1200" height="630" fill="#fbfaf7"/>
+
+  <g>
+    <rect x="0" y="0" width="1200" height="36" fill="#eeeae3"/>
+    <circle cx="18" cy="18" r="5.5" fill="#ff5f56"/>
+    <circle cx="36" cy="18" r="5.5" fill="#ffbd2e"/>
+    <circle cx="54" cy="18" r="5.5" fill="#27c93f"/>
+    <line x1="0" y1="36" x2="1200" y2="36" stroke="#4c4f69" stroke-width="0.5" opacity="0.12"/>
+  </g>
+
+  <!-- Two incoming ports on the left -->
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="16" font-weight="600">
+    <g transform="translate(80 185)">
+      <rect width="160" height="60" rx="30" stroke="#4c4f69" stroke-width="2.5"/>
+      <text x="80" y="38" fill="#4c4f69" text-anchor="middle">tcp/80</text>
+    </g>
+    <g transform="translate(80 385)">
+      <rect width="160" height="60" rx="30" stroke="#4c4f69" stroke-width="2.5"/>
+      <text x="80" y="38" fill="#4c4f69" text-anchor="middle">tcp/443</text>
+    </g>
+  </g>
+
+  <!-- Arrows → iptables -->
+  <g stroke="#4c4f69" fill="#4c4f69" stroke-width="2.5">
+    <line x1="240" y1="215" x2="350" y2="280"/>
+    <line x1="240" y1="415" x2="350" y2="350"/>
+  </g>
+
+  <!-- iptables MARK (peach) -->
+  <g transform="translate(355 250)">
+    <rect width="280" height="140" rx="12" fill="#fe640b"/>
+    <text x="140" y="34" font-family="Inter, system-ui, sans-serif" font-size="13" fill="#fbfaf7" text-anchor="middle" opacity="0.7" letter-spacing="0.12em">IPTABLES</text>
+    <line x1="24" y1="50" x2="256" y2="50" stroke="#fbfaf7" stroke-width="1" opacity="0.25"/>
+    <text x="24" y="78" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#fbfaf7" opacity="0.9">-t mangle</text>
+    <text x="24" y="98" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#fbfaf7" opacity="0.9">--dport {80,443}</text>
+    <text x="24" y="122" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="16" fill="#fbfaf7" font-weight="600">-j MARK 80</text>
+  </g>
+
+  <!-- Arrow → keepalived VS -->
+  <g stroke="#4c4f69" fill="#4c4f69" stroke-width="2.5">
+    <line x1="640" y1="320" x2="745" y2="320"/>
+    <polygon points="755,320 743,313 743,327"/>
+  </g>
+
+  <!-- keepalived virtual_server (fwmark 80) -->
+  <g transform="translate(760 240)">
+    <rect width="340" height="160" rx="12" stroke="#4c4f69" stroke-width="3"/>
+    <text x="170" y="36" font-family="Inter, system-ui, sans-serif" font-size="13" fill="#4c4f69" text-anchor="middle" opacity="0.55" letter-spacing="0.12em">KEEPALIVED</text>
+    <line x1="24" y1="52" x2="316" y2="52" stroke="#4c4f69" stroke-width="1" opacity="0.18"/>
+    <text x="24" y="84" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="16" fill="#4c4f69" font-weight="600">virtual_server fwmark 80</text>
+    <text x="24" y="112" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#4c4f69" opacity="0.75">persistence_timeout 600</text>
+    <text x="24" y="134" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#4c4f69" opacity="0.75">lb_algo lc</text>
+  </g>
+
+  <!-- Result label below -->
+  <g transform="translate(760 430)">
+    <rect width="340" height="60" rx="10" fill="#40a02b" opacity="0.15"/>
+    <rect width="340" height="60" rx="10" stroke="#40a02b" stroke-width="2" stroke-dasharray="4 3" opacity="0.55"/>
+    <text x="170" y="25" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#40a02b" text-anchor="middle" opacity="0.75" letter-spacing="0.08em">RESULT</text>
+    <text x="170" y="48" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#40a02b" text-anchor="middle" font-weight="600">same client → same backend</text>
+  </g>
+
+  <!-- Corner wordmark -->
+  <text x="1178" y="618" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#4c4f69" text-anchor="end" opacity="0.35">// syshero.org</text>
+</svg>

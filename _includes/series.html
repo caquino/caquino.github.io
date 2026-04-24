@@ -1,0 +1,29 @@
+{%- comment -%}
+Series navigation block. Posts opt in by setting `series: "<name>"` in
+frontmatter. Lists every sibling chronologically with the current post
+highlighted. Uses Liquid where filter to match the series key across the
+whole post collection.
+{%- endcomment -%}
+{%- if page.series -%}
+  {%- assign siblings = site.posts | where: "series", page.series | sort: "date" -%}
+  {%- if siblings.size > 1 -%}
+    <aside class="series-nav" aria-label="Series navigation">
+      <header class="series-nav-header">
+        <span class="series-nav-label">Series</span>
+        <span class="series-nav-title">{{ page.series }}</span>
+        <span class="series-nav-count">Part {% for s in siblings %}{% if s.url == page.url %}{{ forloop.index }}{% endif %}{% endfor %} of {{ siblings.size }}</span>
+      </header>
+      <ol class="series-nav-list">
+        {%- for s in siblings -%}
+          <li class="{% if s.url == page.url %}series-nav-current{% endif %}">
+            {%- if s.url == page.url -%}
+              <span class="series-nav-item">{{ s.title | escape }}</span>
+            {%- else -%}
+              <a class="series-nav-item" href="{{ s.url | relative_url }}">{{ s.title | escape }}</a>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ol>
+    </aside>
+  {%- endif -%}
+{%- endif -%}

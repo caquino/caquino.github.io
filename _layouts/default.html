@@ -1,13 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     {% include head.html %}
 
-    <body>
-        <div class="wrapper clear">
-            {% include sidebar.html %}
+    <body class="{% if page.url == '/' %}page-home{% endif %}"{% unless page.layout == "post" %} data-pagefind-ignore{% endunless %}>
+        <a class="skip-link" href="#main">Skip to content</a>
 
-            <main class="the-content" role="main">
-                {% include search.html %}
+        {%- comment -%}
+        Header shown on every page. On the homepage the brand section
+        (avatar + name) is hidden via CSS because the hero block below
+        already carries the full identity; nav + search + social stay
+        so visitors scrolling the homepage always have access to them.
+        {%- endcomment -%}
+        {% include header.html %}
+
+        <div class="wrapper">
+            <main id="main" class="the-content" role="main">
                 {{ content }}
             </main>
         </div>

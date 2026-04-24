@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" fill="none" role="img" aria-label="NGINX+ chained PURGE: Lua iterates Consul-registered NGINX peers and forwards the PURGE to each">
+  <rect width="1200" height="630" fill="#fbfaf7"/>
+
+  <g>
+    <rect x="0" y="0" width="1200" height="36" fill="#eeeae3"/>
+    <circle cx="18" cy="18" r="5.5" fill="#ff5f56"/>
+    <circle cx="36" cy="18" r="5.5" fill="#ffbd2e"/>
+    <circle cx="54" cy="18" r="5.5" fill="#27c93f"/>
+    <line x1="0" y1="36" x2="1200" y2="36" stroke="#4c4f69" stroke-width="0.5" opacity="0.12"/>
+  </g>
+
+  <!-- PURGE request on left -->
+  <g transform="translate(70 295)">
+    <rect width="170" height="70" rx="10" stroke="#4c4f69" stroke-width="2.5"/>
+    <text x="85" y="30" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#4c4f69" text-anchor="middle" opacity="0.55" letter-spacing="0.1em">OPERATOR</text>
+    <text x="85" y="54" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#4c4f69" text-anchor="middle" font-weight="600">PURGE /uri</text>
+  </g>
+
+  <g stroke="#4c4f69" fill="#4c4f69" stroke-width="2.5">
+    <line x1="245" y1="330" x2="310" y2="330"/>
+    <polygon points="320,330 308,323 308,337"/>
+  </g>
+
+  <!-- Entry NGINX+ node (peach, does the orchestration) -->
+  <g transform="translate(325 225)">
+    <rect width="310" height="220" rx="12" fill="#fe640b"/>
+    <text x="155" y="34" font-family="Inter, system-ui, sans-serif" font-size="13" fill="#fbfaf7" text-anchor="middle" opacity="0.7" letter-spacing="0.12em">NGINX+ (PURGER)</text>
+    <line x1="24" y1="50" x2="286" y2="50" stroke="#fbfaf7" stroke-width="1" opacity="0.25"/>
+    <text x="24" y="80" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#fbfaf7" opacity="0.95">location /purger/* {</text>
+    <text x="24" y="102" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#fbfaf7" opacity="0.95">  content_by_lua_block {</text>
+    <text x="48" y="126" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#fbfaf7">ngx.location.capture(</text>
+    <text x="48" y="146" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#fbfaf7">  '/api/…/upstreams/caches')</text>
+    <text x="48" y="172" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#fbfaf7">for each peer:</text>
+    <text x="48" y="192" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#fbfaf7">  PURGE → /proxy_to/&lt;peer&gt;</text>
+  </g>
+
+  <!-- Consul side-label -->
+  <g transform="translate(355 470)">
+    <rect width="250" height="60" rx="10" fill="#1e66f5" opacity="0.15"/>
+    <rect width="250" height="60" rx="10" stroke="#1e66f5" stroke-width="2"/>
+    <text x="125" y="25" font-family="Inter, system-ui, sans-serif" font-size="11" fill="#1e66f5" text-anchor="middle" opacity="0.75" letter-spacing="0.1em">CONSUL</text>
+    <text x="125" y="48" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#1e66f5" text-anchor="middle" font-weight="600">service=cache</text>
+  </g>
+  <g stroke="#1e66f5" fill="#1e66f5" stroke-width="2" opacity="0.6">
+    <line x1="480" y1="470" x2="480" y2="450"/>
+    <polygon points="480,445 473,458 487,458"/>
+  </g>
+
+  <!-- Arrows fan-out to 3 peers -->
+  <g stroke="#fe640b" fill="#fe640b" stroke-width="2.5">
+    <line x1="640" y1="260" x2="770" y2="200"/>
+    <polygon points="776,197 766,204 763,190"/>
+    <line x1="640" y1="335" x2="770" y2="335"/>
+    <polygon points="780,335 768,328 768,342"/>
+    <line x1="640" y1="410" x2="770" y2="470"/>
+    <polygon points="776,473 763,475 766,461"/>
+  </g>
+  <text x="705" y="250" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#fe640b" font-weight="600" stroke="#fbfaf7" stroke-width="4" paint-order="stroke">PURGE</text>
+
+  <!-- Three peer NGINX+ nodes -->
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+    <g transform="translate(785 170)">
+      <rect width="300" height="70" rx="10" stroke="#4c4f69" stroke-width="2.5"/>
+      <text x="150" y="28" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#4c4f69" text-anchor="middle" opacity="0.55" letter-spacing="0.1em">PEER NGINX+</text>
+      <text x="150" y="54" font-size="14" fill="#4c4f69" text-anchor="middle" font-weight="600">cache-01.service</text>
+    </g>
+    <g transform="translate(785 300)">
+      <rect width="300" height="70" rx="10" stroke="#4c4f69" stroke-width="2.5"/>
+      <text x="150" y="28" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#4c4f69" text-anchor="middle" opacity="0.55" letter-spacing="0.1em">PEER NGINX+</text>
+      <text x="150" y="54" font-size="14" fill="#4c4f69" text-anchor="middle" font-weight="600">cache-02.service</text>
+    </g>
+    <g transform="translate(785 445)">
+      <rect width="300" height="70" rx="10" stroke="#4c4f69" stroke-width="2.5"/>
+      <text x="150" y="28" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#4c4f69" text-anchor="middle" opacity="0.55" letter-spacing="0.1em">PEER NGINX+</text>
+      <text x="150" y="54" font-size="14" fill="#4c4f69" text-anchor="middle" font-weight="600">cache-N.service</text>
+    </g>
+  </g>
+
+  <text x="1178" y="618" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#4c4f69" text-anchor="end" opacity="0.35">// syshero.org</text>
+</svg>

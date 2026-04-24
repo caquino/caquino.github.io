@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" fill="none" role="img" aria-label="NGINX CORS via chained map directives">
+  <rect width="1200" height="630" fill="#fbfaf7"/>
+
+  <!-- Terminal chrome -->
+  <g>
+    <rect x="0" y="0" width="1200" height="36" fill="#eeeae3"/>
+    <circle cx="18" cy="18" r="5.5" fill="#ff5f56"/>
+    <circle cx="36" cy="18" r="5.5" fill="#ffbd2e"/>
+    <circle cx="54" cy="18" r="5.5" fill="#27c93f"/>
+    <line x1="0" y1="36" x2="1200" y2="36" stroke="#4c4f69" stroke-width="0.5" opacity="0.12"/>
+  </g>
+
+  <!-- Request document -->
+  <g transform="translate(120 245)">
+    <rect width="170" height="220" rx="10" stroke="#4c4f69" stroke-width="3"/>
+    <line x1="24" y1="40" x2="146" y2="40" stroke="#4c4f69" stroke-width="2" opacity="0.35"/>
+    <line x1="24" y1="64" x2="110" y2="64" stroke="#4c4f69" stroke-width="2" opacity="0.35"/>
+    <rect x="18" y="90" width="134" height="32" rx="5" fill="#fe640b" opacity="0.18"/>
+    <text x="30" y="112" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#4c4f69">Origin: …</text>
+    <line x1="24" y1="148" x2="146" y2="148" stroke="#4c4f69" stroke-width="2" opacity="0.35"/>
+    <line x1="24" y1="172" x2="100" y2="172" stroke="#4c4f69" stroke-width="2" opacity="0.35"/>
+    <line x1="24" y1="196" x2="130" y2="196" stroke="#4c4f69" stroke-width="2" opacity="0.35"/>
+  </g>
+  <text x="205" y="500" font-family="Inter, system-ui, sans-serif" font-size="16" fill="#4c4f69" text-anchor="middle" opacity="0.55" letter-spacing="0.08em">REQUEST</text>
+
+  <!-- Arrow request → maps -->
+  <g fill="#4c4f69" stroke="#4c4f69">
+    <line x1="305" y1="356" x2="405" y2="356" stroke-width="3"/>
+    <polygon points="418,356 404,348 404,364"/>
+  </g>
+
+  <!-- Map chain -->
+  <g transform="translate(440 235)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+    <rect width="340" height="60" rx="8" fill="#fe640b"/>
+    <text x="22" y="38" font-size="20" fill="#fbfaf7">map $http_origin</text>
+
+    <line x1="170" y1="60" x2="170" y2="85" stroke="#4c4f69" stroke-width="3"/>
+
+    <rect y="85" width="340" height="60" rx="8" fill="#fe640b"/>
+    <text x="22" y="123" font-size="20" fill="#fbfaf7">map $request_method</text>
+
+    <line x1="170" y1="145" x2="170" y2="170" stroke="#4c4f69" stroke-width="3"/>
+
+    <rect y="170" width="340" height="60" rx="8" fill="#fe640b"/>
+    <text x="22" y="208" font-size="20" fill="#fbfaf7">map $cors</text>
+  </g>
+  <text x="610" y="500" font-family="Inter, system-ui, sans-serif" font-size="16" fill="#4c4f69" text-anchor="middle" opacity="0.55" letter-spacing="0.08em">NGINX MAP CHAIN</text>
+
+  <!-- Arrow maps → response -->
+  <g fill="#4c4f69" stroke="#4c4f69">
+    <line x1="795" y1="356" x2="895" y2="356" stroke-width="3"/>
+    <polygon points="908,356 894,348 894,364"/>
+  </g>
+
+  <!-- Response with CORS header chips -->
+  <g transform="translate(930 220)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+    <rect width="160" height="270" rx="10" stroke="#4c4f69" stroke-width="3"/>
+    <g transform="translate(16 24)">
+      <rect width="128" height="28" rx="5" fill="#4c4f69" opacity="0.08"/>
+      <text x="10" y="19" font-size="12" fill="#4c4f69">Allow-Origin</text>
+    </g>
+    <g transform="translate(16 62)">
+      <rect width="128" height="28" rx="5" fill="#4c4f69" opacity="0.08"/>
+      <text x="10" y="19" font-size="12" fill="#4c4f69">Allow-Credentials</text>
+    </g>
+    <g transform="translate(16 100)">
+      <rect width="128" height="28" rx="5" fill="#4c4f69" opacity="0.08"/>
+      <text x="10" y="19" font-size="12" fill="#4c4f69">Allow-Methods</text>
+    </g>
+    <g transform="translate(16 138)">
+      <rect width="128" height="28" rx="5" fill="#4c4f69" opacity="0.08"/>
+      <text x="10" y="19" font-size="12" fill="#4c4f69">Allow-Headers</text>
+    </g>
+    <g transform="translate(16 176)">
+      <rect width="128" height="28" rx="5" fill="#4c4f69" opacity="0.08"/>
+      <text x="10" y="19" font-size="12" fill="#4c4f69">Max-Age</text>
+    </g>
+  </g>
+  <text x="1010" y="525" font-family="Inter, system-ui, sans-serif" font-size="16" fill="#4c4f69" text-anchor="middle" opacity="0.55" letter-spacing="0.08em">RESPONSE</text>
+
+  <!-- Corner wordmark -->
+  <text x="1178" y="618" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#4c4f69" text-anchor="end" opacity="0.35">// syshero.org</text>
+</svg>

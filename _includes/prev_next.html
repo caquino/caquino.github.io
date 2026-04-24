@@ -1,0 +1,33 @@
+{%- comment -%}
+Chronological post navigation.
+
+page.previous = the post with the earlier date (older)
+page.next     = the post with the later date (newer)
+
+Both slots always render so the pair stays visually balanced on a two-column
+grid — when only one neighbour exists, the other slot collapses to an empty
+placeholder. A post with neither (impossible unless there's exactly one post
+in the site) renders nothing.
+{%- endcomment -%}
+{%- if page.previous or page.next -%}
+<nav class="post-nav" aria-label="Post navigation">
+  {%- if page.previous -%}
+  <a class="post-nav-link post-nav-prev" href="{{ page.previous.url | relative_url }}" rel="prev">
+    <span class="post-nav-dir">← Previous</span>
+    <span class="post-nav-title">{{ page.previous.title | escape }}</span>
+    <span class="post-nav-date">{{ page.previous.date | date: "%-d %b, %Y" }}</span>
+  </a>
+  {%- else -%}
+  <span class="post-nav-link post-nav-placeholder" aria-hidden="true"></span>
+  {%- endif -%}
+  {%- if page.next -%}
+  <a class="post-nav-link post-nav-next" href="{{ page.next.url | relative_url }}" rel="next">
+    <span class="post-nav-dir">Next →</span>
+    <span class="post-nav-title">{{ page.next.title | escape }}</span>
+    <span class="post-nav-date">{{ page.next.date | date: "%-d %b, %Y" }}</span>
+  </a>
+  {%- else -%}
+  <span class="post-nav-link post-nav-placeholder" aria-hidden="true"></span>
+  {%- endif -%}
+</nav>
+{%- endif -%}

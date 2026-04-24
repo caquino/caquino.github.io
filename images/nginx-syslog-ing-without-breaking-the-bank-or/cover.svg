@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" fill="none" role="img" aria-label="NGINX ships access_log to syslog via named FIFO read by syslog-ng">
+  <rect width="1200" height="630" fill="#fbfaf7"/>
+
+  <g>
+    <rect x="0" y="0" width="1200" height="36" fill="#eeeae3"/>
+    <circle cx="18" cy="18" r="5.5" fill="#ff5f56"/>
+    <circle cx="36" cy="18" r="5.5" fill="#ffbd2e"/>
+    <circle cx="54" cy="18" r="5.5" fill="#27c93f"/>
+    <line x1="0" y1="36" x2="1200" y2="36" stroke="#4c4f69" stroke-width="0.5" opacity="0.12"/>
+  </g>
+
+  <!-- NGINX -->
+  <g transform="translate(80 240)">
+    <rect width="220" height="150" rx="12" stroke="#4c4f69" stroke-width="3"/>
+    <text x="110" y="36" font-family="Inter, system-ui, sans-serif" font-size="13" fill="#4c4f69" text-anchor="middle" opacity="0.55" letter-spacing="0.12em">NGINX</text>
+    <line x1="24" y1="52" x2="196" y2="52" stroke="#4c4f69" stroke-width="1" opacity="0.18"/>
+    <text x="24" y="82" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#4c4f69" opacity="0.75">access_log</text>
+    <text x="24" y="102" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#4c4f69" opacity="0.75">error_log</text>
+    <text x="24" y="132" font-family="Inter, system-ui, sans-serif" font-size="11" fill="#4c4f69" opacity="0.55">(pre-1.7.1 — no native syslog)</text>
+  </g>
+
+  <!-- Arrow → FIFO -->
+  <g stroke="#4c4f69" fill="#4c4f69" stroke-width="2.5">
+    <line x1="305" y1="315" x2="395" y2="315"/>
+    <polygon points="405,315 393,308 393,322"/>
+  </g>
+
+  <!-- FIFO (peach — the key trick) -->
+  <g transform="translate(410 245)">
+    <rect width="280" height="140" rx="12" fill="#fe640b"/>
+    <text x="140" y="34" font-family="Inter, system-ui, sans-serif" font-size="13" fill="#fbfaf7" text-anchor="middle" opacity="0.7" letter-spacing="0.12em">NAMED FIFO</text>
+    <line x1="24" y1="50" x2="256" y2="50" stroke="#fbfaf7" stroke-width="1" opacity="0.25"/>
+    <text x="24" y="80" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#fbfaf7" opacity="0.95">mkfifo /srv/logs/access.log</text>
+    <text x="24" y="100" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#fbfaf7" opacity="0.95">mkfifo /srv/logs/error.log</text>
+    <text x="24" y="124" font-family="Inter, system-ui, sans-serif" font-size="11" fill="#fbfaf7" opacity="0.7">no disk IO · kernel pipe</text>
+  </g>
+
+  <!-- Arrow FIFO → syslog-ng -->
+  <g stroke="#4c4f69" fill="#4c4f69" stroke-width="2.5">
+    <line x1="695" y1="315" x2="785" y2="315"/>
+    <polygon points="795,315 783,308 783,322"/>
+  </g>
+
+  <!-- syslog-ng -->
+  <g transform="translate(800 240)">
+    <rect width="200" height="150" rx="12" stroke="#4c4f69" stroke-width="3"/>
+    <text x="100" y="36" font-family="Inter, system-ui, sans-serif" font-size="13" fill="#4c4f69" text-anchor="middle" opacity="0.55" letter-spacing="0.12em">SYSLOG-NG</text>
+    <text x="100" y="62" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#4c4f69" text-anchor="middle">pipe(…)</text>
+    <line x1="20" y1="78" x2="180" y2="78" stroke="#4c4f69" stroke-width="1" opacity="0.18"/>
+    <text x="100" y="100" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#4c4f69" text-anchor="middle" opacity="0.75">source → filter →</text>
+    <text x="100" y="120" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#4c4f69" text-anchor="middle" opacity="0.75">destination</text>
+  </g>
+
+  <!-- Arrow → remote syslog -->
+  <g stroke="#4c4f69" fill="#4c4f69" stroke-width="2.5">
+    <line x1="1005" y1="315" x2="1060" y2="315"/>
+    <polygon points="1070,315 1058,308 1058,322"/>
+  </g>
+
+  <!-- Remote (small) -->
+  <g transform="translate(1075 275)">
+    <rect width="110" height="80" rx="10" fill="#40a02b" opacity="0.15"/>
+    <rect width="110" height="80" rx="10" stroke="#40a02b" stroke-width="2"/>
+    <text x="55" y="30" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#40a02b" text-anchor="middle" opacity="0.7">tcp/514</text>
+    <text x="55" y="56" font-family="Inter, system-ui, sans-serif" font-size="14" fill="#40a02b" text-anchor="middle" font-weight="600">remote</text>
+    <text x="55" y="72" font-family="Inter, system-ui, sans-serif" font-size="11" fill="#40a02b" text-anchor="middle" opacity="0.75">syslog</text>
+  </g>
+
+  <text x="1178" y="618" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#4c4f69" text-anchor="end" opacity="0.35">// syshero.org</text>
+</svg>

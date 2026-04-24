@@ -1,6 +1,8 @@
 ---
 layout: post
 title: Replacing spaces in URL in apache using mod_rewrite
+cover: /images/replacing-spaces-in-url-in-apache-using/cover.svg
+description: "RewriteRules using the [N] flag replace spaces in URLs without causing infinite loops in Apache."
 date: '2013-06-23T01:20:00+01:00'
 tags: []
 tumblr_url: http://syshero.org/post/53632792929/replacing-spaces-in-url-in-apache-using
@@ -13,7 +15,10 @@ An evil bug lives on Apache previous to 2.2.12 that causes recursive RewriteRule
 
 To fix this DPI comes at your rescue.
 
-{% gist 5843197 %}
+```apacheconf
+RewriteEngine on
+RewriteRule ^([^\s]*)\s(.*)$ $1-$2 [R=301,N,DPI]
+```
 
 This can be used on any RewriteRule, that uses the [N] (next) flag.
 

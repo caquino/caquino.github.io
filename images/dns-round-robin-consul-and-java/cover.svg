@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" fill="none" role="img" aria-label="DNS round robin via Consul returning a single random IP per query">
+  <rect width="1200" height="630" fill="#fbfaf7"/>
+
+  <!-- Terminal chrome -->
+  <g>
+    <rect x="0" y="0" width="1200" height="36" fill="#eeeae3"/>
+    <circle cx="18" cy="18" r="5.5" fill="#ff5f56"/>
+    <circle cx="36" cy="18" r="5.5" fill="#ffbd2e"/>
+    <circle cx="54" cy="18" r="5.5" fill="#27c93f"/>
+    <line x1="0" y1="36" x2="1200" y2="36" stroke="#4c4f69" stroke-width="0.5" opacity="0.12"/>
+  </g>
+
+  <!-- Three client query boxes (left) -->
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14">
+    <g transform="translate(90 185)">
+      <rect width="180" height="50" rx="8" stroke="#4c4f69" stroke-width="2.5"/>
+      <text x="90" y="31" fill="#4c4f69" text-anchor="middle">getaddrinfo()</text>
+    </g>
+    <g transform="translate(90 315)">
+      <rect width="180" height="50" rx="8" stroke="#4c4f69" stroke-width="2.5"/>
+      <text x="90" y="31" fill="#4c4f69" text-anchor="middle">getaddrinfo()</text>
+    </g>
+    <g transform="translate(90 445)">
+      <rect width="180" height="50" rx="8" stroke="#4c4f69" stroke-width="2.5"/>
+      <text x="90" y="31" fill="#4c4f69" text-anchor="middle">getaddrinfo()</text>
+    </g>
+  </g>
+
+  <!-- Labels for query order -->
+  <g font-family="Inter, system-ui, sans-serif" font-size="13" fill="#4c4f69" opacity="0.55" letter-spacing="0.08em">
+    <text x="180" y="175" text-anchor="middle">QUERY 1</text>
+    <text x="180" y="305" text-anchor="middle">QUERY 2</text>
+    <text x="180" y="435" text-anchor="middle">QUERY 3</text>
+  </g>
+
+  <!-- Arrows left → Consul -->
+  <g stroke="#4c4f69" fill="#4c4f69" stroke-width="2.5">
+    <line x1="270" y1="210" x2="450" y2="312"/>
+    <line x1="270" y1="340" x2="450" y2="345"/>
+    <line x1="270" y1="470" x2="450" y2="385"/>
+  </g>
+
+  <!-- Central Consul DNS box -->
+  <g transform="translate(455 242)">
+    <rect width="290" height="215" rx="14" fill="#4c4f69"/>
+    <text x="145" y="68" font-family="Inter, system-ui, sans-serif" font-size="38" font-weight="600" fill="#fbfaf7" text-anchor="middle">Consul</text>
+    <text x="145" y="98" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#fbfaf7" text-anchor="middle" opacity="0.6">DNS</text>
+    <line x1="50" y1="125" x2="240" y2="125" stroke="#fbfaf7" stroke-width="1" opacity="0.25"/>
+    <text x="145" y="158" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#fe640b" text-anchor="middle">1 random IP</text>
+    <text x="145" y="180" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#fe640b" text-anchor="middle">per query</text>
+  </g>
+
+  <!-- Arrows Consul → IPs -->
+  <g stroke="#4c4f69" fill="#4c4f69" stroke-width="2.5">
+    <line x1="745" y1="297" x2="920" y2="210"/>
+    <polygon points="928,208 914,203 918,217"/>
+    <line x1="745" y1="347" x2="920" y2="340"/>
+    <polygon points="930,340 917,333 917,347"/>
+    <line x1="745" y1="407" x2="920" y2="470"/>
+    <polygon points="928,472 915,472 919,458"/>
+  </g>
+
+  <!-- Three IP response boxes (right) each a different color -->
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="18" font-weight="600">
+    <g transform="translate(920 185)">
+      <rect width="180" height="50" rx="8" fill="#fe640b"/>
+      <text x="90" y="33" fill="#fbfaf7" text-anchor="middle">10.0.0.1</text>
+    </g>
+    <g transform="translate(920 315)">
+      <rect width="180" height="50" rx="8" fill="#1e66f5"/>
+      <text x="90" y="33" fill="#fbfaf7" text-anchor="middle">10.0.0.2</text>
+    </g>
+    <g transform="translate(920 445)">
+      <rect width="180" height="50" rx="8" fill="#40a02b"/>
+      <text x="90" y="33" fill="#fbfaf7" text-anchor="middle">10.0.0.3</text>
+    </g>
+  </g>
+
+  <!-- Backend cluster label -->
+  <text x="1010" y="555" font-family="Inter, system-ui, sans-serif" font-size="13" fill="#4c4f69" text-anchor="middle" opacity="0.55" letter-spacing="0.08em">SERVICE INSTANCES</text>
+
+  <!-- Corner wordmark -->
+  <text x="1178" y="618" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#4c4f69" text-anchor="end" opacity="0.35">// syshero.org</text>
+</svg>

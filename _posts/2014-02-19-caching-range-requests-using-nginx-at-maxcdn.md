@@ -1,6 +1,8 @@
 ---
 layout: post
 title: Caching range requests using NGINX at MaxCDN
+cover: /images/caching-range-requests-using-nginx-at-maxcdn/cover.svg
+description: "Using Lua and ngx_lua, ranger normalizes byte-range requests for caching in NGINX."
 date: '2014-02-19T01:06:00+00:00'
 tags:
 - nginx

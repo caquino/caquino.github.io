@@ -1,6 +1,8 @@
 ---
 layout: post
 title: NGINX syslog-ing without breaking the bank or patching the code
+cover: /images/nginx-syslog-ing-without-breaking-the-bank-or/cover.svg
+description: "Configuring NGINX to log to syslog using a FIFO and syslog-ng."
 date: '2013-11-26T17:24:00+00:00'
 tags: []
 tumblr_url: http://syshero.org/post/68174083489/nginx-syslog-ing-without-breaking-the-bank-or
@@ -23,23 +25,34 @@ I’ve tried to generate enough requests to fill up the log buffer with syslog-n
 
 First of all, you need to create the fifos, I’ve used one directory outside /var/log to not be surprised by any logrotate rules.
 
-{% highlight bash %}
+```bash
 mkdir -p /srv/logs/
 mkfifo /srv/logs/access.log
 mkfifo /srv/logs/error.log
-{% endhighlight %}
+```
 
 Now you need to configure syslog-ng to read from the FIFO using the following configuration.
 
-{% gist 7661837 %}
+```nginx
+source s_nginx_20 { pipe("/srv/logs/access.log" program_override("nginx-access-log")); };
+source s_nginx_21 { pipe("/srv/logs/error.log" program_override("nginx-error-log")); };
+
+filter f_nginx_20 { match("nginx-access-log" value("PROGRAM")); };
+filter f_nginx_21 { match("nginx-error-log" value("PROGRAM")); };
+
+destination d_remote { tcp("central.syslog", port(514)); };
+
+log { source(s_nginx_20); filter(f_nginx_20); destination(d_messages); };
+log { source(s_nginx_21); filter(f_nginx_21); destination(d_messages); };
+```
 
 To send the logs to a remote server just change the destination.
 On nginx side just configure access_log and error_log to write on the fifos.
 
-{% highlight nginx %}
+```nginx
 error_log /srv/logs/error.log;
 access_log /srv/logs/access.log;
-{% endhighlight %}
+```
 
 Keep in mind that your syslog-ng needs to be started before nginx, or it will hang on startup.
 
@@ -52,5 +65,9 @@ After writing this post, I saw some people arguing about I/O usage and pipes/fif
 Having nginx supporting syslog protocol is the best solution, but for a project that can’t justify paying for this feature or the time spent taking care of custom packages and patching, this may be a solution.
 
 By the way: if you know any company in Toronto needing a Senior DevOps, drop me a message!
+
+---
+
+**EDIT 2026-04-24.** NGINX OSS has supported syslog output natively since [nginx 1.7.1 (June 2014)](http://nginx.org/en/CHANGES), a few months after this post was written. These days the syntax is just `error_log syslog:server=host:514 ...;` on the `error_log` and `access_log` directives, and the whole FIFO + syslog-ng pipeline below is no longer needed. I'm keeping the post up because, at the time, the "free nginx can't log to syslog" complaint had just hit the HN front page (this was my response), and the fuss around that thread is part of how I ended up at Zendesk.
 
 Thanks!

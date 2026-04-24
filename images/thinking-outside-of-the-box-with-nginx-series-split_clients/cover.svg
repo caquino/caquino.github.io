@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" fill="none" role="img" aria-label="NGINX split_clients: deterministic percentage-based split between two upstreams">
+  <rect width="1200" height="630" fill="#fbfaf7"/>
+
+  <g>
+    <rect x="0" y="0" width="1200" height="36" fill="#eeeae3"/>
+    <circle cx="18" cy="18" r="5.5" fill="#ff5f56"/>
+    <circle cx="36" cy="18" r="5.5" fill="#ffbd2e"/>
+    <circle cx="54" cy="18" r="5.5" fill="#27c93f"/>
+    <line x1="0" y1="36" x2="1200" y2="36" stroke="#4c4f69" stroke-width="0.5" opacity="0.12"/>
+  </g>
+
+  <!-- Incoming traffic (stacked requests) -->
+  <g transform="translate(80 175)">
+    <text x="90" y="-10" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#4c4f69" text-anchor="middle" opacity="0.55" letter-spacing="0.12em">TRAFFIC</text>
+    <rect width="180" height="320" rx="12" stroke="#4c4f69" stroke-width="2.5"/>
+    <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#4c4f69">
+      <g transform="translate(14 20)">
+        <rect width="150" height="22" rx="3" fill="#4c4f69" opacity="0.08"/>
+        <text x="10" y="15">req #1</text>
+      </g>
+      <g transform="translate(14 48)">
+        <rect width="150" height="22" rx="3" fill="#4c4f69" opacity="0.08"/>
+        <text x="10" y="15">req #2</text>
+      </g>
+      <g transform="translate(14 76)">
+        <rect width="150" height="22" rx="3" fill="#4c4f69" opacity="0.08"/>
+        <text x="10" y="15">req #3</text>
+      </g>
+      <g transform="translate(14 104)">
+        <rect width="150" height="22" rx="3" fill="#4c4f69" opacity="0.08"/>
+        <text x="10" y="15">req #4</text>
+      </g>
+      <g transform="translate(14 132)">
+        <rect width="150" height="22" rx="3" fill="#4c4f69" opacity="0.08"/>
+        <text x="10" y="15">req #5</text>
+      </g>
+      <text x="90" y="175" text-anchor="middle" opacity="0.5">…</text>
+      <text x="90" y="290" text-anchor="middle" opacity="0.55">hashed by $remote_addr</text>
+    </g>
+  </g>
+
+  <!-- Arrow to split_clients -->
+  <g stroke="#4c4f69" fill="#4c4f69" stroke-width="2.5">
+    <line x1="265" y1="335" x2="340" y2="335"/>
+    <polygon points="350,335 338,328 338,342"/>
+  </g>
+
+  <!-- split_clients directive (peach) -->
+  <g transform="translate(355 240)">
+    <rect width="330" height="200" rx="12" fill="#fe640b"/>
+    <text x="165" y="34" font-family="Inter, system-ui, sans-serif" font-size="13" fill="#fbfaf7" text-anchor="middle" opacity="0.7" letter-spacing="0.12em">SPLIT_CLIENTS</text>
+    <line x1="24" y1="50" x2="306" y2="50" stroke="#fbfaf7" stroke-width="1" opacity="0.25"/>
+    <text x="24" y="82" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#fbfaf7" opacity="0.95">"${remote_addr}${date_gmt}"</text>
+    <text x="24" y="102" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#fbfaf7" opacity="0.95">  $upstream_group {</text>
+    <text x="48" y="130" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#fbfaf7" font-weight="600">10%  "testing";</text>
+    <text x="48" y="152" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#fbfaf7" font-weight="600">*    "production";</text>
+    <text x="24" y="180" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#fbfaf7" opacity="0.95">}</text>
+  </g>
+
+  <!-- Split visual below: big 90/10 bar -->
+  <g transform="translate(355 470)">
+    <text x="165" y="-8" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#4c4f69" text-anchor="middle" opacity="0.6" letter-spacing="0.1em">OUTPUT DISTRIBUTION</text>
+    <rect width="297" height="30" rx="5" fill="#1e66f5"/>
+    <rect x="297" width="33" height="30" rx="5" fill="#fe640b"/>
+    <text x="148" y="20" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#fbfaf7" text-anchor="middle" font-weight="600">90% production</text>
+    <text x="313" y="20" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#fbfaf7" text-anchor="middle" font-weight="600">10%</text>
+  </g>
+
+  <!-- Output arrows to upstreams -->
+  <g stroke="#1e66f5" fill="#1e66f5" stroke-width="2.5">
+    <line x1="685" y1="295" x2="780" y2="230"/>
+    <polygon points="786,226 775,232 772,218"/>
+  </g>
+  <g stroke="#fe640b" fill="#fe640b" stroke-width="2.5">
+    <line x1="685" y1="395" x2="780" y2="460"/>
+    <polygon points="786,464 772,466 775,452"/>
+  </g>
+
+  <!-- Upstreams on right -->
+  <g transform="translate(795 180)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+    <rect width="310" height="100" rx="10" stroke="#1e66f5" stroke-width="2.5"/>
+    <text x="155" y="30" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#1e66f5" text-anchor="middle" opacity="0.8" letter-spacing="0.12em">UPSTREAM PRODUCTION</text>
+    <g fill="#1e66f5" opacity="0.45">
+      <rect x="24" y="46" width="120" height="36" rx="5"/>
+      <rect x="160" y="46" width="120" height="36" rx="5"/>
+    </g>
+    <text x="84" y="70" fill="#fbfaf7" font-size="13" text-anchor="middle">be-01</text>
+    <text x="220" y="70" fill="#fbfaf7" font-size="13" text-anchor="middle">be-02</text>
+  </g>
+  <g transform="translate(795 410)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+    <rect width="310" height="100" rx="10" stroke="#fe640b" stroke-width="2.5"/>
+    <text x="155" y="30" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#fe640b" text-anchor="middle" opacity="0.8" letter-spacing="0.12em">UPSTREAM TESTING</text>
+    <g fill="#fe640b" opacity="0.7">
+      <rect x="24" y="46" width="120" height="36" rx="5"/>
+      <rect x="160" y="46" width="120" height="36" rx="5"/>
+    </g>
+    <text x="84" y="70" fill="#fbfaf7" font-size="13" text-anchor="middle">be-03</text>
+    <text x="220" y="70" fill="#fbfaf7" font-size="13" text-anchor="middle">be-04</text>
+  </g>
+
+  <text x="1178" y="618" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#4c4f69" text-anchor="end" opacity="0.35">// syshero.org</text>
+</svg>

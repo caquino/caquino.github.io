@@ -1,0 +1,133 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" fill="none" role="img" aria-label="NGINX+ replicated key-value store: mirror-based replication with 307 write redirect">
+  <rect width="1200" height="630" fill="#fbfaf7"/>
+
+  <!-- Terminal chrome -->
+  <g>
+    <rect x="0" y="0" width="1200" height="36" fill="#eeeae3"/>
+    <circle cx="18" cy="18" r="5.5" fill="#ff5f56"/>
+    <circle cx="36" cy="18" r="5.5" fill="#ffbd2e"/>
+    <circle cx="54" cy="18" r="5.5" fill="#27c93f"/>
+    <line x1="0" y1="36" x2="1200" y2="36" stroke="#4c4f69" stroke-width="0.5" opacity="0.12"/>
+  </g>
+
+  <!-- PRIMARY label -->
+  <text x="320" y="140" font-family="Inter, system-ui, sans-serif" font-size="14" fill="#4c4f69" text-anchor="middle" opacity="0.55" letter-spacing="0.12em">NGINX+ PRIMARY</text>
+
+  <!-- Primary node box -->
+  <g transform="translate(170 160)">
+    <rect width="300" height="270" rx="14" stroke="#4c4f69" stroke-width="3"/>
+    <!-- keyval header -->
+    <text x="24" y="40" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#4c4f69" opacity="0.6">keyval_zone</text>
+    <line x1="24" y1="54" x2="276" y2="54" stroke="#4c4f69" stroke-width="1" opacity="0.18"/>
+    <!-- key/value rows -->
+    <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#4c4f69">
+      <g transform="translate(24 76)">
+        <rect width="110" height="28" rx="4" fill="#fe640b" opacity="0.18"/>
+        <text x="12" y="19">user:42</text>
+        <text x="130" y="19" opacity="0.55">→</text>
+        <text x="156" y="19">"alice"</text>
+      </g>
+      <g transform="translate(24 116)">
+        <rect width="110" height="28" rx="4" fill="#fe640b" opacity="0.18"/>
+        <text x="12" y="19">session:7</text>
+        <text x="130" y="19" opacity="0.55">→</text>
+        <text x="156" y="19">"active"</text>
+      </g>
+      <g transform="translate(24 156)">
+        <rect width="110" height="28" rx="4" fill="#fe640b" opacity="0.18"/>
+        <text x="12" y="19">flag:ff</text>
+        <text x="130" y="19" opacity="0.55">→</text>
+        <text x="156" y="19">"on"</text>
+      </g>
+      <g transform="translate(24 196)">
+        <rect width="110" height="28" rx="4" fill="#fe640b" opacity="0.18"/>
+        <text x="12" y="19">user:43</text>
+        <text x="130" y="19" opacity="0.55">→</text>
+        <text x="156" y="19">"bob"</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- REPLICA label -->
+  <text x="880" y="140" font-family="Inter, system-ui, sans-serif" font-size="14" fill="#4c4f69" text-anchor="middle" opacity="0.55" letter-spacing="0.12em">NGINX+ REPLICA</text>
+
+  <!-- Replica node box -->
+  <g transform="translate(730 160)">
+    <rect width="300" height="270" rx="14" stroke="#4c4f69" stroke-width="3"/>
+    <text x="24" y="40" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#4c4f69" opacity="0.6">keyval_zone</text>
+    <line x1="24" y1="54" x2="276" y2="54" stroke="#4c4f69" stroke-width="1" opacity="0.18"/>
+    <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#4c4f69">
+      <g transform="translate(24 76)">
+        <rect width="110" height="28" rx="4" fill="#fe640b" opacity="0.18"/>
+        <text x="12" y="19">user:42</text>
+        <text x="130" y="19" opacity="0.55">→</text>
+        <text x="156" y="19">"alice"</text>
+      </g>
+      <g transform="translate(24 116)">
+        <rect width="110" height="28" rx="4" fill="#fe640b" opacity="0.18"/>
+        <text x="12" y="19">session:7</text>
+        <text x="130" y="19" opacity="0.55">→</text>
+        <text x="156" y="19">"active"</text>
+      </g>
+      <g transform="translate(24 156)">
+        <rect width="110" height="28" rx="4" fill="#fe640b" opacity="0.18"/>
+        <text x="12" y="19">flag:ff</text>
+        <text x="130" y="19" opacity="0.55">→</text>
+        <text x="156" y="19">"on"</text>
+      </g>
+      <g transform="translate(24 196)">
+        <rect width="110" height="28" rx="4" fill="#fe640b" opacity="0.18"/>
+        <text x="12" y="19">user:43</text>
+        <text x="130" y="19" opacity="0.55">→</text>
+        <text x="156" y="19">"bob"</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- Mirror arrow: primary → replica (top) -->
+  <g stroke="#fe640b" fill="#fe640b" stroke-width="3">
+    <line x1="475" y1="245" x2="720" y2="245"/>
+    <polygon points="730,245 716,238 716,252"/>
+  </g>
+  <text x="597" y="232" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#fe640b" text-anchor="middle" stroke="#fbfaf7" stroke-width="4" paint-order="stroke">mirror (writes)</text>
+
+  <!-- 307 redirect arrow: replica → primary (bottom) -->
+  <g stroke="#1e66f5" fill="#1e66f5" stroke-width="3">
+    <line x1="725" y1="345" x2="480" y2="345"/>
+    <polygon points="470,345 484,338 484,352"/>
+  </g>
+  <text x="597" y="371" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#1e66f5" text-anchor="middle" stroke="#fbfaf7" stroke-width="4" paint-order="stroke">307 redirect on writes</text>
+
+  <!-- Client + flow arrows at bottom -->
+  <g transform="translate(540 485)">
+    <rect width="120" height="60" rx="8" stroke="#4c4f69" stroke-width="2.5"/>
+    <text x="60" y="38" font-family="Inter, system-ui, sans-serif" font-size="16" fill="#4c4f69" text-anchor="middle">client</text>
+  </g>
+
+  <!-- write arrow client → primary -->
+  <g stroke="#fe640b" fill="#fe640b" stroke-width="2.5">
+    <line x1="540" y1="500" x2="390" y2="435"/>
+    <polygon points="385,432 398,430 393,444"/>
+  </g>
+  <text x="425" y="492" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#fe640b" stroke="#fbfaf7" stroke-width="4" paint-order="stroke">W</text>
+
+  <!-- read arrow client → replica -->
+  <g stroke="#40a02b" fill="#40a02b" stroke-width="2.5">
+    <line x1="660" y1="500" x2="810" y2="435"/>
+    <polygon points="815,432 802,430 807,444"/>
+  </g>
+  <text x="765" y="492" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#40a02b" stroke="#fbfaf7" stroke-width="4" paint-order="stroke">R</text>
+
+  <!-- Legend -->
+  <g transform="translate(460 595)" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#4c4f69">
+    <rect x="0" y="0" width="14" height="14" fill="#fe640b"/>
+    <text x="22" y="11" opacity="0.75">write</text>
+    <rect x="90" y="0" width="14" height="14" fill="#40a02b"/>
+    <text x="112" y="11" opacity="0.75">read</text>
+    <rect x="170" y="0" width="14" height="14" fill="#1e66f5"/>
+    <text x="192" y="11" opacity="0.75">307</text>
+  </g>
+
+  <!-- Corner wordmark -->
+  <text x="1178" y="618" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#4c4f69" text-anchor="end" opacity="0.35">// syshero.org</text>
+</svg>

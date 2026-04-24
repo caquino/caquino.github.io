@@ -1,6 +1,8 @@
 ---
 layout: post
 title: Persistent backend selection using cookies with NGINX
+cover: /images/persistent-backend-selection-using-cookies-with/cover.svg
+description: "NGINX maps URL paths to backends using cookies and regular expressions."
 date: '2015-07-03T16:58:37+01:00'
 tags:
 - devops nginx linux sysadmin proxying
@@ -21,6 +23,32 @@ So on this example it was used a combination of map, regexp named matches and co
 
 The configuration below achieves this functionality, mapping /app[0-9] to specific backend listed on the map { }
 
-{% gist 27dd864ab756eb71e99f %}
+```nginx
+map $cookie_beid $backend {
+  default www.globo.com:80;
+  1       www.uol.com.br:80;
+  2       www.ig.com.br:80;
+  3       www.terra.com.br:80;
+}
+
+server {
+  listen 80 default;
+  server_name _;
+
+  resolver 4.2.2.2;
+
+  location ~ ^/app(?<beid>[0-9]+) {
+    add_header Set-Cookie   "beid=${beid};Max-Age=31536000";
+    return 301 /;
+  }
+
+  location / {
+    add_header X-Backend $backend;
+    add_header X-BeID $cookie_beid;
+    proxy_pass http://$backend;
+  }
+
+}
+```
 
 Thanks!

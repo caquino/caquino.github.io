@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" fill="none" role="img" aria-label="Chef recipe overriding a third-party cookbook template via resources() without forking the upstream cookbook">
+  <rect width="1200" height="630" fill="#fbfaf7"/>
+
+  <g>
+    <rect x="0" y="0" width="1200" height="36" fill="#eeeae3"/>
+    <circle cx="18" cy="18" r="5.5" fill="#ff5f56"/>
+    <circle cx="36" cy="18" r="5.5" fill="#ffbd2e"/>
+    <circle cx="54" cy="18" r="5.5" fill="#27c93f"/>
+    <line x1="0" y1="36" x2="1200" y2="36" stroke="#4c4f69" stroke-width="0.5" opacity="0.12"/>
+  </g>
+
+  <!-- Upstream (third-party) cookbook box -->
+  <g transform="translate(80 180)">
+    <rect width="340" height="220" rx="12" stroke="#4c4f69" stroke-width="3"/>
+    <text x="170" y="34" font-family="Inter, system-ui, sans-serif" font-size="13" fill="#4c4f69" text-anchor="middle" opacity="0.55" letter-spacing="0.12em">COMMUNITY COOKBOOK</text>
+    <text x="170" y="64" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="17" fill="#4c4f69" text-anchor="middle" font-weight="600">rsyslog</text>
+    <line x1="24" y1="80" x2="316" y2="80" stroke="#4c4f69" stroke-width="1" opacity="0.18"/>
+    <!-- template resource -->
+    <g transform="translate(24 100)">
+      <rect width="292" height="100" rx="8" fill="#4c4f69" opacity="0.08"/>
+      <text x="16" y="28" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#4c4f69" opacity="0.85">template "/etc/rsyslog.conf"</text>
+      <text x="16" y="52" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#4c4f69" opacity="0.6">  source "rsyslog.conf.erb"</text>
+      <text x="16" y="72" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#4c4f69" opacity="0.6">  cookbook "rsyslog"</text>
+      <text x="16" y="92" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#4c4f69" opacity="0.45">(do not edit)</text>
+    </g>
+  </g>
+
+  <!-- Override arrow (peach) from custom cookbook -->
+  <g stroke="#fe640b" fill="#fe640b" stroke-width="3">
+    <line x1="770" y1="290" x2="445" y2="290"/>
+    <polygon points="435,290 450,283 450,297"/>
+  </g>
+  <text x="605" y="275" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#fe640b" text-anchor="middle" font-weight="600" stroke="#fbfaf7" stroke-width="4" paint-order="stroke">resources(...)</text>
+  <text x="605" y="320" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#fe640b" text-anchor="middle" opacity="0.9" stroke="#fbfaf7" stroke-width="4" paint-order="stroke">redirect template source</text>
+
+  <!-- Custom cookbook box -->
+  <g transform="translate(780 180)">
+    <rect width="340" height="220" rx="12" fill="#fe640b"/>
+    <text x="170" y="34" font-family="Inter, system-ui, sans-serif" font-size="13" fill="#fbfaf7" text-anchor="middle" opacity="0.7" letter-spacing="0.12em">YOUR COOKBOOK</text>
+    <text x="170" y="64" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="17" fill="#fbfaf7" text-anchor="middle" font-weight="600">example</text>
+    <line x1="24" y1="80" x2="316" y2="80" stroke="#fbfaf7" stroke-width="1" opacity="0.25"/>
+    <g transform="translate(24 100)">
+      <rect width="292" height="100" rx="8" fill="#fbfaf7" opacity="0.14"/>
+      <text x="16" y="28" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#fbfaf7">include_recipe "rsyslog"</text>
+      <text x="16" y="54" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#fbfaf7">t = resources(template:</text>
+      <text x="16" y="70" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#fbfaf7">  "/etc/rsyslog.conf")</text>
+      <text x="16" y="90" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#fbfaf7">t.cookbook "example"</text>
+    </g>
+  </g>
+
+  <!-- Result -->
+  <g transform="translate(400 460)">
+    <rect width="400" height="80" rx="10" fill="#40a02b" opacity="0.15"/>
+    <rect width="400" height="80" rx="10" stroke="#40a02b" stroke-width="2.5"/>
+    <text x="200" y="28" font-family="Inter, system-ui, sans-serif" font-size="12" fill="#40a02b" text-anchor="middle" opacity="0.7" letter-spacing="0.12em">RESULT ON NODE</text>
+    <text x="200" y="58" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="14" fill="#40a02b" text-anchor="middle" font-weight="600">/etc/rsyslog.conf from example</text>
+  </g>
+
+  <text x="1178" y="618" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#4c4f69" text-anchor="end" opacity="0.35">// syshero.org</text>
+</svg>
