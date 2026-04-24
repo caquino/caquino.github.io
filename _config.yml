@@ -42,6 +42,7 @@ plugins:
 social_networks:
   - { name: twitter,   url: 'https://twitter.com/syshero' }
   - { name: mastodon,  url: 'https://mastodon.social/@syshero' }
+  - { name: bluesky,   url: 'https://bsky.app/profile/chaosmaker.bsky.social' }
   - { name: linkedin,  url: 'https://linkedin.com/in/cassianoaquino' }
   - { name: github,    url: 'https://github.com/caquino' }
 

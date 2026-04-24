@@ -1,7 +1,7 @@
 FROM ruby:3.3-slim
 
 RUN apt-get update \
-  && apt-get install -y --no-install-recommends build-essential git curl ca-certificates \
+  && apt-get install -y --no-install-recommends build-essential git curl ca-certificates librsvg2-bin \
   && rm -rf /var/lib/apt/lists/*
 
 # Pagefind static-site search index. The Jekyll post_write hook in

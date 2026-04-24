@@ -17,7 +17,14 @@
     {% endif %}
     <meta property="og:url" content="{{page.url | absolute_url}}" />
 
+    {%- comment -%}
+    OG image always PNG: social platforms (Slack, Discord, Twitter, LinkedIn,
+    iMessage) don't render SVG in link-preview cards. On-site display uses
+    cover.svg (vector); og:image uses the PNG sibling rendered at build time
+    by rsvg-convert.
+    {%- endcomment -%}
     {%- assign og_image = page.cover | default: site.og_default_image | default: "/images/og-default.png" -%}
+    {%- assign og_image = og_image | replace: ".svg", ".png" -%}
     <meta property="og:image" content="{{ og_image | absolute_url }}" />
     <meta name="twitter:image" content="{{ og_image | absolute_url }}" />
 

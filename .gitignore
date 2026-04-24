@@ -20,3 +20,8 @@ _config.dev.yml
 # Local editor / OS junk
 .DS_Store
 Thumbs.db
+
+# Post cover PNG twins are build-time artifacts: rsvg-convert renders them
+# from cover.svg during the GitHub Actions pipeline. Only SVGs are tracked.
+# Keep cover-ernie.png (pre-SVG backup) and any other cover-<label>.png files.
+images/*/cover.png
