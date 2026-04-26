@@ -452,6 +452,7 @@
             }
             .sep { margin: 0 6px; color: var(--border); }
         }
+        .author-footer-disclaimer { margin: 10px 0 0; font-size: 12px; line-height: 1.5; color: var(--text-soft); font-style: italic; }
     }
 
     .comments { position: relative; margin: 40px 0 0; padding: 40px; border: 1px solid var(--border-soft); border-radius: 12px; background: var(--surface); box-shadow: 0 2px 4px rgba(0,0,0,0.04); }
