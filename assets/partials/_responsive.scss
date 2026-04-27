@@ -98,3 +98,54 @@
         .post-nav-next { text-align: left; align-items: flex-start; }
     }
 }
+
+// ---------------------------------------------------------------
+// Phone-and-small-tablet layout fixes (≤ 640px)
+//
+// Without these the page renders OK in iOS Safari but in-app
+// webviews (LinkedIn, X, Slack) treat the site as desktop-shaped
+// and shrink-to-fit, producing tiny text. Fixing the actual
+// responsive layout fixes the heuristic too.
+// ---------------------------------------------------------------
+
+@include media-query($on-smaller-tablets) {
+    // Homepage post-cards with a cover: stack the cover above the text
+    // instead of squeezing it into a 160px thumbnail next to the body.
+    .the-content .post-card.has-cover {
+        grid-template-columns: 1fr;
+        gap: 12px;
+        .post-card-cover { width: 100%; aspect-ratio: 1200 / 630; }
+    }
+
+    // Homepage hero (avatar + intro): avatar on top, text below.
+    .the-content .hero {
+        flex-direction: column;
+        gap: 14px;
+        padding-top: 4px;
+        .hero-avatar { margin: 0; }
+    }
+
+    // Author footer (under each post): stack avatar above body.
+    .the-content .author-footer {
+        flex-direction: column;
+        gap: 14px;
+        padding: 18px 20px;
+    }
+
+    // Mermaid: by default mermaid sets inline `max-width: 100%` on the SVG,
+    // which crushes complex diagrams to an unreadable thumbnail on phones.
+    // Let it keep its natural width and scroll the container instead.
+    .the-content .mermaid {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        svg {
+            max-width: none !important;
+            width: auto !important;
+            min-width: max-content;
+        }
+    }
+
+    // Code blocks: long lines should scroll the block, not the page.
+    .the-content pre,
+    .the-content .highlight { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+}
