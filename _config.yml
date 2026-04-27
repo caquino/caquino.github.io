@@ -2,7 +2,6 @@
 title: "Cassiano Aquino"
 name: Cassiano Aquino
 job_title: Senior Principal Engineer - DevOps @ Flutter Entertainment Plc
-email: cassianoaquino@me.com
 description: Protecting the weak against null pointer exceptions, motorcyles, skydiving and technology.
 avatar: /images/avatar.jpg
 favicon: /images/avatar.jpg
@@ -24,7 +23,6 @@ github_repo: caquino/caquino.github.io
 
 author:
   name: Cassiano Aquino
-  email: cassianoaquino@me.com
   twitter: syshero
 
 # Enabled plugins (Gemfile's :jekyll_plugins group is authoritative; this
