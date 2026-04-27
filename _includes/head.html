@@ -90,18 +90,25 @@
         "@type": "BlogPosting",
         "headline": {{ page.title | jsonify }},
         "description": {% if page.description %}{{ page.description | strip_html | strip_newlines | jsonify }}{% else %}{{ site.description | jsonify }}{% endif %},
-        "image": {{ og_image | absolute_url | jsonify }},
+        "image": {
+            "@type": "ImageObject",
+            "url": {{ og_image | absolute_url | jsonify }},
+            "width": 1200,
+            "height": 630
+        },
         "datePublished": "{{ page.date | date_to_xmlschema }}",
         "dateModified": "{{ page.updated | default: page.date | date_to_xmlschema }}",
         "author": {
             "@type": "Person",
             "name": {{ site.name | jsonify }},
-            "url": "{{ '/about/' | absolute_url }}"
+            "url": "{{ '/about/' | absolute_url }}",
+            "image": "{{ site.avatar | absolute_url }}"
         },
         "publisher": {
             "@type": "Person",
             "name": {{ site.name | jsonify }},
-            "url": "{{ '/' | absolute_url }}"
+            "url": "{{ '/' | absolute_url }}",
+            "image": "{{ site.avatar | absolute_url }}"
         },
         "mainEntityOfPage": {
             "@type": "WebPage",
