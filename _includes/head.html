@@ -30,6 +30,18 @@
     {% endif %}
     <meta property="og:url" content="{{page.url | absolute_url}}" />
 
+    {%- if page.layout == 'post' -%}
+    <meta property="og:type" content="article" />
+    <meta property="article:published_time" content="{{ page.date | date_to_xmlschema }}" />
+    <meta property="article:modified_time" content="{{ page.updated | default: page.date | date_to_xmlschema }}" />
+    <meta property="article:author" content="{{ site.name }}" />
+    {%- for tag in page.tags %}
+    <meta property="article:tag" content="{{ tag }}" />
+    {%- endfor %}
+    {%- else -%}
+    <meta property="og:type" content="website" />
+    {%- endif %}
+
     {%- comment -%}
     OG image always PNG: social platforms (Slack, Discord, Twitter, LinkedIn,
     iMessage) don't render SVG in link-preview cards. On-site display uses
@@ -63,4 +75,40 @@
     {% if site.goatcounter_endpoint %}
     <script data-goatcounter="{{ site.goatcounter_endpoint }}/count" async src="{{ site.goatcounter_endpoint }}/count.js"></script>
     {% endif %}
+
+    {%- comment -%}
+    JSON-LD BlogPosting schema for posts. Google reads this to populate
+    rich-result eligibility (article carousel, top-stories, etc.). Hand-rolled
+    rather than via {% raw %}{% seo %}{% endraw %} because the rest of head.html
+    is hand-rolled and switching would risk regressing the cover-image .svg → .png swap
+    and the page_title formatting.
+    {%- endcomment -%}
+    {%- if page.layout == 'post' -%}
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": {{ page.title | jsonify }},
+        "description": {% if page.description %}{{ page.description | strip_html | strip_newlines | jsonify }}{% else %}{{ site.description | jsonify }}{% endif %},
+        "image": {{ og_image | absolute_url | jsonify }},
+        "datePublished": "{{ page.date | date_to_xmlschema }}",
+        "dateModified": "{{ page.updated | default: page.date | date_to_xmlschema }}",
+        "author": {
+            "@type": "Person",
+            "name": {{ site.name | jsonify }},
+            "url": "{{ '/about/' | absolute_url }}"
+        },
+        "publisher": {
+            "@type": "Person",
+            "name": {{ site.name | jsonify }},
+            "url": "{{ '/' | absolute_url }}"
+        },
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": {{ page.url | absolute_url | jsonify }}
+        }{% if page.tags %},
+        "keywords": {{ page.tags | join: ", " | jsonify }}{% endif %}
+    }
+    </script>
+    {%- endif -%}
 </head>
